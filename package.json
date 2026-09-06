@@ -1,0 +1,9 @@
+{
+  "name": "the-drowned-bell",
+  "private": true,
+  "type": "module",
+  "description": "Indiana Jones and the Drowned Bell of Atlantis — a browser point-and-click adventure. No build step; docs/ is served as-is.",
+  "scripts": {
+    "test": "node test/solvability.mjs"
+  }
+}

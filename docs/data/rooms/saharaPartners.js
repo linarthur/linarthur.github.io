@@ -1,0 +1,211 @@
+// data/rooms/saharaPartners.js — Act 2, Partners Path: the Richat
+// Structure, Mauritania. Mo calls bearings off a sundial-compass while the
+// player drives (dialogue+cutscene), then the Storm Fork — buried at the
+// centre of the rings — is a resonance puzzle (the middle voice).
+
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+
+const W = 1920, H = 1080;
+
+const WALKBOX = [
+  [220, 740], [1700, 740], [1800, 990], [120, 990],
+];
+
+function paintSky(ctx) {
+  const g = paintedGradient(ctx, 0, 0, 0, 620, [
+    [0, "#e8955a"],
+    [0.5, "#e8b878"],
+    [1, "#f0d0a0"],
+  ]);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, 620);
+  // sun
+  const sunGlow = ctx.createRadialGradient(1500, 200, 10, 1500, 200, 220);
+  sunGlow.addColorStop(0, "rgba(255,240,200,0.9)");
+  sunGlow.addColorStop(1, "rgba(255,240,200,0)");
+  ctx.fillStyle = sunGlow;
+  ctx.beginPath();
+  ctx.arc(1500, 200, 220, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function paintRings(ctx) {
+  ctx.save();
+  ctx.strokeStyle = "rgba(140,90,50,0.35)";
+  ctx.lineWidth = 6;
+  const cx = 960, cy = 620;
+  [200, 340, 480, 620].forEach((r) => {
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, r, r * 0.28, 0, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+  ctx.restore();
+}
+
+function paintDunes(ctx) {
+  const g = paintedGradient(ctx, 0, 600, 0, H, [
+    [0, "#d9a468"],
+    [1, "#a06a3a"],
+  ]);
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.moveTo(0, 640);
+  ctx.lineTo(W, 640);
+  ctx.lineTo(W, H);
+  ctx.lineTo(0, H);
+  ctx.closePath();
+  ctx.fill();
+  paintRings(ctx);
+  texturedFloor(ctx, { x: 0, y: 700, w: W, h: H - 700, vanishX: 960, speckleColor: "rgba(255,240,210,0.08)" });
+}
+
+function paintSandrail(ctx) {
+  ctx.save();
+  ctx.translate(500, 880);
+  ctx.fillStyle = "#5c4c3a";
+  ctx.beginPath();
+  ctx.roundRect(-70, -30, 140, 50, 8);
+  ctx.fill();
+  rimLight(ctx, () => ctx.roundRect(-70, -30, 140, 50, 8), { color: "255,220,170", alpha: 0.3, width: 2 });
+  ctx.fillStyle = "#2c2118";
+  [-40, 40].forEach((dx) => {
+    ctx.beginPath();
+    ctx.arc(dx, 24, 20, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+function paintMoAndFork(ctx, found) {
+  ctx.save();
+  ctx.translate(1420, 860);
+  ctx.fillStyle = "rgba(0,0,0,0.25)";
+  ctx.beginPath();
+  ctx.ellipse(0, 78, 44, 12, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#3a5c48";
+  ctx.beginPath();
+  ctx.moveTo(-28, 70);
+  ctx.lineTo(-20, -55);
+  ctx.quadraticCurveTo(0, -75, 20, -55);
+  ctx.lineTo(28, 70);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = "#5c3d28";
+  ctx.beginPath();
+  ctx.arc(0, -70, 19, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#e8dcc4";
+  ctx.beginPath();
+  ctx.moveTo(-24, -84);
+  ctx.lineTo(24, -84);
+  ctx.lineTo(16, -96);
+  ctx.lineTo(-16, -96);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  if (!found) {
+    ctx.save();
+    ctx.translate(1560, 940);
+    ctx.strokeStyle = "#a97142";
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(-8, 20);
+    ctx.lineTo(-8, -20);
+    ctx.moveTo(8, 20);
+    ctx.lineTo(8, -20);
+    ctx.stroke();
+    rimLight(ctx, () => {
+      ctx.moveTo(-8, 20);
+      ctx.lineTo(-8, -20);
+      ctx.moveTo(8, 20);
+      ctx.lineTo(8, -20);
+    }, { color: "255,220,170", alpha: 0.4, width: 2 });
+    ctx.restore();
+  }
+}
+
+export const saharaPartners = {
+  id: "saharaPartners",
+  name: "The Eye of the Sahara — Mauritania",
+  walkbox: WALKBOX,
+
+  drawBackground(ctx, state) {
+    paintSky(ctx);
+    lightWash(ctx, [1500, 0, 900, 700], "255,220,170", 0.16);
+    paintDunes(ctx);
+    paintSandrail(ctx);
+    paintMoAndFork(ctx, !!state?.flags?.storm_fork_found);
+    vignette(ctx, W, H, 0.4);
+  },
+
+  hotspots: [
+    {
+      id: "mo",
+      name: "Dr. Nomusa Adeyemi",
+      kind: "actor",
+      polygon: [[1360, 780], [1480, 780], [1480, 950], [1360, 950]],
+      dialogue: "mo_sahara",
+      responses: {
+        look: "Mo, sundial-compass in hand, already arguing with it about true north.",
+        default: "She's mid-calculation. Better not to jog her elbow.",
+      },
+    },
+    {
+      id: "sandrail",
+      name: "Sandrail",
+      kind: "scenery",
+      polygon: [[420, 830], [590, 830], [590, 940], [420, 940]],
+      responses: {
+        look: "A stripped-down dune buggy, rented from a broker who overcharged them exactly as much as the guidebook warned he would.",
+        use: "It's already parked where it needs to be. Driving further would just mean driving in circles — literally, given the rings.",
+        default: "It's done its job getting them this far in.",
+      },
+    },
+    {
+      id: "rings",
+      name: "The Concentric Rings",
+      kind: "scenery",
+      polygon: [[700, 500], [1220, 500], [1220, 740], [700, 740]],
+      responses: {
+        look: "Ridge after ridge after ridge, dead level, radiating out from the centre like a target the size of a city. From ground level they all look identical.",
+        default: "Best appreciated from a very great height, which he does not currently have.",
+      },
+    },
+    {
+      id: "fork_site",
+      name: "Buried Bronze",
+      kind: "scenery",
+      polygon: [[1500, 880], [1650, 880], [1650, 990], [1500, 990]],
+      hideWhenFlag: "storm_fork_found",
+      puzzleRequiresFlag: "mo_helped_sahara",
+      responses: {
+        look: "Two bronze tines, just breaking the surface at the dead centre of the rings, humming faintly in the heat-shimmer.",
+        use: "Getting here in a straight line mattered — the rings all look alike, and he'd rather not have wandered in circles to find this. Ask Mo for a bearing first.",
+        default: "It's not coming loose without digging, and it's not worth digging in the wrong spot.",
+      },
+      puzzleOnVerb: { use: "storm_fork_resonance" },
+    },
+    {
+      id: "onward",
+      name: "The Track South",
+      kind: "exit",
+      polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
+      requiresFlag: "storm_fork_found",
+      lockedLine: "Leaving without the fork would mean the whole detour through the Sahara was for nothing.",
+      to: { room: "biminiPartners", spawn: { x: 300, y: 900, facing: "down" } },
+      fallCaption:
+        "A sandrail, a cargo plane, and a boat with a captain who asks no questions later, the Sahara gives way to the turquoise shallows of Bimini.",
+      responses: {
+        look: "The track back to the airstrip, and from there, the Atlantic.",
+      },
+    },
+  ],
+
+  items: [],
+
+  actorStart: { x: 900, y: 900, facing: "down" },
+};
+
+export default saharaPartners;

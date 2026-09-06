@@ -1,0 +1,6 @@
+.claude/
+reference sound/
+reference graphics/
+test/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>Indiana Jones and the Drowned Bell of Atlantis</title>
+<link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <div id="tap-gate">
+    <h1 id="tap-gate-title">THE DROWNED BELL</h1>
+    <div class="prompt" id="tap-gate-prompt">TAP TO BEGIN</div>
+    <div class="dedication-wrap" id="tap-gate-dedication"></div>
+  </div>
+
+  <div id="game-root">
+    <div id="sentence-line">Ready.</div>
+    <div id="stage-wrap">
+      <canvas id="stage"></canvas>
+      <div id="transition-fade"></div>
+      <div id="offline-badge" hidden>offline — saving locally</div>
+      <div id="radial-menu"></div>
+      <div id="inventory-drawer-handle">▲ items</div>
+      <div id="inventory-drawer"></div>
+      <div id="touch-hint">tap: look/take/walk · hold: verb wheel · swipe up: items</div>
+      <div id="overlays"></div>
+    </div>
+    <div id="control-bar">
+      <div id="verb-panel"></div>
+      <div id="inventory-panel"></div>
+    </div>
+  </div>
+
+  <!-- Tone.js: chosen audio engine (design doc Section 3). Loaded before the
+       module script so `window.Tone` is guaranteed defined when it runs.
+       Every Tone.js call in the codebase is guarded — if this CDN is
+       blocked or offline, the game stays fully playable, just silent. -->
+  <script src="https://unpkg.com/tone@14.8.49/build/Tone.js"></script>
+  <script type="module" src="engine/main.js"></script>
+</body>
+</html>
