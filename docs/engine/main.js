@@ -55,7 +55,7 @@ import { foremanBiminiDialogue } from "../data/dialogue/foreman.js";
 import { ferroBiminiDialogue } from "../data/dialogue/ferro.js";
 import { CUTSCENES } from "../data/cutscenes.js";
 import { GOALS, CODEX } from "../data/journal.js";
-import { HINTS } from "../data/hints.js";
+import { HINTS, HINT_TARGETS } from "../data/hints.js";
 
 // Dev-only tooling (window.__debug, the 'c' credits preview) is gated on
 // this rather than deleted — it stays available for local testing, but
@@ -317,6 +317,7 @@ function resolveResponse(entry, itemId) {
 }
 
 function runAction(verb, target) {
+  clearHintHighlight();
   if (target.type === "item") {
     const item = getItem(target.def.id);
     const v = verb || "take";
@@ -544,6 +545,7 @@ async function fallToRoom(nextRoomId, spawn, caption) {
   playTransitionChime();
   await shake(200);
   await fadeOut(320);
+  clearHintHighlight();
   room = ROOMS[nextRoomId];
   gameState.roomId = nextRoomId;
   const theme = ROOM_THEMES[nextRoomId];
@@ -764,13 +766,58 @@ const hintToast = createHintToast(overlaysRoot);
 const dialogueRunner = createDialogueRunner(flagApi);
 const hintTracker = createHintTracker(flagApi);
 
+// Third-stage ("solution") hints additionally draw a temporary highlight
+// over the actual hotspot/item they describe, reusing the same dashed
+// outline the renderer already draws on hover (see engine/renderer.js).
+let hintHighlightPolygon = null;
+let hintHighlightExpiresAt = 0;
+
+function clearHintHighlight() {
+  hintHighlightPolygon = null;
+  hintHighlightExpiresAt = 0;
+}
+
+function resolveHintTarget(goalId) {
+  const spec = HINT_TARGETS[goalId];
+  if (!spec || room.id !== spec.room) return null;
+  for (const entry of spec.targets) {
+    const id = typeof entry === "string" ? entry : entry.id;
+    const unless = typeof entry === "string" ? null : entry.unless;
+    if (unless && getFlag(gameState, unless)) continue;
+    const item = room.items.find((it) => it.id === id);
+    if (item) {
+      if (hasItem(gameState, id)) continue;
+      const full = getItem(id);
+      if (full?.combinesInto && hasItem(gameState, full.combinesInto)) continue;
+      return item.polygon;
+    }
+    const hs = room.hotspots.find((h) => h.id === id);
+    if (hs) {
+      if (hs.hideWhenFlag && getFlag(gameState, hs.hideWhenFlag)) continue;
+      return hs.polygon;
+    }
+  }
+  return null;
+}
+
 function showHint() {
   const goals = computeGoals(GOALS, gameState.flags);
   const undone = goals.find((g) => !g.done);
   if (!undone) {
     hintToast.show("Nothing to nudge you toward right now — you're all caught up.");
+    clearHintHighlight();
+    return;
+  }
+  const stages = HINTS[undone.id];
+  const stageBefore = getFlag(gameState, `hint_stage_${undone.id}`) || 0;
+  const isSolutionStage = !!stages?.length && stageBefore % stages.length === stages.length - 1;
+  hintToast.show(hintTracker.next(undone.id, HINTS));
+  const polygon = isSolutionStage ? resolveHintTarget(undone.id) : null;
+  if (polygon) {
+    hintHighlightPolygon = polygon;
+    hintHighlightExpiresAt = performance.now() + 6000;
   } else {
-    hintToast.show(hintTracker.next(undone.id, HINTS));
+    clearHintHighlight();
   }
 }
 
@@ -935,6 +982,7 @@ function doAutosave() {
 function applyLoadedState(data) {
   Object.assign(gameState, data);
   gameState.actor = { ...gameState.actor, ...(data.actor || {}) };
+  clearHintHighlight();
   room = ROOMS[gameState.roomId] || room;
   const theme = ROOM_THEMES[room.id];
   if (theme) music.playTrack(theme);
@@ -1207,6 +1255,7 @@ function draw() {
     room,
     actor,
     hoveredHotspot: hoveredTarget ? hoveredTarget.def : null,
+    hintHighlight: hintHighlightPolygon && performance.now() < hintHighlightExpiresAt ? hintHighlightPolygon : null,
     debug: false,
     cameraOffset: currentCameraOffset(),
     state: gameState,
@@ -1342,6 +1391,7 @@ if (devToolsEnabled) {
     setFlag: (k, v = true) => setFlag(gameState, k, v),
     setPathDebug: (p) => setPath(gameState, p),
     jumpToRoom: (id, x = 900, y = 900) => {
+      clearHintHighlight();
       room = ROOMS[id] || room;
       gameState.roomId = room.id;
       actor.x = x;
@@ -1352,5 +1402,8 @@ if (devToolsEnabled) {
       const theme = ROOM_THEMES[room.id];
       if (theme) music.playTrack(theme);
     },
+    triggerHint: () => showHint(),
+    getHintHighlight: () =>
+      hintHighlightPolygon && performance.now() < hintHighlightExpiresAt ? hintHighlightPolygon : null,
   };
 }

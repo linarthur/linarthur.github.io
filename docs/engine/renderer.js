@@ -4,6 +4,7 @@ export const LOGICAL_W = 1920;
 export const LOGICAL_H = 1080;
 
 const ACCENT = "#ff7a1a"; // signal orange — reserved for interactive hotspots at rest
+const HINT_COLOR = "#ffd23f"; // gold — reserved for the hint system's call-out highlight
 
 export function createRenderer(canvas) {
   const ctx = canvas.getContext("2d");
@@ -69,6 +70,23 @@ export function createRenderer(canvas) {
     ctx.restore();
   }
 
+  // Third-stage hint call-out: same dashed-outline language as the hover
+  // highlight above, so it reads as "this is clickable" rather than a new
+  // visual idiom — just gold and pulsing so it's noticeable unprompted.
+  function drawHintHighlight(polygon, phase) {
+    const pulse = 0.5 + 0.5 * Math.sin(phase / 220);
+    ctx.save();
+    ctx.strokeStyle = HINT_COLOR;
+    ctx.lineWidth = 5 + pulse * 3;
+    ctx.globalAlpha = 0.6 + pulse * 0.4;
+    ctx.setLineDash([14, 10]);
+    ctx.beginPath();
+    polygon.forEach(([px, py], i) => (i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py)));
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+  }
+
   function drawWalkboxDebug(polygon) {
     ctx.save();
     ctx.strokeStyle = "rgba(93,255,176,0.25)";
@@ -80,13 +98,14 @@ export function createRenderer(canvas) {
     ctx.restore();
   }
 
-  function render({ room, actor, hoveredHotspot, debug, cameraOffset = { x: 0, y: 0 }, state }) {
+  function render({ room, actor, hoveredHotspot, hintHighlight, debug, cameraOffset = { x: 0, y: 0 }, state }) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, LOGICAL_W, LOGICAL_H);
     ctx.save();
     ctx.translate(cameraOffset.x, cameraOffset.y);
     room.drawBackground(ctx, state);
     if (debug) drawWalkboxDebug(room.walkbox);
+    if (hintHighlight) drawHintHighlight(hintHighlight, performance.now());
     if (hoveredHotspot) drawHotspotHighlight(hoveredHotspot.polygon);
     drawActor(actor);
     ctx.restore();

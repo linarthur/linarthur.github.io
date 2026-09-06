@@ -128,4 +128,44 @@ export const HINTS = {
   ],
 };
 
+// HINT_TARGETS — maps a goal id to the room + hotspot/item id its stage-3
+// ("solution") hint text points at, so the game can draw the same dashed
+// highlight used on hover directly onto that spot. Purely additive: if a
+// goal has no entry, or the player isn't in the listed room, no highlight
+// is drawn and the text-only hint behaves exactly as before.
+//
+// `targets` is tried in order; each entry is either a hotspot/item id, or
+// `{ id, unless }` where `unless` is a flag to skip that candidate once
+// set. The first candidate that's still an item not yet held (and not
+// already combined into something the player holds) or a hotspot not
+// currently hidden by its own `hideWhenFlag` wins.
+export const HINT_TARGETS = {
+  escape_gallery: { room: "gallery", targets: ["rope"] },
+  escape_stacks: { room: "stacks", targets: ["toppled_shelf"] },
+  escape_boiler: { room: "boiler", targets: ["valve_wheel"] },
+  escape_cellar: { room: "cellar", targets: ["barrel_stack"] },
+  figure_out_basement: { room: "subbasement", targets: ["higgins"] },
+  talk_to_higgins: { room: "subbasement", targets: ["higgins"] },
+  examine_tablet: { room: "subbasement", targets: ["tablet"] },
+  find_the_chart: { room: "subbasement", targets: ["chart"] },
+  solve_azulejo: { room: "lisbonAlley", targets: ["tile_shop"] },
+  reach_malta: { room: "lisbonAlley", targets: ["funicular"] },
+  solve_hypogeum: { room: "hypogeum", targets: ["oracle_niche"] },
+  meet_draghi: { room: "harborBar", targets: ["draghi"] },
+  choose_a_path: { room: "harborBar", targets: ["harbor_door"] },
+  find_salt_conch: { room: "donanaPartners", targets: [{ id: "mo", unless: "mo_helped_donana" }, "conch_site"] },
+  find_storm_fork: { room: "saharaPartners", targets: [{ id: "mo", unless: "mo_helped_sahara" }, "fork_site"] },
+  find_star_bell: { room: "biminiPartners", targets: [{ id: "mo", unless: "mo_helped_bimini" }, "bell_site"] },
+  forge_permit: { room: "donanaCunning", targets: ["blank_permit", "consortium_stamp", "conch_site"] },
+  forge_disguise: { room: "saharaCunning", targets: ["local_robes", "headscarf", "fork_site"] },
+  forge_requisition: { room: "biminiCunning", targets: ["requisition_form", "official_seal", "bell_site"] },
+  cross_boardwalk: { room: "donanaNerve", targets: ["boardwalk"] },
+  brake_tram: { room: "saharaNerve", targets: ["tram"] },
+  beat_ferro: { room: "biminiNerve", targets: ["ferro"] },
+  confront_draghi: { room: "calderaApproach", targets: ["draghi"] },
+  wake_the_bell: { room: "calderaChamber", targets: ["altar"] },
+  // reach_caldera has no single room (the exit hotspot differs by which
+  // Act 2 path/room the player is standing in) — left text-only.
+};
+
 export default HINTS;
