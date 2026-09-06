@@ -19,6 +19,12 @@ html, body {
   overscroll-behavior: none;
   -webkit-user-select: none;
   user-select: none;
+  /* Bilingual text is written as an English line, a newline, then the
+     繁體中文 line, right inside the same string (e.g. "Resume\n繼續遊戲") —
+     this keeps that newline as an actual line break everywhere in the game
+     instead of collapsing it away, while still wrapping and collapsing
+     runs of spaces/tabs normally. */
+  white-space: pre-line;
 }
 
 #game-root {
@@ -553,6 +559,8 @@ body.touch #inventory-drawer { display: grid; }
 .slot-btn:hover:not(:disabled), .menu-btn:hover { background: #29394a; border-color: var(--ochre); }
 .slot-btn:disabled { opacity: 0.35; cursor: default; }
 .menu-btn { align-self: center; margin-top: 6px; min-width: 160px; }
+.menu-btn.danger { border-color: #7a3a34; color: #e8b0a8; }
+.menu-btn.danger:hover { background: #3a1e1a; border-color: #c05a4a; }
 
 /* ---------- credits screen ---------- */
 .credits-panel {

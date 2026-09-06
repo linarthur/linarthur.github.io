@@ -54,14 +54,15 @@ export const identity = {
   // Player-facing flavour strings that mention the hero by name/title.
   // Route new ones through here so a re-skin stays a one-file edit.
   strings: {
-    titleScreenPrompt: "TAP TO BEGIN",
-    saveSlotHeader: (n) => `Case File ${n}`,
+    titleScreenPrompt: "TAP TO BEGIN\n點擊開始",
+    saveSlotHeader: (n) => `Case File ${n}\n案件檔案 ${n}`,
   },
 
   // Shown on every visit to the title screen, and again on the credits
   // screen after the game is completed. Not part of the hero re-skin —
   // this stays true regardless of which character config is loaded.
-  dedication: "This game is created by Austin and Lucy's father, hope you kids have lots of fun! Love from Dad.",
+  dedication:
+    "This game is created by Austin and Lucy's father, hope you kids have lots of fun! Love from Dad.\n這個遊戲是Austin和Lucy的爸爸做的，希望孩子們玩得開心！爸爸愛你們。",
 };
 
 export default identity;

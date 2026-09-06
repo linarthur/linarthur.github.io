@@ -72,11 +72,11 @@ export function addGrit(state, amount) {
 // label for "how are we doing," not a separate scoring track — no title
 // is ever a prerequisite for anything.
 const GRIT_TITLES = [
-  { min: 0, title: "Rookie Archaeologist" },
-  { min: 100, title: "Field Researcher" },
-  { min: 250, title: "Seasoned Explorer" },
-  { min: 400, title: "Master of the Drowned Bell" },
-  { min: 550, title: "Legend of Atlantis" },
+  { min: 0, title: "Rookie Archaeologist\n菜鳥考古學家" },
+  { min: 100, title: "Field Researcher\n田野研究員" },
+  { min: 250, title: "Seasoned Explorer\n資深探險家" },
+  { min: 400, title: "Master of the Drowned Bell\n沉鐘大師" },
+  { min: 550, title: "Legend of Atlantis\n亞特蘭提斯傳奇" },
 ];
 
 export function gritTitle(amount) {

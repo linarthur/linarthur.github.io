@@ -19,8 +19,8 @@
 
 import { drawChladniPlate, freqToMode } from "./chladni.js";
 
-const HINT_WRONG = "Not quite — give it another listen.";
-const HINT_NONE_PICKED = "Tap a note first, then Confirm.";
+const HINT_WRONG = "Not quite — give it another listen.\n不太對——再聽一次看看。";
+const HINT_NONE_PICKED = "Tap a note first, then Confirm.\n先點選一個音符，再按確認。";
 
 // Ratios (relative to the target frequency) used to build the wrong
 // answers, spread across recognizably different pitches rather than
@@ -55,8 +55,8 @@ function ensureDom(root) {
       <p class="resonance-flavor"></p>
       <canvas class="resonance-canvas" width="480" height="260"></canvas>
       <div class="resonance-choices"></div>
-      <div class="resonance-status">Listening...</div>
-      <button class="menu-btn resonance-close">Leave it for now</button>
+      <div class="resonance-status">Listening...<br>聆聽中……</div>
+      <button class="menu-btn resonance-close">Leave it for now<br>先放著晚點再做</button>
     </div>
   `;
   root.appendChild(overlay);
@@ -106,7 +106,7 @@ function buildChoiceGroup(index, target, label, onConfirmed) {
 
   const listenBtn = el("button", "resonance-listen-btn");
   listenBtn.type = "button";
-  listenBtn.textContent = "🔊 Hear the Note";
+  listenBtn.textContent = "🔊 Hear the Note\n聽這個音";
   const playTarget = () => {
     playTone(target);
     previewMode = freqToMode(target);
@@ -117,7 +117,7 @@ function buildChoiceGroup(index, target, label, onConfirmed) {
   const status = el("div", "resonance-group-status");
   const confirmBtn = el("button", "resonance-confirm-btn");
   confirmBtn.type = "button";
-  confirmBtn.textContent = "Confirm";
+  confirmBtn.textContent = "Confirm\n確認";
 
   let selectedFreq = null;
 
@@ -203,11 +203,11 @@ export function openResonancePuzzle(root, { targets: puzzleTargets, targetLabels
   introTimers.forEach((t) => clearTimeout(t));
   introTimers = [];
 
-  overlay.querySelector(".resonance-title").textContent = title || "Resonance";
+  overlay.querySelector(".resonance-title").textContent = title || "Resonance\n共鳴";
   overlay.querySelector(".resonance-flavor").textContent = flavor || "";
 
   const overallStatus = overlay.querySelector(".resonance-status");
-  overallStatus.textContent = "Listening...";
+  overallStatus.textContent = "Listening...\n聆聽中……";
 
   const choicesWrap = overlay.querySelector(".resonance-choices");
   choicesWrap.innerHTML = "";
@@ -219,7 +219,7 @@ export function openResonancePuzzle(root, { targets: puzzleTargets, targetLabels
       solvedSlots[i] = true;
       group.lockSolved();
       if (solvedSlots.every(Boolean)) {
-        overallStatus.textContent = "Resonance achieved.";
+        overallStatus.textContent = "Resonance achieved.\n共鳴達成。";
         finish(true);
       }
     });

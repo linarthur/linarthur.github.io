@@ -32,11 +32,11 @@ function ensureDom(root) {
       <p class="echo-flavor"></p>
       <canvas class="echo-canvas" width="380" height="270"></canvas>
       <div class="echo-actions">
-        <button class="echo-clap-btn">Clap</button>
+        <button class="echo-clap-btn">Clap<br>拍手</button>
       </div>
       <div class="echo-actions echo-chambers"></div>
-      <div class="echo-status">Clap once, then count.</div>
-      <button class="menu-btn echo-close">Leave it for now</button>
+      <div class="echo-status">Clap once, then count.<br>拍一下手，然後數數看。</div>
+      <button class="menu-btn echo-close">Leave it for now<br>先放著晚點再做</button>
     </div>
   `;
   root.appendChild(overlay);
@@ -65,7 +65,7 @@ function clap() {
   echoTime = clapTime + cfg.delayMs;
   tone(523, 0.15);
   tone(392, 0.25, cfg.delayMs);
-  overlay.querySelector(".echo-status").textContent = "Listening...";
+  overlay.querySelector(".echo-status").textContent = "Listening...\n聆聽中……";
 }
 
 function draw(now) {
@@ -105,7 +105,7 @@ function draw(now) {
     ctx.stroke();
     if (now >= echoTime + 400 && running) {
       running = false;
-      overlay.querySelector(".echo-status").textContent = "Which chamber echoed back?";
+      overlay.querySelector(".echo-status").textContent = "Which chamber echoed back?\n哪一個石室傳回了回聲？";
     }
   }
 
@@ -114,10 +114,11 @@ function draw(now) {
 
 function pickChamber(id) {
   if (id === cfg.correctId) {
-    overlay.querySelector(".echo-status").textContent = "That's the one — the sound comes straight back.";
+    overlay.querySelector(".echo-status").textContent =
+      "That's the one — the sound comes straight back.\n就是它——聲音直接傳了回來。";
     setTimeout(() => finish(true), 500);
   } else {
-    overlay.querySelector(".echo-status").textContent = "Not quite — clap again and listen closer.";
+    overlay.querySelector(".echo-status").textContent = "Not quite — clap again and listen closer.\n不太對——再拍一次手，仔細聽聽看。";
   }
 }
 
@@ -139,7 +140,7 @@ export function openEchoPuzzle(root, { title, flavor, chambers, correctId, delay
   onCloseCb = onClose || null;
   overlay.querySelector(".echo-title").textContent = title || "The Hypogeum";
   overlay.querySelector(".echo-flavor").textContent = flavor || "";
-  overlay.querySelector(".echo-status").textContent = "Clap once, then count.";
+  overlay.querySelector(".echo-status").textContent = "Clap once, then count.\n拍一下手，然後數數看。";
   const chamberWrap = overlay.querySelector(".echo-chambers");
   chamberWrap.innerHTML = "";
   chambers.forEach((ch) => {

@@ -262,7 +262,7 @@ function setSentence(text) {
 
 function previewFor(target, verb) {
   const verbDef = VERBS.find((v) => v.id === verb);
-  const verbLabel = verbDef ? verbDef.label.split("/")[0] : "Walk to";
+  const verbLabel = verbDef ? verbDef.previewLabel : "Walk to";
   if (target.type === "floor") return "Walk here.";
   const name = target.type === "item" ? getItem(target.def.id).name : target.def.name;
   return `${verbLabel} ${name}.`;
@@ -428,7 +428,7 @@ function openPuzzle(id, def) {
   };
   const onClose = () => {
     restoreMusic();
-    setSentence("Ready.");
+    setSentence("Ready.\n準備就緒。");
   };
   const onSolved = () => {
     restoreMusic();
@@ -519,7 +519,7 @@ function openPathChoice() {
         "This path's Act 2 arrives in a later milestone — the Partners and Cunning paths are playable now if you'd like to see Act 2 in action.",
       ],
       "Continue",
-      () => setSentence("Ready.")
+      () => setSentence("Ready.\n準備就緒。")
     );
   });
 }
@@ -583,7 +583,7 @@ function checkPrologueComplete() {
         "The street grate stairwell is open when you're ready to go.",
       ],
       "Continue",
-      () => setSentence("Ready.")
+      () => setSentence("Ready.\n準備就緒。")
     );
   });
 }
@@ -612,7 +612,7 @@ function checkAct2PartnersComplete() {
       "One way left to go: down, into whatever's waiting at the bottom of the water.",
     ],
     "Continue",
-    () => setSentence("Ready.")
+    () => setSentence("Ready.\n準備就緒。")
   );
 }
 
@@ -634,7 +634,7 @@ function checkAct2CunningComplete() {
       "One way left to go: down, into whatever's waiting at the bottom of the water.",
     ],
     "Continue",
-    () => setSentence("Ready.")
+    () => setSentence("Ready.\n準備就緒。")
   );
 }
 
@@ -656,7 +656,7 @@ function checkAct2NerveComplete() {
       "One way left to go: down, into whatever's waiting at the bottom of the water.",
     ],
     "Continue",
-    () => setSentence("Ready.")
+    () => setSentence("Ready.\n準備就緒。")
   );
 }
 
@@ -682,12 +682,12 @@ function checkAct3Complete() {
     creditsUI.show(
       identity,
       [
-        "Design &amp; Programming — Dad",
-        "Story, Art &amp; Music — Dad",
+        "Design &amp; Programming — Dad<br>設計與程式 — 爸爸",
+        "Story, Art &amp; Music — Dad<br>故事、美術與音樂 — 爸爸",
         epilogue,
-        `Final Grit Rating: ${gameState.grit} — ${gritTitle(gameState.grit)}`,
+        `Final Grit Rating: ${gameState.grit} — ${gritTitle(gameState.grit)}<br>最終分數：${gameState.grit} — ${gritTitle(gameState.grit)}`,
       ],
-      () => setSentence("The End.")
+      () => setSentence("The End.\n完。")
     );
   });
 }
@@ -822,7 +822,9 @@ function showHint() {
   const goals = computeGoals(GOALS, gameState.flags);
   const undoneGoals = goals.filter((g) => !g.done);
   if (!undoneGoals.length) {
-    hintToast.show("Nothing to nudge you toward right now — you're all caught up.");
+    hintToast.show(
+      "Nothing to nudge you toward right now — you're all caught up.\n目前沒有可以提示的事——你已經跟上進度了。"
+    );
     clearHintHighlight();
     return;
   }
@@ -1032,7 +1034,7 @@ function applyLoadedState(data) {
   actor.facing = gameState.actor.facing;
   pendingAction = null;
   renderInventory();
-  setSentence("Loaded.");
+  setSentence("Loaded.\n讀取完成。");
 }
 
 function openPauseMenu() {
@@ -1067,6 +1069,16 @@ function openPauseMenu() {
         pauseUI.hide();
         paused = false;
         openJournal();
+      },
+      onNewGame() {
+        const ok = window.confirm(
+          "Start a brand new game? Progress in this session that hasn't been saved to a Case File will be lost.\n\n開始新遊戲？本次遊戲中尚未存入案件檔案的進度將會遺失。"
+        );
+        if (!ok) return;
+        pauseUI.hide();
+        paused = false;
+        applyLoadedState(createGameState());
+        playIntro();
       },
     },
     {
@@ -1126,7 +1138,7 @@ function openRadial(sx, sy, target) {
     const angle = (-90 + i * (360 / VERBS.length)) * (Math.PI / 180);
     const item = document.createElement("div");
     item.className = "radial-item";
-    item.textContent = v.label.split("/")[0];
+    item.textContent = v.previewLabel;
     item.style.left = `${110 + radius * Math.cos(angle)}px`;
     item.style.top = `${110 + radius * Math.sin(angle)}px`;
     item.dataset.verb = v.id;
@@ -1169,7 +1181,7 @@ attachInput(canvas, {
     if (inputBlocked()) return;
     const target = getTargetAt(x, y);
     if (!target) {
-      setSentence("Nothing to do there.");
+      setSentence("Nothing to do there.\n這裡沒什麼好做的。");
       return;
     }
     requestAction(selectedVerb || effectiveVerbFor(target), target);
@@ -1235,7 +1247,9 @@ attachInput(canvas, {
     }
     if (inputBlocked()) return;
     if (key === "i") {
-      setSentence(`Grit Rating: ${gameState.grit} — ${gritTitle(gameState.grit)}`);
+      setSentence(
+        `Grit Rating: ${gameState.grit} — ${gritTitle(gameState.grit)}\n分數：${gameState.grit} — ${gritTitle(gameState.grit)}`
+      );
       return;
     }
     if (key === "h") {
@@ -1320,44 +1334,44 @@ function showCard(title, lines, buttonText) {
 
 async function playIntro() {
   await showCard(
-    "Who You Are",
+    "Who You Are<br>你是誰",
     [
-      "You're Indiana Jones. Archaeologist, professor, occasional target of large rolling objects.",
-      "Barnett College pays you to teach. The world keeps handing you better reasons not to.",
+      "You're Indiana Jones. Archaeologist, professor, occasional target of large rolling objects.<br>你是印第安納瓊斯。考古學家、教授，偶爾會被巨大的滾動物體盯上。",
+      "Barnett College pays you to teach. The world keeps handing you better reasons not to.<br>巴奈特學院付錢請你教書。但這個世界老是找到更好的理由，讓你沒空教書。",
     ],
-    "Next"
+    "Next\n下一步"
   );
   await showCard(
-    "What Happened Tonight",
+    "What Happened Tonight<br>今晚發生的事",
     [
-      "Someone broke into the college museum, cracked open a sealed crate, and vanished through a hole in the floor.",
-      "Whatever was inside it rang loud enough to crack every window in the hall.",
-      "They left in a hurry. You're about to find out why.",
+      "Someone broke into the college museum, cracked open a sealed crate, and vanished through a hole in the floor.<br>有人闖進學院博物館，撬開一只密封的木箱，然後從地板上的一個洞消失無蹤。",
+      "Whatever was inside it rang loud enough to crack every window in the hall.<br>箱子裡的東西發出的聲響，大到把整間大廳的窗戶都震裂了。",
+      "They left in a hurry. You're about to find out why.<br>他們走得很匆忙。你即將發現原因。",
     ],
-    "Next"
+    "Next\n下一步"
   );
   await showCard(
-    "Your Mission",
+    "Your Mission<br>你的任務",
     [
-      "The thieves have a head start. You have a hat, a whip, and no patience for waiting.",
-      "Somewhere out there is the truth about the Drowned Bell of Atlantis — and you intend to get there first.",
-      "Ready? Good. Nobody else is.",
+      "The thieves have a head start. You have a hat, a whip, and no patience for waiting.<br>竊賊已經搶先一步。你有一頂帽子、一條鞭子，還有毫無耐性等待的個性。",
+      "Somewhere out there is the truth about the Drowned Bell of Atlantis — and you intend to get there first.<br>在某個地方，藏著關於「亞特蘭提斯沉鐘」的真相——你打算搶先一步找到它。",
+      "Ready? Good. Nobody else is.<br>準備好了嗎？很好。反正也沒有別人準備好。",
     ],
-    "Next"
+    "Next\n下一步"
   );
   await showCard(
-    "How to Play",
+    "How to Play<br>操作說明",
     [
-      "Tap or click the floor to walk there.",
-      "Tap or click something you see — like a crate or a door — to look at it.",
-      "Pick an action first (Look, Take, Use, Talk...), then tap the thing you want to use it on.",
-      "Stuck? Tap the ? button any time for a hint.",
-      "Tap ☰ to open the menu — save your game, or check your Journal for goals.",
+      "Tap or click the floor to walk there.<br>點擊地板即可走到該處。",
+      "Tap or click something you see — like a crate or a door — to look at it.<br>點擊畫面中的物品——例如木箱或門——即可查看。",
+      "Pick an action first (Look, Take, Use, Talk...), then tap the thing you want to use it on.<br>先選擇一個動作（看、拿、使用、說話……），再點擊你想對它使用的物品。",
+      "Stuck? Tap the ? button any time for a hint.<br>卡關了嗎？隨時點擊 ? 按鈕取得提示。",
+      "Tap ☰ to open the menu — save your game, or check your Journal for goals.<br>點擊 ☰ 開啟選單——儲存遊戲，或查看日誌中的目標。",
     ],
-    "Let's Go!"
+    "Let's Go!\n開始遊戲！"
   );
   setFlag(gameState, "intro_seen", true);
-  setSentence("Ready.");
+  setSentence("Ready.\n準備就緒。");
 }
 
 function startGame() {
@@ -1366,7 +1380,7 @@ function startGame() {
   music.playTrack(ROOM_THEMES[room.id] || "barnett");
   loop.start();
   if (getFlag(gameState, "intro_seen")) {
-    setSentence("Ready.");
+    setSentence("Ready.\n準備就緒。");
   } else {
     playIntro();
   }

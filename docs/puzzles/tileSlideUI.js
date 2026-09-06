@@ -32,10 +32,10 @@ function ensureDom(root) {
       <h2 class="tileslide-title"></h2>
       <p class="tileslide-flavor"></p>
       <canvas class="tileslide-canvas" width="360" height="360"></canvas>
-      <div class="tileslide-status">Slide the tiles to rebuild the chart.</div>
+      <div class="tileslide-status">Slide the tiles to rebuild the chart.<br>滑動拼塊，拼出完整的地圖。</div>
       <div class="tileslide-buttons">
-        <button class="menu-btn tileslide-close">Leave it for now</button>
-        <button class="menu-btn tileslide-skip" hidden>Guess the way instead</button>
+        <button class="menu-btn tileslide-close">Leave it for now<br>先放著晚點再做</button>
+        <button class="menu-btn tileslide-skip" hidden>Guess the way instead<br>直接憑猜測前進</button>
       </div>
     </div>
   `;
@@ -128,7 +128,7 @@ function onCanvasClick(e) {
   if (puzzle.tryMove(r, c)) {
     drawMural();
     if (puzzle.isSolved()) {
-      overlay.querySelector(".tileslide-status").textContent = "The chart resolves — a compass, clear and whole.";
+      overlay.querySelector(".tileslide-status").textContent = "The chart resolves — a compass, clear and whole.\n地圖拼好了——一個清晰完整的羅盤。";
       setTimeout(() => finish(true), 500);
     }
   }
@@ -147,12 +147,12 @@ export function openTileSlidePuzzle(root, { title, flavor, size = 3, onSolved, o
   onCloseCb = onClose || null;
   onSkipCb = onSkip || null;
   puzzle = createTileSlidePuzzle(size);
-  overlay.querySelector(".tileslide-title").textContent = title || "Azulejo Chart";
+  overlay.querySelector(".tileslide-title").textContent = title || "Azulejo Chart\n瓷磚地圖";
   overlay.querySelector(".tileslide-flavor").textContent = flavor || "";
-  overlay.querySelector(".tileslide-status").textContent = "Slide the tiles to rebuild the chart.";
+  overlay.querySelector(".tileslide-status").textContent = "Slide the tiles to rebuild the chart.\n滑動拼塊，拼出完整的地圖。";
   const skipBtn = overlay.querySelector(".tileslide-skip");
   skipBtn.hidden = !onSkip;
-  if (onSkip) skipBtn.textContent = skipLabel || "Guess the way instead";
+  if (onSkip) skipBtn.textContent = skipLabel || "Guess the way instead\n直接憑猜測前進";
   overlay.hidden = false;
   drawMural();
 }

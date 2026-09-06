@@ -13,6 +13,7 @@ export const draghiDialogue = {
         "(She doesn't look up from her drink.) Professor Jones. I was starting to think Barnett College had stopped producing anyone interesting.",
       setFlag: "met_draghi",
       cutscene: "draghi_reveal",
+      mood: "surprised",
       options: [
         { id: "ask_who", text: "Who exactly are you?", once: true, goto: "who_info" },
         { id: "ask_want", text: "What does the Adriatic Salvage Consortium want with a Roman diving bell?", once: true, goto: "want_info" },

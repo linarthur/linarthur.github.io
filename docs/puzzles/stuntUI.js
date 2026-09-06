@@ -37,8 +37,8 @@ function ensureDom(root) {
       <p class="stunt-flavor"></p>
       <div class="stunt-timer"><div class="stunt-timer-fill"></div></div>
       <div class="stunt-moves"></div>
-      <div class="stunt-status">Watch closely.</div>
-      <button class="menu-btn stunt-close">Catch your breath</button>
+      <div class="stunt-status">Watch closely.<br>仔細看好。</div>
+      <button class="menu-btn stunt-close">Catch your breath<br>先喘口氣</button>
     </div>
   `;
   root.appendChild(overlay);

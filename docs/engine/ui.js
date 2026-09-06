@@ -85,16 +85,16 @@ export function createJournalUI(root) {
   panel.hidden = true;
   panel.innerHTML = `
     <div class="journal-header">
-      <span>Field Journal</span>
-      <button class="journal-close">Close (J)</button>
+      <span>Field Journal<br>探險日誌</span>
+      <button class="journal-close">Close (J)<br>關閉 (J)</button>
     </div>
     <div class="journal-body">
       <section>
-        <h3>Goals</h3>
+        <h3>Goals<br>目標</h3>
         <ul class="journal-goals"></ul>
       </section>
       <section>
-        <h3>Bellwright Codex</h3>
+        <h3>Bellwright Codex<br>貝爾萊特文獻</h3>
         <ul class="journal-codex"></ul>
       </section>
     </div>
@@ -113,7 +113,7 @@ export function createJournalUI(root) {
       const codexEl = panel.querySelector(".journal-codex");
       codexEl.innerHTML = "";
       if (!codex.length) {
-        codexEl.appendChild(el("li", "empty", "Nothing recorded yet."));
+        codexEl.appendChild(el("li", "empty", "Nothing recorded yet.\n尚無記錄。"));
       }
       codex.forEach((c) => {
         const item = el("li");
@@ -144,10 +144,10 @@ export function createPauseMenuUI(root) {
   function renderSlotRow(label, slot, onSave, onLoad) {
     const row = el("div", "slot-row");
     row.appendChild(el("span", "slot-label", label));
-    row.appendChild(el("span", "slot-meta", slot?.data ? new Date(slot.data.updatedAt).toLocaleString() : "empty"));
-    const saveBtn = el("button", "slot-btn", "Save");
+    row.appendChild(el("span", "slot-meta", slot?.data ? new Date(slot.data.updatedAt).toLocaleString() : "empty\n空白"));
+    const saveBtn = el("button", "slot-btn", "Save\n儲存");
     saveBtn.addEventListener("click", onSave);
-    const loadBtn = el("button", "slot-btn", "Load");
+    const loadBtn = el("button", "slot-btn", "Load\n讀取");
     loadBtn.disabled = !slot?.data;
     loadBtn.addEventListener("click", onLoad);
     row.appendChild(saveBtn);
@@ -159,11 +159,11 @@ export function createPauseMenuUI(root) {
     show(slots, callbacks, account, sound) {
       panel.hidden = false;
       panel.innerHTML = "";
-      panel.appendChild(el("h2", null, "Paused"));
+      panel.appendChild(el("h2", null, "Paused\n遊戲暫停"));
 
       if (sound) {
         const row = el("div", "sound-row");
-        const muteBtn = el("button", "slot-btn", sound.muted ? "Unmute Music" : "Mute Music");
+        const muteBtn = el("button", "slot-btn", sound.muted ? "Unmute Music\n取消靜音" : "Mute Music\n靜音");
         muteBtn.addEventListener("click", () => {
           sound.onToggleMute();
         });
@@ -183,23 +183,28 @@ export function createPauseMenuUI(root) {
       if (account) {
         const row = el("div", "account-row");
         if (account.user) {
+          const name = account.user.displayName || "Explorer";
+          const nameZh = account.user.displayName || "探險家";
+          const gritSuffix = account.gritTitle ? ` (${account.gritTitle})` : "";
           row.appendChild(
             el(
               "span",
               "account-status",
-              `Signed in as ${account.user.displayName || "Explorer"} · Grit ${account.gritTotal ?? 0}${account.gritTitle ? ` (${account.gritTitle})` : ""}`
+              `Signed in as ${name} · Grit ${account.gritTotal ?? 0}${gritSuffix}\n已登入：${nameZh} · 分數 ${account.gritTotal ?? 0}${gritSuffix}`
             )
           );
-          const signOutBtn = el("button", "slot-btn", "Sign Out");
+          const signOutBtn = el("button", "slot-btn", "Sign Out\n登出");
           signOutBtn.addEventListener("click", account.onSignOut);
           row.appendChild(signOutBtn);
         } else if (account.available) {
-          row.appendChild(el("span", "account-status", "Playing offline — link an account to save to the cloud."));
-          const signInBtn = el("button", "slot-btn", "Sign in with Google");
+          row.appendChild(
+            el("span", "account-status", "Playing offline — link an account to save to the cloud.\n離線遊玩中 — 連結帳號即可雲端存檔。")
+          );
+          const signInBtn = el("button", "slot-btn", "Sign in with Google\n使用 Google 登入");
           signInBtn.addEventListener("click", account.onSignIn);
           row.appendChild(signInBtn);
         } else {
-          row.appendChild(el("span", "account-status", "Offline — saving locally on this device."));
+          row.appendChild(el("span", "account-status", "Offline — saving locally on this device.\n離線模式 — 進度將儲存於本機。"));
         }
         panel.appendChild(row);
       }
@@ -208,28 +213,32 @@ export function createPauseMenuUI(root) {
         .filter((s) => s.id !== "auto")
         .forEach((slot) => {
           panel.appendChild(
-            renderSlotRow(`Case File ${slot.id}`, slot, () => callbacks.onSave(slot.id), () => callbacks.onLoad(slot.id))
+            renderSlotRow(`Case File ${slot.id}\n案件檔案 ${slot.id}`, slot, () => callbacks.onSave(slot.id), () => callbacks.onLoad(slot.id))
           );
         });
       const autoSlot = slots.find((s) => s.id === "auto");
       const autoRow = el("div", "slot-row");
-      autoRow.appendChild(el("span", "slot-label", "Autosave"));
+      autoRow.appendChild(el("span", "slot-label", "Autosave\n自動存檔"));
       autoRow.appendChild(
-        el("span", "slot-meta", autoSlot?.data ? new Date(autoSlot.data.updatedAt).toLocaleString() : "empty")
+        el("span", "slot-meta", autoSlot?.data ? new Date(autoSlot.data.updatedAt).toLocaleString() : "empty\n空白")
       );
-      const loadAuto = el("button", "slot-btn", "Load");
+      const loadAuto = el("button", "slot-btn", "Load\n讀取");
       loadAuto.disabled = !autoSlot?.data;
       loadAuto.addEventListener("click", () => callbacks.onLoad("auto"));
       autoRow.appendChild(loadAuto);
       panel.appendChild(autoRow);
 
-      const resume = el("button", "menu-btn", "Resume");
+      const resume = el("button", "menu-btn", "Resume\n繼續遊戲");
       resume.addEventListener("click", callbacks.onResume);
       panel.appendChild(resume);
 
-      const journal = el("button", "menu-btn", "Journal");
+      const journal = el("button", "menu-btn", "Journal\n日誌");
       journal.addEventListener("click", callbacks.onJournal);
       panel.appendChild(journal);
+
+      const newGame = el("button", "menu-btn danger", "New Game\n開始新遊戲");
+      newGame.addEventListener("click", callbacks.onNewGame);
+      panel.appendChild(newGame);
     },
     hide() {
       panel.hidden = true;
@@ -255,7 +264,7 @@ export function createChapterCardUI(root) {
           ${bellFlourishSVG(56)}
           <h2 class="chapter-title">${title}</h2>
           <div class="chapter-lines">${lines.map((l) => `<div>${l}</div>`).join("")}</div>
-          <button class="menu-btn chapter-close">${buttonText || "Continue"}</button>
+          <button class="menu-btn chapter-close">${buttonText || "Continue\n繼續"}</button>
         </div>
       `;
       panel.querySelector(".chapter-close").addEventListener("click", () => {
@@ -279,17 +288,19 @@ export function createSignInGateUI(root) {
   panel.hidden = true;
   panel.innerHTML = `
     <div class="signin-gate-inner">
-      <h2 class="signin-gate-title">Save your progress</h2>
+      <h2 class="signin-gate-title">Save your progress<br>儲存你的進度</h2>
       <p class="signin-gate-text">
         Sign in with Google to save your progress to your account, so you
         can pick up right where you left off on any device. If you play
         without signing in, your progress only saves on this browser —
         clear its data, switch devices, or come back on a different
         computer, and you'll be starting over from the beginning.
+        <br><br>
+        使用 Google 登入即可將進度儲存到你的帳號，讓你在任何裝置上都能接續遊玩。若不登入，進度只會存在這個瀏覽器裡——清除瀏覽器資料、更換裝置或在別台電腦上開啟，都會從頭開始。
       </p>
       <div class="signin-gate-buttons">
-        <button class="menu-btn signin-gate-google">Sign in with Google</button>
-        <button class="menu-btn signin-gate-offline">Continue Offline</button>
+        <button class="menu-btn signin-gate-google">Sign in with Google<br>使用 Google 登入</button>
+        <button class="menu-btn signin-gate-offline">Continue Offline<br>離線繼續遊玩</button>
       </div>
       <p class="signin-gate-note"></p>
     </div>
@@ -304,7 +315,7 @@ export function createSignInGateUI(root) {
     show({ onSignIn, onContinueOffline, cloudPending }) {
       panel.hidden = false;
       googleBtn.disabled = !!cloudPending;
-      note.textContent = cloudPending ? "Checking for Google Sign-In..." : "";
+      note.textContent = cloudPending ? "Checking for Google Sign-In...\n正在檢查 Google 登入狀態……" : "";
       googleBtn.onclick = () => onSignIn();
       offlineBtn.onclick = () => onContinueOffline();
     },
@@ -313,7 +324,9 @@ export function createSignInGateUI(root) {
     setCloudAvailable(available) {
       if (panel.hidden) return;
       googleBtn.disabled = !available;
-      note.textContent = available ? "" : "Cloud save isn't available right now — you can still play offline.";
+      note.textContent = available
+        ? ""
+        : "Cloud save isn't available right now — you can still play offline.\n目前無法使用雲端存檔——你仍然可以離線遊玩。";
     },
     hide() {
       panel.hidden = true;
@@ -334,18 +347,18 @@ export function createPathChoiceUI(root) {
   const PATHS = [
     {
       id: "partners",
-      name: "Partners",
-      desc: "Mo travels with you. Two-person puzzles, the best dialogue, the easiest road.",
+      name: "Partners\n夥伴之路",
+      desc: "Mo travels with you. Two-person puzzles, the best dialogue, the easiest road.\n莫與你同行。雙人合作解謎，對話最豐富，也是最平順的一條路。",
     },
     {
       id: "cunning",
-      name: "Cunning",
-      desc: "Solo. Forgery, bluffing, disguise, a full con on the Consortium. Hardest, and no fighting at all.",
+      name: "Cunning\n狡詐之路",
+      desc: "Solo. Forgery, bluffing, disguise, a full con on the Consortium. Hardest, and no fighting at all.\n獨自一人。偽造文件、虛張聲勢、喬裝改扮，對財團使出一場完整的騙局。最困難，但完全不需要動手打鬥。",
     },
     {
       id: "nerve",
-      name: "Nerve",
-      desc: "Solo. Chases, escapes, timed stunts instead of punches. Nothing here can be truly lost, only bruised.",
+      name: "Nerve\n膽識之路",
+      desc: "Solo. Chases, escapes, timed stunts instead of punches. Nothing here can be truly lost, only bruised.\n獨自一人。追逐、逃脫、限時特技取代拳腳相向。這裡沒有真正輸掉的風險，最多只是撞得瘀青。",
     },
   ];
 
@@ -354,8 +367,8 @@ export function createPathChoiceUI(root) {
       panel.hidden = false;
       panel.innerHTML = `
         <div class="pathchoice-inner">
-          <h2 class="pathchoice-title">Which way, Professor?</h2>
-          <p class="pathchoice-sub">Three roads out of Valletta. Whichever one he takes, he'll cross paths with the others again before this is over.</p>
+          <h2 class="pathchoice-title">Which way, Professor?<br>教授，該走哪條路？</h2>
+          <p class="pathchoice-sub">Three roads out of Valletta. Whichever one he takes, he'll cross paths with the others again before this is over.<br>離開瓦萊塔有三條路。無論他選哪一條，故事結束前終究會與另外兩條路再次交會。</p>
           <div class="pathchoice-cards"></div>
         </div>
       `;
@@ -398,7 +411,7 @@ export function createCreditsUI(root) {
           </div>
           <div class="dedication">${identity.dedication}</div>
           ${bellFlourishSVG(40)}
-          <button class="menu-btn credits-close">Close</button>
+          <button class="menu-btn credits-close">Close<br>關閉</button>
         </div>
       `;
       panel.querySelector(".credits-close").addEventListener("click", () => {
@@ -421,7 +434,7 @@ export function createHintToast(root) {
   let timer = null;
   return {
     show(text) {
-      toast.textContent = `Hint: ${text}`;
+      toast.textContent = `Hint / 提示: ${text}`;
       toast.hidden = false;
       clearTimeout(timer);
       timer = setTimeout(() => (toast.hidden = true), 6000);
@@ -432,7 +445,7 @@ export function createHintToast(root) {
 // ---------------- Cutscene skip overlay ----------------
 
 export function createSkipOverlay(root, onSkip) {
-  const overlay = el("div", "skip-overlay", "tap or press Esc to skip");
+  const overlay = el("div", "skip-overlay", "tap or press Esc to skip\n點擊或按 Esc 跳過");
   overlay.addEventListener("click", onSkip);
   overlay.addEventListener("touchend", (e) => {
     e.preventDefault();
