@@ -16,7 +16,15 @@ export const moDonanaDialogue = {
       options: [
         { id: "ask_mo", text: "Who exactly are you?", once: true, goto: "mo_info" },
         { id: "ask_help", text: "Any idea how we get across this marsh?", once: true, goto: "help_info" },
-        { id: "go", text: "Let's find this conch.", goto: null },
+        { id: "ask_plan", text: "Trust me, I have a plan.", once: true, goto: "plan_reaction" },
+        {
+          id: "go",
+          text: "Let's find this conch.",
+          goto: null,
+          setFlag: "mo_helped_donana",
+          grit: 20,
+          cutscene: "donana_punt",
+        },
       ],
     },
     mo_info: {
@@ -27,11 +35,15 @@ export const moDonanaDialogue = {
     },
     help_info: {
       npcLine:
-        "There's a punt tied off past those reeds. You pole, I'll read the channel markers — the flamingos won't stand in open water, so where they're NOT standing is where the mud will swallow the boat.",
+        "There's a punt tied off past those reeds. You pole — try not to fall in, I'm not diving in after both of us — and I'll read the channel markers. The flamingos won't stand in open water, so wherever they're not standing is exactly where the mud wants to eat the boat.",
       setFlag: "mo_helped_donana",
       grit: 20,
       cutscene: "donana_punt",
       options: [{ id: "back2", text: "(Ask something else.)", goto: "root" }],
+    },
+    plan_reaction: {
+      npcLine: "You always have a plan. Statistically, about a third of them survive contact with reality.",
+      options: [{ id: "back3", text: "(Ask something else.)", goto: "root" }],
     },
   },
 };
@@ -46,7 +58,15 @@ export const moSaharaDialogue = {
       options: [
         { id: "ask_rings", text: "What do you make of the rings?", once: true, goto: "rings_info" },
         { id: "ask_help", text: "How do we find our way to the centre?", once: true, goto: "help_info" },
-        { id: "go", text: "Let's find the fork.", goto: null },
+        { id: "ask_confidence", text: "Should be simple enough.", once: true, goto: "confidence_reaction" },
+        {
+          id: "go",
+          text: "Let's find the fork.",
+          goto: null,
+          setFlag: "mo_helped_sahara",
+          grit: 20,
+          cutscene: "sahara_rings",
+        },
       ],
     },
     rings_info: {
@@ -57,11 +77,15 @@ export const moSaharaDialogue = {
     },
     help_info: {
       npcLine:
-        "You drive, I'll call bearings off the sundial-compass — the rings all look the same from ground level, so we go by shadow angle, not by eye.",
+        "You drive — try to resist doing donuts around a three-thousand-year-old ring system — and I'll call bearings off the sundial-compass. Shadow angle, not by eye. The rings look identical from ground level, which is either brilliant design or somebody's idea of a joke.",
       setFlag: "mo_helped_sahara",
       grit: 20,
       cutscene: "sahara_rings",
       options: [{ id: "back2", text: "(Ask something else.)", goto: "root" }],
+    },
+    confidence_reaction: {
+      npcLine: "Said every person right before something buried woke up.",
+      options: [{ id: "back3", text: "(Ask something else.)", goto: "root" }],
     },
   },
 };
@@ -77,7 +101,15 @@ export const moBiminiDialogue = {
       options: [
         { id: "ask_road", text: "What is the Bimini Road, really?", once: true, goto: "road_info" },
         { id: "ask_help", text: "Ready to get me into that suit?", once: true, goto: "help_info" },
-        { id: "go", text: "Let's get the bell.", goto: null },
+        { id: "ask_ready", text: "Ready when you are.", once: true, goto: "ready_reaction" },
+        {
+          id: "go",
+          text: "Let's get the bell.",
+          goto: null,
+          setFlag: "mo_helped_bimini",
+          grit: 20,
+          cutscene: "bimini_dive",
+        },
       ],
     },
     road_info: {
@@ -88,11 +120,15 @@ export const moBiminiDialogue = {
     },
     help_info: {
       npcLine:
-        "I'll mind the air pump topside — three tugs on the line if you need up fast. Don't make me use the line.",
+        "I'll mind the air pump topside. Three tugs on the line if you need up fast — and Professor, for once in your life, don't make me use it.",
       setFlag: "mo_helped_bimini",
       grit: 20,
       cutscene: "bimini_dive",
       options: [{ id: "back2", text: "(Ask something else.)", goto: "root" }],
+    },
+    ready_reaction: {
+      npcLine: "You say that like drowning's a scheduling problem.",
+      options: [{ id: "back3", text: "(Ask something else.)", goto: "root" }],
     },
   },
 };

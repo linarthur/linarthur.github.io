@@ -94,9 +94,17 @@ export function createDialogueRunner({ getFlag, setFlag, hasItem, addGrit }) {
       if (!opt) return { ended: true, cutscene: null };
       if (opt.once) setFlag(usedKey(opt.id), true);
       if (opt.goto === null) {
+        // A closing option can carry its own setFlag/grit/cutscene, same
+        // as a node — otherwise the one option whose wording sounds most
+        // like "yes, let's do the thing" (e.g. "Let's find the fork.")
+        // would be a dead end with no effect, while the actual unlock
+        // hides behind a differently-worded question option instead.
+        if (opt.setFlag) setFlag(opt.setFlag, true);
+        awardNodeGrit(`opt_${optId}`, opt);
+        const cutscene = opt.cutscene && !getFlag(`cs_ran_${opt.cutscene}`) ? opt.cutscene : null;
         tree = null;
         nodeId = null;
-        return { ended: true, cutscene: null };
+        return { ended: true, cutscene };
       }
       nodeId = opt.goto;
       const nextNode = tree.nodes[nodeId];

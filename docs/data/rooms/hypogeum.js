@@ -141,7 +141,7 @@ export const hypogeum = {
       kind: "scenery",
       polygon: [[840, 420], [1080, 420], [1080, 700], [840, 700]],
       responses: {
-        look: "A hollow cut into the living rock, angled just so. Every word spoken into it comes back a half-tone lower, and twice as loud — the Hypogeum's builders knew exactly what they were carving.",
+        look: "A hollow cut into the living rock, angled just so. Every word spoken into it comes back a half-tone lower, and twice as loud. Three answering alcoves ring the chamber — but only the middle one narrows to a throat before it opens, the kind of carving that catches a voice and throws it straight back before the others even feel the sound arrive.",
         use: "Come to think of it, that's less something to look at than something to test.",
         default: "Best not to shout into three-thousand-year-old stonework for fun.",
       },

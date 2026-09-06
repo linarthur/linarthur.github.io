@@ -175,10 +175,13 @@ export function createMusicPlayer() {
     return volume;
   }
 
-  // Temporarily lowers the score for a listen-by-ear puzzle without
-  // touching the user's actual volume/mute preference or persisting
-  // anything — unduck() puts it right back where it was.
-  function duck(factor = 0.15) {
+  // Fully silences the score for a listen-by-ear puzzle without touching
+  // the user's actual volume/mute preference or persisting anything —
+  // unduck() puts it right back where it was. A partial duck (this used
+  // to just lower the volume to a small fraction) still buried the quiet
+  // sine-wave puzzle tones under a full mixed music track, so this goes
+  // all the way to silent instead.
+  function duck(factor = 0) {
     if (!masterGain) return;
     masterGain.gain.cancelScheduledValues(ctx.currentTime);
     masterGain.gain.linearRampToValueAtTime(muted ? 0 : volume * factor, ctx.currentTime + 0.3);

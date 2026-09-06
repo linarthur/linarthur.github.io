@@ -366,6 +366,11 @@ export const subbasement = {
       responses: {
         look: "Three jars of something the department calls 'preserved samples' and the janitorial staff calls 'not my problem.'",
         open: "The jars are sealed with wax. Whatever's inside has been marinating since roughly the Coolidge administration.",
+        use: {
+          crowbar:
+            "He gets the crowbar halfway to the wax seal before some deep, professional instinct stops him. Whatever's in there has waited this long. It can keep waiting.",
+          default: "He's not touching the jars. Some professional curiosities are better left curious.",
+        },
         default: "He's not touching the jars. Some professional curiosities are better left curious.",
       },
     },
@@ -387,9 +392,9 @@ export const subbasement = {
       kind: "scenery",
       polygon: [[1500, 250], [1660, 250], [1660, 630], [1500, 630]],
       responses: {
-        look: "Cast iron, sweating condensation, humming very faintly at a pitch that sets his teeth on edge.",
-        pull: "It doesn't budge, but it rings — one low, resonant note — and dust sifts down from the joists.",
-        push: "Solid as the day it was laid. Whatever's vibrating in there isn't coming out through brute force.",
+        look: "Cast iron, sweating condensation, humming very faintly at a pitch that sets his teeth on edge. Pipes don't hold a note. This one's holding a note.",
+        pull: "It doesn't budge, but it rings when struck — one low tone, sustained a beat too long for ordinary plumbing — and dust sifts down from the joists.",
+        push: "Solid as the day it was laid. Whatever's making it hum isn't coming out through muscle — this wants matching, not moving.",
         use: "Quiet now. Whatever needed proving, it's proven.",
         default: "It's forty years of college plumbing. It has survived worse ideas than his.",
       },

@@ -159,7 +159,11 @@ export const donanaCunning = {
       responses: {
         look: "A warden in a faded uniform, more interested in his paperwork than the marsh itself. He hasn't looked up once.",
         talk: "\"No permit, no marsh,\" he says, without looking up. \"Rules are rules.\"",
-        give: "He'd want to see it in writing, not in hand.",
+        give: {
+          forged_permit:
+            "He barely glances at it before stamping the air with an invisible rubber stamp of pure disinterest. \"Should've said so.\" He still hasn't looked up.",
+          default: "He'd want to see it in writing, not in hand.",
+        },
         default: "He's not moving until the paperwork's in order.",
       },
     },
@@ -191,7 +195,12 @@ export const donanaCunning = {
       hideWhenFlag: "salt_conch_found",
       puzzleRequiresItem: "forged_permit",
       responses: {
-        look: "Something pale and spiral-ridged, humming faintly under the mud whenever the wind drops. The warden's shack blocks the only dry path to it.",
+        look: {
+          forged_permit:
+            "Still half-buried, still out of reach — but paper like this has a way of making a warden forget where his own shack ends.",
+          default:
+            "Something pale and spiral-ridged, humming faintly under the mud whenever the wind drops. The warden's shack blocks the only dry path to it.",
+        },
         use: "Not without the warden waving him through first — and he's not waving anyone through without paper.",
         default: "It's not coming free without a plan.",
       },

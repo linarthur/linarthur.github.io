@@ -8,12 +8,12 @@ export const PUZZLES = {
   pipe_resonance: {
     type: "resonance",
     title: "The Overhead Pipe",
-    flavor: "Something in the pipework is humming a single, stubborn note. Match it.",
+    flavor: "A pipe shouldn't hold a note like that. Everything down here is starting to hum the same tune. Match it, and see what stops.",
     targets: [220],
     flagOnSolve: "pipe_resonance_solved",
     grit: 25,
     solvedLine:
-      "The pipe rings clean and true, once, like a struck bell — and falls silent, its work apparently done.",
+      "The pipe rings clean and true — and stops, like something finally satisfied. If a pipe can be tuned into silence, so, apparently, can whatever else is down here.",
   },
 
   lisbon_azulejo: {
@@ -36,7 +36,7 @@ export const PUZZLES = {
   hypogeum_echo: {
     type: "echo",
     title: "The Hypogeum",
-    flavor: "Clap once. The chamber that answers first is the one that's listening.",
+    flavor: "Clap once, and listen close. Two of these alcoves just echo. Only one was built to answer.",
     chambers: [
       { id: "near", label: "Near Chamber", distance: 60 },
       { id: "mid", label: "Middle Chamber", distance: 110 },
@@ -47,7 +47,7 @@ export const PUZZLES = {
     flagOnSolve: "hypogeum_echo_solved",
     grit: 40,
     solvedLine:
-      "The middle chamber answers a half-beat before the others — a resonance chamber, cut on purpose, three thousand years before anyone had a word for acoustics.",
+      "The middle chamber answers first, exactly as its narrowed throat was carved to do — three thousand years of stonework, still keeping perfect time.",
   },
 
   // The Three Voices — stage 1 resonance puzzles (single pitch), escalating

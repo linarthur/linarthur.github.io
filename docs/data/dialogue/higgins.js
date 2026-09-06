@@ -11,7 +11,8 @@ export const higginsDialogue = {
   start: "root",
   nodes: {
     root: {
-      npcLine: "Mind the water, Professor. Whole basement's gone to the fishes.",
+      npcLine:
+        "Mind the water, Professor. Whole basement's gone to the fishes, and somehow I knew you'd be the one wading through it.",
       options: [
         { id: "ask_crate", text: "What happened to the crate?", once: true, goto: "crate_info" },
         { id: "ask_water", text: "Where's all this water coming from?", once: true, goto: "water_info" },
@@ -20,13 +21,13 @@ export const higginsDialogue = {
     },
     crate_info: {
       npcLine:
-        "Came in this morning, screaming like a kettle when the delivery man dropped it. Gone an hour later — whoever took it knew exactly which crate to lift, and exactly when the room would be empty.",
+        "Came in this morning, screaming like a kettle when the delivery man near dropped it. Gone an hour later — whoever took it knew exactly which crate, and exactly when this room would be empty. More planning than the Dean's ever put into a maintenance schedule.",
       setFlag: "learned_crate_theft",
       options: [{ id: "back1", text: "(Ask something else.)", goto: "root" }],
     },
     water_info: {
       npcLine:
-        "Main's been weeping since the spring thaw. Dean won't pay for a plumber till it's a proper lake. Between you and me, it's been rising faster since that crate started singing.",
+        "Main's been weeping since the spring thaw. Dean won't sign off on a plumber till it's a proper lake he can charge admission to. Between you and me, it's been rising faster since that crate started singing, and I don't much care for coincidences this far underground.",
       setFlag: "learned_water",
       cutscene: "higgins_hint",
       options: [{ id: "back2", text: "(Ask something else.)", goto: "root" }],

@@ -11,9 +11,19 @@ export const CUTSCENES = {
   ],
 
   prologue_end: [
-    { type: "say", speaker: "Indy", text: "A chart... someone wanted this crate quiet, and this map quieter still.", ms: 2400 },
+    { type: "wait", ms: 300 },
+    { type: "say", speaker: "Indy", text: "A chart. Someone wanted this crate quiet — and this map quieter still.", ms: 2400 },
+    { type: "camera", ms: 200 },
     { type: "say", speaker: "Higgins", text: "Three anchorages, Professor. Reckon you've got some travelling ahead of you.", ms: 2400 },
     { type: "setFlag", key: "prologue_complete", value: true },
+  ],
+
+  // Act 1, the harbour bar — the first sight of Draghi, before she's said
+  // a word. Fires once, from the `draghi_intro` tree's root node, the same
+  // way `higgins_hint` fires from a mid-conversation node below.
+  draghi_reveal: [
+    { type: "camera", ms: 250 },
+    { type: "say", speaker: "Indy", text: "Well. Someone dressed for a funeral, and came to the wrong bar.", ms: 2200 },
   ],
 
   // Act 2, Partners Path — the "two person" puzzles resolve as one dialogue
@@ -48,9 +58,9 @@ export const CUTSCENES = {
 
   bell_awakens: [
     { type: "camera", ms: 400 },
-    { type: "say", speaker: "Indy", text: "Three voices wake the ninth wave. It wasn't ever a warning. It was instructions.", ms: 2800 },
+    { type: "say", speaker: "Indy", text: "Three voices wake the ninth wave. Not a warning. Instructions.", ms: 2600 },
     { type: "wait", ms: 400 },
-    { type: "say", speaker: null, text: "The chamber floods with a light that has no business being underwater, and for one held breath, Atlantis is not a legend.", ms: 3200 },
+    { type: "say", speaker: null, text: "Light floods a chamber that has no business being underwater — and for one held breath, Atlantis stops being a legend.", ms: 3200 },
     { type: "wait", ms: 600 },
   ],
 };

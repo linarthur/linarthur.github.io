@@ -184,6 +184,7 @@ const actor = {
 };
 
 let selectedVerb = null; // null = smart default
+let selectedItemId = null; // the inventory item currently "held" for give/use
 let hoveredTarget = null;
 let pendingAction = null; // { verb, target } — executed on arrival
 let paused = false;
@@ -305,6 +306,16 @@ function applySetFlagOn(def, verb) {
   if (flag) setFlag(gameState, flag, true);
 }
 
+// A response entry is normally a plain string. It may instead be an object
+// keyed by inventory item id (plus its own "default") so a hotspot can
+// react differently depending on which item the player is holding when
+// they Give/Use — e.g. `give: { forged_permit: "...", default: "..." }`.
+// Every existing plain-string response keeps working unchanged.
+function resolveResponse(entry, itemId) {
+  if (entry && typeof entry === "object") return entry[itemId] ?? entry.default;
+  return entry;
+}
+
 function runAction(verb, target) {
   if (target.type === "item") {
     const item = getItem(target.def.id);
@@ -367,7 +378,7 @@ function runAction(verb, target) {
         return;
       }
     }
-    const line = target.def.responses[v] || target.def.responses.default;
+    const line = resolveResponse(target.def.responses[v], selectedItemId) ?? target.def.responses.default;
     setSentence(line);
     applySetFlagOn(target.def, v);
     return;
@@ -658,9 +669,12 @@ function checkAct3Complete() {
     playChapterEndChime();
     music.playTrack("title");
     const epilogueByPath = {
-      partners: "Mo's already sketching the chamber from memory, muttering about nobody back at Cambridge ever believing a word of this without her notes.",
-      cunning: "No forged paperwork explains this. For once, that seems to be exactly the point.",
-      nerve: "Every bruise from Doñana to the dockyard, and not one of them for nothing.",
+      partners:
+        "Mo's already sketching the chamber from memory, insisting nobody at Cambridge will believe a word of this without her notes — and she started taking them before the light even settled.",
+      cunning:
+        "A forged permit, a forged disguise, a forged requisition — and not one forgery in the world explains what's happening at the bottom of this chamber. For once, that seems to be exactly the point.",
+      nerve:
+        "The boardwalk, the tram, Ferro's crate — every bruise between Doñana and the dockyard, and not one of them for nothing.",
     };
     const epilogue = epilogueByPath[gameState.path] || "The chord is complete, and Atlantis, for one held breath, was not a legend.";
     creditsUI.show(
@@ -707,6 +721,7 @@ function makeInvSlot(id) {
   const item = getItem(id);
   const slot = document.createElement("div");
   slot.className = "inv-slot";
+  if (id === selectedItemId) slot.classList.add("selected");
   slot.title = item.name;
   const c = document.createElement("canvas");
   c.width = 40;
@@ -715,11 +730,16 @@ function makeInvSlot(id) {
   cctx.translate(20, 20);
   item.drawIcon(cctx, 34);
   slot.appendChild(c);
-  slot.addEventListener("click", () => setSentence(item.lookLine));
+  slot.addEventListener("click", () => {
+    selectedItemId = selectedItemId === id ? null : id;
+    renderInventory();
+    setSentence(item.lookLine);
+  });
   return slot;
 }
 
 function renderInventory() {
+  if (selectedItemId && !hasItem(gameState, selectedItemId)) selectedItemId = null;
   invPanel.innerHTML = "";
   invDrawer.innerHTML = "";
   gameState.inventory.forEach((id) => {
@@ -1215,26 +1235,26 @@ async function playIntro() {
   await showCard(
     "Who You Are",
     [
-      "You are Indiana Jones — teacher, explorer, and treasure hunter.",
-      "You work at Barnett College, where old and important objects are kept safe.",
+      "You're Indiana Jones. Archaeologist, professor, occasional target of large rolling objects.",
+      "Barnett College pays you to teach. The world keeps handing you better reasons not to.",
     ],
     "Next"
   );
   await showCard(
     "What Happened Tonight",
     [
-      "Late at night, someone broke into the college museum.",
-      "They smashed open a locked crate and blew a hole in the floor to get away!",
-      "Inside the crate was a strange old diving bell. People say it came from the lost city of Atlantis.",
+      "Someone broke into the college museum, cracked open a sealed crate, and vanished through a hole in the floor.",
+      "Whatever was inside it rang loud enough to crack every window in the hall.",
+      "They left in a hurry. You're about to find out why.",
     ],
     "Next"
   );
   await showCard(
     "Your Mission",
     [
-      "The thieves are gone, and so is the diving bell.",
-      "Follow their trail, solve the clues they left behind, and find the truth about the Drowned Bell of Atlantis.",
-      "Grab your hat. The adventure starts now!",
+      "The thieves have a head start. You have a hat, a whip, and no patience for waiting.",
+      "Somewhere out there is the truth about the Drowned Bell of Atlantis — and you intend to get there first.",
+      "Ready? Good. Nobody else is.",
     ],
     "Next"
   );

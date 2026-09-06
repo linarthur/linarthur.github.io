@@ -116,14 +116,34 @@ function paintFork(ctx, found) {
   if (found) return;
   ctx.save();
   ctx.translate(1560, 940);
-  ctx.strokeStyle = "#a97142";
-  ctx.lineWidth = 8;
+  // a mound of freshly-disturbed sand, plus a warm glow so the bronze
+  // reads as an object to interact with, not a stray pair of pixels
+  ctx.fillStyle = "rgba(90,60,30,0.4)";
   ctx.beginPath();
-  ctx.moveTo(-8, 20);
-  ctx.lineTo(-8, -20);
-  ctx.moveTo(8, 20);
-  ctx.lineTo(8, -20);
+  ctx.ellipse(0, 24, 60, 20, 0, 0, Math.PI * 2);
+  ctx.fill();
+  const glow = ctx.createRadialGradient(0, 0, 6, 0, 0, 70);
+  glow.addColorStop(0, "rgba(255,220,150,0.35)");
+  glow.addColorStop(1, "rgba(255,220,150,0)");
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(0, 0, 70, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = "#c9924f";
+  ctx.lineWidth = 14;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(-16, 30);
+  ctx.lineTo(-16, -36);
+  ctx.moveTo(16, 30);
+  ctx.lineTo(16, -36);
   ctx.stroke();
+  rimLight(ctx, () => {
+    ctx.moveTo(-16, 30);
+    ctx.lineTo(-16, -36);
+    ctx.moveTo(16, 30);
+    ctx.lineTo(16, -36);
+  }, { color: "255,235,190", alpha: 0.6, width: 3 });
   ctx.restore();
 }
 

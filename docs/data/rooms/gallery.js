@@ -200,8 +200,8 @@ export const gallery = {
       kind: "scenery",
       polygon: [[595, 720], [790, 720], [790, 830], [595, 830]],
       responses: {
-        look: "The Tagus dredge crate, hasp snapped clean off. Whatever rang loud enough to crack a floor is long gone — but someone scratched a line into the lip before they ran: “Three voices wake the ninth wave.”",
-        open: "It's already open. Whoever did the opening wasn't gentle about it.",
+        look: "The Tagus dredge crate, hasp snapped clean off. Whatever rang loud enough to crack a floor is long gone — but someone scratched a line into the lip before they ran: “Three voices wake the ninth wave.” Not a warning. A recipe.",
+        open: "It's already open. Whoever did the opening wasn't gentle, and wasn't planning to explain it to the Dean.",
         default: "It's done its damage for one day. Best not to touch it further.",
       },
       setFlagOn: { look: "read_crate_etching" },
@@ -212,8 +212,8 @@ export const gallery = {
       kind: "scenery",
       polygon: [[1290, 60], [1510, 60], [1510, 480], [1290, 480]],
       responses: {
-        look: "Every pane on this side of the hall is starred with cracks, radiating out from nothing at all. Sound did that. He'd like to know what note.",
-        default: "Best not to lean on cracked glass three floors up.",
+        look: "Every pane on this side of the hall is starred with cracks, radiating out from nothing at all. Sound did that. He's spent fifteen years teaching that glass doesn't work this way.",
+        default: "Best not to lean on cracked glass three floors up. He's already had one bad night.",
       },
     },
     {
@@ -222,8 +222,8 @@ export const gallery = {
       kind: "scenery",
       polygon: [[330, 160], [470, 160], [470, 340], [330, 340]],
       responses: {
-        look: "Dean Whitfield, painted mid-scowl, as always. He is going to have opinions about the hole in his gallery floor.",
-        default: "The Dean's portrait glowers back. Some things are better left un-prodded.",
+        look: "Dean Whitfield, painted mid-scowl, as always — the artist clearly worked from life. He is going to have opinions about the hole in his gallery floor, and all of them will involve Indy's budget.",
+        default: "The Dean's portrait glowers back. Even in oil paint, the man disapproves.",
       },
     },
     {
