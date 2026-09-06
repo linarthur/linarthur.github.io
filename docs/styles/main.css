@@ -161,13 +161,17 @@ body.touch #touch-hint { display: block; }
 body.touch #inventory-drawer-handle { display: flex; }
 body.touch #inventory-drawer { display: grid; }
 
-/* Bottom-right corner, out of the way of the walkable floor area kids tap
-   through the middle and bottom of the scene — a wide bottom-center bar
-   used to sit right on top of that and eat taps meant for the room. */
+/* Fixed to the real screen, not the canvas — on a tall phone the 16:9
+   game area doesn't reach the bottom of the screen, so pinning this to
+   the viewport corner drops it into that empty black strip below the
+   game world instead of sitting on top of the scene and eating taps
+   meant for the room. (A phone whose screen IS 16:9 has no such gap, but
+   that's rare among current devices; the corner still keeps it as far
+   from the walkable floor as possible either way.) */
 #inventory-drawer-handle {
   display: none;
-  position: absolute;
-  bottom: 10px;
+  position: fixed;
+  bottom: max(10px, env(safe-area-inset-bottom));
   right: 10px;
   width: 52px;
   height: 52px;

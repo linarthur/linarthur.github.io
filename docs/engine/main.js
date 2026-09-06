@@ -967,11 +967,19 @@ let radialHot = null;
 
 function openRadial(sx, sy, target) {
   radialTarget = target;
-  radialCenter = { sx, sy };
+  // The coin's items reach 90px (radius) + 32px (their own half-width) out
+  // from its center in every direction — clamp the center so that full
+  // reach stays on-screen instead of getting cut off near an edge, which
+  // otherwise makes some verbs impossible to reach with a finger near the
+  // side of a phone screen.
+  const reach = 125;
+  const cx = Math.min(Math.max(sx, reach), window.innerWidth - reach);
+  const cy = Math.min(Math.max(sy, reach), window.innerHeight - reach);
+  radialCenter = { sx: cx, sy: cy };
   radialHot = null;
   radialMenu.innerHTML = "";
-  radialMenu.style.left = `${sx}px`;
-  radialMenu.style.top = `${sy}px`;
+  radialMenu.style.left = `${cx}px`;
+  radialMenu.style.top = `${cy}px`;
   const radius = 90;
   VERBS.forEach((v, i) => {
     const angle = (-90 + i * (360 / VERBS.length)) * (Math.PI / 180);
