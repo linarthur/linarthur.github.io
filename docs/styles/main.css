@@ -780,6 +780,20 @@ body.touch #inventory-drawer { display: grid; }
 .resonance-confirm-btn:hover { background: rgba(255,122,26,0.24); }
 .resonance-confirm-btn[disabled] { opacity: 0.4; cursor: default; }
 
+.resonance-listen-btn {
+  padding: 8px 18px;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  border-radius: 8px;
+  border: 1px solid var(--teal);
+  background: rgba(47,111,107,0.18);
+  color: var(--cream);
+  cursor: pointer;
+}
+
+.resonance-listen-btn:hover { background: rgba(47,111,107,0.3); }
+.resonance-listen-btn[disabled] { opacity: 0.4; cursor: default; }
+
 @keyframes resonance-shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-6px); }
@@ -856,6 +870,21 @@ body.touch #inventory-drawer { display: grid; }
   font-size: 0.85rem;
   min-height: 1.2em;
 }
+
+.tileslide-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.tileslide-skip {
+  opacity: 0.7;
+  border-color: #6a5a4a;
+}
+
+.tileslide-skip:hover { opacity: 1; }
+.tileslide-skip[hidden] { display: none; }
 
 /* ---------- echo-timing puzzle ---------- */
 .echo-overlay {

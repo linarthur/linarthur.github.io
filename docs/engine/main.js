@@ -392,6 +392,19 @@ function markPuzzleSolved(id, def) {
   doAutosave();
 }
 
+// A handful of puzzles (data/puzzles.js opts in via `skipGrit`) can be
+// skipped outright rather than blocking progress forever — same flag gets
+// set so the story moves on, just for a fraction of the Grit and none of
+// the solved flavour text.
+function markPuzzleSkipped(id, def) {
+  setFlag(gameState, def.flagOnSolve, true);
+  addGrit(gameState, def.skipGrit || 0);
+  setSentence(def.skippedLine || "He leaves it unsolved and moves on anyway.");
+  checkAct2Complete();
+  checkAct3Complete();
+  doAutosave();
+}
+
 function openPuzzle(id, def) {
   // Resonance and echo puzzles are solved by ear — the background score
   // fights with the tones/echoes the player is trying to listen for, so
@@ -409,6 +422,12 @@ function openPuzzle(id, def) {
     restoreMusic();
     markPuzzleSolved(id, def);
   };
+  const onSkip = def.skipGrit != null || def.skippedLine
+    ? () => {
+        restoreMusic();
+        markPuzzleSkipped(id, def);
+      }
+    : undefined;
   if (def.type === "resonance") {
     openResonancePuzzle(overlaysRoot, {
       targets: def.targets,
@@ -425,6 +444,7 @@ function openPuzzle(id, def) {
       flavor: def.flavor,
       onSolved,
       onClose,
+      onSkip,
     });
   } else if (def.type === "echo") {
     openEchoPuzzle(overlaysRoot, {

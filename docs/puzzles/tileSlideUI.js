@@ -13,6 +13,7 @@ let canvas, ctx;
 let puzzle = null;
 let onSolvedCb = null;
 let onCloseCb = null;
+let onSkipCb = null;
 let cellSize = 0;
 let gridPx = 0;
 
@@ -32,13 +33,17 @@ function ensureDom(root) {
       <p class="tileslide-flavor"></p>
       <canvas class="tileslide-canvas" width="360" height="360"></canvas>
       <div class="tileslide-status">Slide the tiles to rebuild the chart.</div>
-      <button class="menu-btn tileslide-close">Leave it for now</button>
+      <div class="tileslide-buttons">
+        <button class="menu-btn tileslide-close">Leave it for now</button>
+        <button class="menu-btn tileslide-skip" hidden>Guess the way instead</button>
+      </div>
     </div>
   `;
   root.appendChild(overlay);
   canvas = overlay.querySelector(".tileslide-canvas");
   ctx = canvas.getContext("2d");
   overlay.querySelector(".tileslide-close").addEventListener("click", () => finish(false));
+  overlay.querySelector(".tileslide-skip").addEventListener("click", () => finish("skip"));
   canvas.addEventListener("click", onCanvasClick);
 }
 
@@ -129,20 +134,25 @@ function onCanvasClick(e) {
   }
 }
 
-function finish(solved) {
+function finish(result) {
   if (overlay) overlay.hidden = true;
-  if (solved) onSolvedCb?.();
+  if (result === "skip") onSkipCb?.();
+  else if (result) onSolvedCb?.();
   else onCloseCb?.();
 }
 
-export function openTileSlidePuzzle(root, { title, flavor, size = 3, onSolved, onClose }) {
+export function openTileSlidePuzzle(root, { title, flavor, size = 3, onSolved, onClose, onSkip, skipLabel }) {
   ensureDom(root);
   onSolvedCb = onSolved || null;
   onCloseCb = onClose || null;
+  onSkipCb = onSkip || null;
   puzzle = createTileSlidePuzzle(size);
   overlay.querySelector(".tileslide-title").textContent = title || "Azulejo Chart";
   overlay.querySelector(".tileslide-flavor").textContent = flavor || "";
   overlay.querySelector(".tileslide-status").textContent = "Slide the tiles to rebuild the chart.";
+  const skipBtn = overlay.querySelector(".tileslide-skip");
+  skipBtn.hidden = !onSkip;
+  if (onSkip) skipBtn.textContent = skipLabel || "Guess the way instead";
   overlay.hidden = false;
   drawMural();
 }

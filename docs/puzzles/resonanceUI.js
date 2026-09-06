@@ -3,16 +3,17 @@
 // DOM + canvas + audio wiring for the resonance puzzle. Originally a
 // continuous drag-to-tune slider; per playtesting feedback from actual kids
 // it was too hard to land by ear or by eye, so each target note is instead
-// a small multiple-choice row: tapping a note only plays it back (a
-// preview, nothing more) and highlights it as the current pick for that
-// voice; the player only finds out if it's right once they tap that
-// group's own Confirm button. Nothing is graded on tap alone — kids kept
-// tapping and getting instantly solved with no idea why, which is exactly
-// what this two-step preview/confirm split is for. A correct Confirm just
-// locks the note in (no "that's right!" narration — with multiple choice
-// already doing the hard work of ear-training, spelling out the answer on
-// top of it would make the puzzle trivial); a wrong Confirm nudges the
-// player to keep listening, and costs nothing.
+// a small multiple-choice row. Each voice plays its own reference note
+// automatically when the puzzle opens (and again any time via its own
+// "Hear the Note" button) — without that there was nothing to actually
+// compare the choices against, just silent buttons. Tapping a choice
+// previews it and marks it as the current pick, nothing is graded yet;
+// the player only finds out if it's right once they tap that group's own
+// Confirm button. A correct Confirm just locks the note in (no "that's
+// right!" narration — with multiple choice already doing the hard work of
+// ear-training, spelling out the answer on top of it would make the
+// puzzle trivial); a wrong Confirm nudges the player to keep listening,
+// and costs nothing.
 //
 // No fail state: closing the puzzle any time just leaves it unsolved.
 
@@ -36,6 +37,7 @@ let onCloseCb = null;
 let targets = [];
 let solvedSlots = [];
 let previewMode = null;
+let introTimers = [];
 
 function el(tag, className) {
   const e = document.createElement(tag);
@@ -90,9 +92,10 @@ function shuffledChoicesFor(target) {
   return choices.sort(() => Math.random() - 0.5);
 }
 
-// One group = one voice to match: a row of note buttons (tap = preview +
-// select, nothing is graded) plus its own Confirm button (tap = grade the
-// currently-selected note).
+// One group = one voice to match: a "Hear the Note" button that plays the
+// actual target (the reference to match, not a guess), a row of choice
+// buttons (tap = preview + select, nothing is graded), and its own
+// Confirm button (tap = grade the currently-selected note).
 function buildChoiceGroup(index, target, label, onConfirmed) {
   const group = el("div", "resonance-choice-group");
   if (label) {
@@ -100,6 +103,16 @@ function buildChoiceGroup(index, target, label, onConfirmed) {
     title.textContent = label;
     group.appendChild(title);
   }
+
+  const listenBtn = el("button", "resonance-listen-btn");
+  listenBtn.type = "button";
+  listenBtn.textContent = "🔊 Hear the Note";
+  const playTarget = () => {
+    playTone(target);
+    previewMode = freqToMode(target);
+  };
+  listenBtn.addEventListener("click", playTarget);
+
   const row = el("div", "resonance-choice-row");
   const status = el("div", "resonance-group-status");
   const confirmBtn = el("button", "resonance-confirm-btn");
@@ -140,12 +153,14 @@ function buildChoiceGroup(index, target, label, onConfirmed) {
     }
   });
 
+  group.appendChild(listenBtn);
   group.appendChild(row);
   group.appendChild(confirmBtn);
   group.appendChild(status);
 
   return {
     el: group,
+    playTarget,
     lockSolved() {
       const pickedBtn = buttons.find((b) => b.classList.contains("is-selected"));
       pickedBtn?.classList.add("is-correct", "is-solved");
@@ -153,6 +168,7 @@ function buildChoiceGroup(index, target, label, onConfirmed) {
         b.disabled = true;
       });
       confirmBtn.disabled = true;
+      listenBtn.disabled = true;
       status.textContent = "";
     },
   };
@@ -161,6 +177,8 @@ function buildChoiceGroup(index, target, label, onConfirmed) {
 function finish(solved) {
   if (raf) cancelAnimationFrame(raf);
   raf = null;
+  introTimers.forEach((t) => clearTimeout(t));
+  introTimers = [];
   if (activeOsc) {
     try {
       activeOsc.stop();
@@ -182,6 +200,8 @@ export function openResonancePuzzle(root, { targets: puzzleTargets, targetLabels
   targets = puzzleTargets;
   solvedSlots = targets.map(() => false);
   previewMode = freqToMode(targets[0]);
+  introTimers.forEach((t) => clearTimeout(t));
+  introTimers = [];
 
   overlay.querySelector(".resonance-title").textContent = title || "Resonance";
   overlay.querySelector(".resonance-flavor").textContent = flavor || "";
@@ -192,7 +212,7 @@ export function openResonancePuzzle(root, { targets: puzzleTargets, targetLabels
   const choicesWrap = overlay.querySelector(".resonance-choices");
   choicesWrap.innerHTML = "";
 
-  targets.forEach((target, i) => {
+  const groups = targets.map((target, i) => {
     const label = targetLabels?.[i] || (targets.length > 1 ? `Voice ${i + 1}` : null);
     const group = buildChoiceGroup(i, target, label, (correct) => {
       if (!correct || solvedSlots[i]) return;
@@ -204,9 +224,18 @@ export function openResonancePuzzle(root, { targets: puzzleTargets, targetLabels
       }
     });
     choicesWrap.appendChild(group.el);
+    return group;
   });
 
   overlay.hidden = false;
+
+  // Play each voice's actual reference note once, automatically, so there's
+  // something real to compare the choices against — staggered so multiple
+  // voices (the Act 3 finale) don't overlap into noise. Still replayable
+  // any time via each group's own "Hear the Note" button.
+  groups.forEach((group, i) => {
+    introTimers.push(setTimeout(() => group.playTarget(), 500 + i * 1300));
+  });
 
   function frame(now) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

@@ -25,6 +25,12 @@ export const PUZZLES = {
     grit: 40,
     solvedLine:
       "The tiles click into place and the glaze catches the lamplight — a compass rose, and beneath it, a coastline that isn't Portugal at all.",
+    // Allowed to skip — a kid who can't get the tiles to line up shouldn't
+    // be stuck in Lisbon forever. Skipping still unlocks the funicular,
+    // just for a fraction of the Grit and none of the satisfaction.
+    skipGrit: 10,
+    skippedLine:
+      "He leaves the tiles half-sorted and just guesses at the route from what's already assembled — not exactly confidence-inspiring, but it'll do.",
   },
 
   hypogeum_echo: {
