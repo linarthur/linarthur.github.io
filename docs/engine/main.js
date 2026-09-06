@@ -800,22 +800,51 @@ function resolveHintTarget(goalId) {
   return null;
 }
 
+// Every exit hotspot in every room is gated by requiresFlag/requiresItem
+// (and sometimes hideWhenFlag once used) — there's no room in this game
+// with an always-open exit — so "an exit here just became reachable" only
+// fires once its room's own task is genuinely finished. Used by showHint()
+// below for the moment right after that: the player is still standing in
+// the room whose objective they just cleared (e.g. the shelf's pushed, but
+// they haven't walked into the boiler room yet), so the NEXT undone goal
+// in story order belongs to a room they haven't set foot in yet.
+function findReachableExit() {
+  return room.hotspots.find((hs) => {
+    if (hs.kind !== "exit") return false;
+    if (hs.hideWhenFlag && getFlag(gameState, hs.hideWhenFlag)) return false;
+    if (hs.requiresFlag && !getFlag(gameState, hs.requiresFlag)) return false;
+    if (hs.requiresItem && !hasItem(gameState, hs.requiresItem)) return false;
+    return true;
+  });
+}
+
 function showHint() {
   const goals = computeGoals(GOALS, gameState.flags);
   const undoneGoals = goals.filter((g) => !g.done);
-  // Goal order in data/journal.js follows the story's usual sequence, but a
-  // player who backtracks to an earlier room can still have a later goal
-  // sitting "undone" ahead of it in that list. Prefer whichever undone goal
-  // is actually about the room Indy is standing in right now, so the hint
-  // describes THIS scene, not a scene further down the checklist. Falls
-  // back to the old story-order pick when nothing undone maps to this room
-  // (e.g. reach_caldera, which spans several possible rooms).
-  const undone = undoneGoals.find((g) => HINT_TARGETS[g.id]?.room === room.id) || undoneGoals[0];
-  if (!undone) {
+  if (!undoneGoals.length) {
     hintToast.show("Nothing to nudge you toward right now — you're all caught up.");
     clearHintHighlight();
     return;
   }
+  // Goal order in data/journal.js follows the story's usual sequence, but a
+  // player who backtracks to an earlier room can still have a later goal
+  // sitting "undone" ahead of it in that list. Prefer whichever undone goal
+  // is actually about the room Indy is standing in right now, so the hint
+  // describes THIS scene, not a scene further down the checklist.
+  const inRoom = undoneGoals.find((g) => HINT_TARGETS[g.id]?.room === room.id);
+  if (!inRoom) {
+    // Nothing undone is set in this room — most often because its own task
+    // just finished and the next objective lives one room over. Point at
+    // the now-open exit instead of describing a scene not yet reached.
+    const exit = findReachableExit();
+    if (exit) {
+      hintToast.show(`Nothing left for him here — ${exit.name || "the way out"} is open now.`);
+      hintHighlightPolygon = exit.polygon;
+      hintHighlightExpiresAt = performance.now() + 6000;
+      return;
+    }
+  }
+  const undone = inRoom || undoneGoals[0];
   const stages = HINTS[undone.id];
   const stageBefore = getFlag(gameState, `hint_stage_${undone.id}`) || 0;
   const isSolutionStage = !!stages?.length && stageBefore % stages.length === stages.length - 1;
@@ -1413,5 +1442,6 @@ if (devToolsEnabled) {
     triggerHint: () => showHint(),
     getHintHighlight: () =>
       hintHighlightPolygon && performance.now() < hintHighlightExpiresAt ? hintHighlightPolygon : null,
+    getMusicTrack: () => music.currentTrackKey(),
   };
 }

@@ -14,7 +14,7 @@ export const HINTS = {
   escape_boiler: [
     "All that steam is coming from somewhere — and it's blocking the grate.",
     "There's a valve wheel on the pipe above the grate. It looks stuck, not broken.",
-    "Select Pull, then click the valve wheel.",
+    "Select Open/Close, then click the valve wheel.",
   ],
   escape_cellar: [
     "The stairwell down is there — it's just buried.",

@@ -172,6 +172,11 @@ export const biminiCunning = {
       dialogue: "foreman_bimini",
       responses: {
         look: "A Consortium foreman, clipboard in hand, checking every crate against a manifest and every diver against a list he clearly takes seriously.",
+        give: {
+          forged_requisition:
+            "He barely glances at the form before waving toward the ladder. \"Should've said.\" He still hasn't asked a single question.",
+          default: "He's not accepting deliveries. Paperwork's the only thing he wants to see.",
+        },
         default: "He's not letting anyone near that ladder without paperwork.",
       },
     },

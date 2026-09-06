@@ -157,11 +157,12 @@ export const boiler = {
       polygon: [[1130, 570], [1280, 570], [1280, 720], [1130, 720]],
       responses: {
         look: "A rusted iron wheel, hissing pale steam around its seal. It hasn't been turned in years, by the look of the crust.",
-        pull: "He throws his whole weight on it. It groans, shrieks, and turns — the hiss cuts off, and a grate in the floor beyond drops open.",
+        open: "He throws his whole weight on it. It groans, shrieks, and turns — the hiss cuts off, and a grate in the floor beyond drops open.",
+        pull: "Pulling gets him nowhere — this wheel wants turning, not yanking.",
         push: "Pushing does nothing a valve wheel wasn't built for pushing.",
-        default: "It's hot, it's stuck, and it's clearly the thing to turn, not touch.",
+        default: "It's hot, it's stuck, and it's clearly the thing to open, not touch.",
       },
-      setFlagOn: { pull: "valve_shut" },
+      setFlagOn: { open: "valve_shut" },
     },
     {
       id: "furnace",
