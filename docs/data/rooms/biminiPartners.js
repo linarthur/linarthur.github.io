@@ -77,26 +77,35 @@ function paintWreck(ctx) {
 function paintSurfaceLine(ctx) {
   ctx.save();
   ctx.translate(160, 0);
-  ctx.strokeStyle = "rgba(230,240,245,0.5)";
-  ctx.lineWidth = 6;
+  // a bright shaft of daylight falling all the way from the surface,
+  // unmissable next to the general underwater gloom
+  const shaft = ctx.createLinearGradient(-90, 0, 90, 0);
+  shaft.addColorStop(0, "rgba(230,250,255,0)");
+  shaft.addColorStop(0.5, "rgba(230,250,255,0.35)");
+  shaft.addColorStop(1, "rgba(230,250,255,0)");
+  ctx.fillStyle = shaft;
+  ctx.fillRect(-90, 0, 180, 940);
+
+  // a stout climbing rope with rungs, running the same span
+  ctx.strokeStyle = "rgba(255,255,255,0.9)";
+  ctx.lineWidth = 10;
   ctx.beginPath();
-  ctx.moveTo(0, 900);
-  ctx.lineTo(0, 60);
+  ctx.moveTo(0, 920);
+  ctx.lineTo(0, 40);
   ctx.stroke();
-  // rope rungs, and a rising trail of bubbles
-  ctx.strokeStyle = "rgba(230,240,245,0.35)";
-  ctx.lineWidth = 3;
-  for (let y = 120; y < 880; y += 70) {
+  ctx.strokeStyle = "rgba(255,255,255,0.75)";
+  ctx.lineWidth = 6;
+  for (let y = 100; y < 900; y += 60) {
     ctx.beginPath();
-    ctx.moveTo(-22, y);
-    ctx.lineTo(22, y);
+    ctx.moveTo(-30, y);
+    ctx.lineTo(30, y);
     ctx.stroke();
   }
-  ctx.fillStyle = "rgba(220,245,250,0.4)";
+  ctx.fillStyle = "rgba(220,245,250,0.5)";
   for (let i = 0; i < 6; i++) {
     const y = 850 - i * 130;
     ctx.beginPath();
-    ctx.arc(10 + (i % 2) * 14, y, 5 - i * 0.4, 0, Math.PI * 2);
+    ctx.arc(14 + (i % 2) * 16, y, 5 - i * 0.4, 0, Math.PI * 2);
     ctx.fill();
   }
   ctx.restore();

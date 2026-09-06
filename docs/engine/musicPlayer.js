@@ -175,6 +175,21 @@ export function createMusicPlayer() {
     return volume;
   }
 
+  // Temporarily lowers the score for a listen-by-ear puzzle without
+  // touching the user's actual volume/mute preference or persisting
+  // anything — unduck() puts it right back where it was.
+  function duck(factor = 0.15) {
+    if (!masterGain) return;
+    masterGain.gain.cancelScheduledValues(ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(muted ? 0 : volume * factor, ctx.currentTime + 0.3);
+  }
+
+  function unduck() {
+    if (!masterGain) return;
+    masterGain.gain.cancelScheduledValues(ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(muted ? 0 : volume, ctx.currentTime + 0.3);
+  }
+
   // Call this from the same user gesture that unlocks the rest of the
   // game's audio (the tap-to-begin gate) — iOS/Safari require it.
   function unlock() {
@@ -189,6 +204,8 @@ export function createMusicPlayer() {
     toggleMuted,
     setVolume,
     getVolume,
+    duck,
+    unduck,
     unlock,
     currentTrackKey: () => currentKey,
   };

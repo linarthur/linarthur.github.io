@@ -1,25 +1,41 @@
 // puzzles/resonanceUI.js
 //
-// DOM + canvas + audio wiring around the pure createResonancePuzzle logic.
-// Feedback is audio-first: the player hears a beat frequency between their
-// tone and the target tone that slows as they tune in, per the design doc.
-// The Chladni plate gives the same information visually, so the puzzle is
-// solvable by ear OR by eye — required for it to work on a phone in a
-// noisy room, or for a kid who just likes watching the sand.
+// DOM + canvas + audio wiring for the resonance puzzle. Originally a
+// continuous drag-to-tune slider; per playtesting feedback from actual kids
+// it was too hard to land by ear or by eye, so each target note is instead
+// a small multiple-choice row: tapping a note only plays it back (a
+// preview, nothing more) and highlights it as the current pick for that
+// voice; the player only finds out if it's right once they tap that
+// group's own Confirm button. Nothing is graded on tap alone — kids kept
+// tapping and getting instantly solved with no idea why, which is exactly
+// what this two-step preview/confirm split is for. A correct Confirm just
+// locks the note in (no "that's right!" narration — with multiple choice
+// already doing the hard work of ear-training, spelling out the answer on
+// top of it would make the puzzle trivial); a wrong Confirm nudges the
+// player to keep listening, and costs nothing.
 //
 // No fail state: closing the puzzle any time just leaves it unsolved.
 
-import { createResonancePuzzle } from "./resonance.js";
 import { drawChladniPlate, freqToMode } from "./chladni.js";
+
+const HINT_WRONG = "Not quite — give it another listen.";
+const HINT_NONE_PICKED = "Tap a note first, then Confirm.";
+
+// Ratios (relative to the target frequency) used to build the wrong
+// answers, spread across recognizably different pitches rather than
+// near-misses, since the point is "can you tell notes apart," not
+// "can you drag a slider to the exact pixel."
+const DISTRACTOR_RATIOS = [0.5, 0.667, 0.75, 1.333, 1.5, 2];
 
 let overlay = null;
 let canvas, ctx;
 let raf = null;
-let playerOsc = [];
-let targetOsc = [];
-let puzzle = null;
+let activeOsc = null;
 let onSolvedCb = null;
 let onCloseCb = null;
+let targets = [];
+let solvedSlots = [];
+let previewMode = null;
 
 function el(tag, className) {
   const e = document.createElement(tag);
@@ -36,7 +52,7 @@ function ensureDom(root) {
       <h2 class="resonance-title"></h2>
       <p class="resonance-flavor"></p>
       <canvas class="resonance-canvas" width="480" height="260"></canvas>
-      <div class="resonance-sliders"></div>
+      <div class="resonance-choices"></div>
       <div class="resonance-status">Listening...</div>
       <button class="menu-btn resonance-close">Leave it for now</button>
     </div>
@@ -47,108 +63,165 @@ function ensureDom(root) {
   overlay.querySelector(".resonance-close").addEventListener("click", () => finish(false));
 }
 
-function makeSlider(index, target, onChange) {
-  const wrap = el("div", "resonance-slider-wrap");
-  const input = document.createElement("input");
-  input.type = "range";
-  input.className = "resonance-slider";
-  input.min = String(Math.round(target * 0.55));
-  input.max = String(Math.round(target * 1.6));
-  input.step = "1";
-  input.value = String(Math.round(target * (0.55 + Math.random() * 0.9)));
-  input.addEventListener("input", () => onChange(index, Number(input.value)));
-  wrap.appendChild(input);
-  return { wrap, input };
-}
-
-function stopOscillators() {
-  [...playerOsc, ...targetOsc].forEach((o) => {
-    if (!o) return;
+function playTone(freq) {
+  const Tone = window.Tone;
+  if (!Tone) return;
+  if (activeOsc) {
     try {
-      o.stop();
-      o.dispose?.();
+      activeOsc.stop();
+      activeOsc.dispose?.();
     } catch (e) {
       /* already stopped */
     }
+  }
+  const o = new Tone.Oscillator(freq, "sine").toDestination();
+  o.volume.value = -12;
+  o.start();
+  o.stop(`+0.9`);
+  activeOsc = o;
+}
+
+function shuffledChoicesFor(target) {
+  const distractors = [...DISTRACTOR_RATIOS]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3)
+    .map((r) => Math.round(target * r * 100) / 100);
+  const choices = [...distractors, target];
+  return choices.sort(() => Math.random() - 0.5);
+}
+
+// One group = one voice to match: a row of note buttons (tap = preview +
+// select, nothing is graded) plus its own Confirm button (tap = grade the
+// currently-selected note).
+function buildChoiceGroup(index, target, label, onConfirmed) {
+  const group = el("div", "resonance-choice-group");
+  if (label) {
+    const title = el("div", "resonance-group-title");
+    title.textContent = label;
+    group.appendChild(title);
+  }
+  const row = el("div", "resonance-choice-row");
+  const status = el("div", "resonance-group-status");
+  const confirmBtn = el("button", "resonance-confirm-btn");
+  confirmBtn.type = "button";
+  confirmBtn.textContent = "Confirm";
+
+  let selectedFreq = null;
+
+  const choices = shuffledChoicesFor(target);
+  const buttons = choices.map((freq) => {
+    const btn = el("button", "resonance-choice-btn");
+    btn.type = "button";
+    btn.textContent = "♪";
+    btn.addEventListener("click", () => {
+      playTone(freq);
+      previewMode = freqToMode(freq);
+      selectedFreq = freq;
+      buttons.forEach((b) => b.classList.remove("is-selected"));
+      btn.classList.add("is-selected");
+      status.textContent = "";
+    });
+    row.appendChild(btn);
+    return btn;
   });
-  playerOsc = [];
-  targetOsc = [];
+
+  confirmBtn.addEventListener("click", () => {
+    if (selectedFreq === null) {
+      status.textContent = HINT_NONE_PICKED;
+      return;
+    }
+    if (Math.abs(selectedFreq - target) < 0.01) {
+      onConfirmed(true);
+    } else {
+      status.textContent = HINT_WRONG;
+      const pickedBtn = buttons.find((b) => b.classList.contains("is-selected"));
+      pickedBtn?.classList.add("is-wrong");
+      setTimeout(() => pickedBtn?.classList.remove("is-wrong"), 300);
+    }
+  });
+
+  group.appendChild(row);
+  group.appendChild(confirmBtn);
+  group.appendChild(status);
+
+  return {
+    el: group,
+    lockSolved() {
+      const pickedBtn = buttons.find((b) => b.classList.contains("is-selected"));
+      pickedBtn?.classList.add("is-correct", "is-solved");
+      buttons.forEach((b) => {
+        b.disabled = true;
+      });
+      confirmBtn.disabled = true;
+      status.textContent = "";
+    },
+  };
 }
 
 function finish(solved) {
   if (raf) cancelAnimationFrame(raf);
   raf = null;
-  stopOscillators();
+  if (activeOsc) {
+    try {
+      activeOsc.stop();
+      activeOsc.dispose?.();
+    } catch (e) {
+      /* already stopped */
+    }
+    activeOsc = null;
+  }
   if (overlay) overlay.hidden = true;
   if (solved) onSolvedCb?.();
   else onCloseCb?.();
 }
 
-export function openResonancePuzzle(root, { targets, title, flavor, onSolved, onClose }) {
+export function openResonancePuzzle(root, { targets: puzzleTargets, targetLabels, title, flavor, onSolved, onClose }) {
   ensureDom(root);
   onSolvedCb = onSolved || null;
   onCloseCb = onClose || null;
-  puzzle = createResonancePuzzle({ targets, toleranceCents: 18, sustainMs: 800 });
+  targets = puzzleTargets;
+  solvedSlots = targets.map(() => false);
+  previewMode = freqToMode(targets[0]);
 
   overlay.querySelector(".resonance-title").textContent = title || "Resonance";
   overlay.querySelector(".resonance-flavor").textContent = flavor || "";
 
-  const sliderWrap = overlay.querySelector(".resonance-sliders");
-  sliderWrap.innerHTML = "";
-  const sliders = targets.map((t, i) => {
-    const s = makeSlider(i, t, (idx, freq) => {
-      puzzle.setPlayerFreq(idx, freq);
-      if (playerOsc[idx]) playerOsc[idx].frequency.value = freq;
+  const overallStatus = overlay.querySelector(".resonance-status");
+  overallStatus.textContent = "Listening...";
+
+  const choicesWrap = overlay.querySelector(".resonance-choices");
+  choicesWrap.innerHTML = "";
+
+  targets.forEach((target, i) => {
+    const label = targetLabels?.[i] || (targets.length > 1 ? `Voice ${i + 1}` : null);
+    const group = buildChoiceGroup(i, target, label, (correct) => {
+      if (!correct || solvedSlots[i]) return;
+      solvedSlots[i] = true;
+      group.lockSolved();
+      if (solvedSlots.every(Boolean)) {
+        overallStatus.textContent = "Resonance achieved.";
+        finish(true);
+      }
     });
-    sliderWrap.appendChild(s.wrap);
-    puzzle.setPlayerFreq(i, Number(s.input.value));
-    return s;
+    choicesWrap.appendChild(group.el);
   });
 
-  const Tone = window.Tone;
-  if (Tone) {
-    playerOsc = targets.map((t, i) => {
-      const o = new Tone.Oscillator(Number(sliders[i].input.value), "sine").toDestination();
-      o.volume.value = -14;
-      o.start();
-      return o;
-    });
-    targetOsc = targets.map((t) => {
-      const o = new Tone.Oscillator(t, "sine").toDestination();
-      o.volume.value = -18;
-      o.start();
-      return o;
-    });
-  }
-
   overlay.hidden = false;
-  let last = performance.now();
 
   function frame(now) {
-    const dt = now - last;
-    last = now;
-    const snap = puzzle.update(dt);
-    const maxOff = Math.max(...snap.centsOff.map((c) => Math.abs(c)));
-    const chaos = Math.min(1, maxOff / 90);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const mode = freqToMode(targets[0]);
+    const solvedCount = solvedSlots.filter(Boolean).length;
+    const chaos = Math.max(0.08, 1 - solvedCount / targets.length);
     drawChladniPlate(ctx, {
       x: 10,
       y: 10,
       w: canvas.width - 20,
       h: canvas.height - 20,
-      m: mode.m,
-      n: mode.n,
+      m: previewMode.m,
+      n: previewMode.n,
       chaos,
       time: now,
     });
-    const statusEl = overlay.querySelector(".resonance-status");
-    statusEl.textContent = snap.withinTolerance.every(Boolean) ? "Holding steady..." : "Listening...";
-    if (snap.solved) {
-      statusEl.textContent = "Resonance achieved.";
-      finish(true);
-      return;
-    }
     raf = requestAnimationFrame(frame);
   }
   raf = requestAnimationFrame(frame);

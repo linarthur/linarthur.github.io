@@ -104,6 +104,42 @@ function paintToppledShelf(ctx, moved) {
   ctx.restore();
 }
 
+function paintLamp(ctx) {
+  ctx.save();
+  ctx.translate(1600, 850);
+  // toppled brass lamp, base up, cord trailing off toward the wall
+  ctx.rotate(0.35);
+  ctx.strokeStyle = "#4a3a28";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(-10, 0);
+  ctx.lineTo(-90, 30);
+  ctx.stroke();
+  ctx.fillStyle = "#8a6a3e";
+  ctx.fillRect(-14, -6, 28, 60);
+  rimLight(ctx, () => ctx.rect(-14, -6, 28, 60), { color: "255,220,170", alpha: 0.35, width: 2 });
+  ctx.beginPath();
+  ctx.moveTo(-30, -6);
+  ctx.lineTo(30, -6);
+  ctx.lineTo(18, -46);
+  ctx.lineTo(-18, -46);
+  ctx.closePath();
+  ctx.fillStyle = "#c9a468";
+  ctx.fill();
+  ctx.strokeStyle = "#3a2c1c";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  // a faint spill of light from the still-warm bulb
+  const glow = ctx.createRadialGradient(0, -20, 4, 0, -20, 70);
+  glow.addColorStop(0, "rgba(255,230,180,0.3)");
+  glow.addColorStop(1, "rgba(255,230,180,0)");
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(0, -20, 70, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 function paintHole(ctx, moved) {
   if (!moved) return;
   ctx.save();
@@ -129,6 +165,7 @@ export const stacks = {
     paintFloor(ctx);
     paintHole(ctx, moved);
     paintToppledShelf(ctx, moved);
+    paintLamp(ctx);
     vignette(ctx, W, H, 0.55);
   },
 

@@ -114,6 +114,25 @@ function paintConch(ctx, found) {
   ctx.restore();
 }
 
+function paintChannelOut(ctx) {
+  ctx.save();
+  ctx.translate(1745, 860);
+  // a narrow open channel through the reeds, with a punt waiting
+  ctx.fillStyle = "#2c4c44";
+  ctx.beginPath();
+  ctx.ellipse(0, 0, 80, 130, 0, 0, Math.PI * 2);
+  ctx.fill();
+  rimLight(ctx, () => ctx.ellipse(0, 0, 80, 130, 0, 0, Math.PI * 2), { color: "220,240,230", alpha: 0.3, width: 2 });
+  ctx.fillStyle = "#5c4028";
+  ctx.beginPath();
+  ctx.ellipse(0, 30, 46, 16, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = "#3a281c";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.restore();
+}
+
 export const donanaCunning = {
   id: "donanaCunning",
   name: "Doñana Marshes — Cádiz, Spain",
@@ -125,6 +144,7 @@ export const donanaCunning = {
     lightWash(ctx, [960, 0, 960, 640], "255,240,200", 0.12);
     paintShack(ctx);
     paintWater(ctx);
+    paintChannelOut(ctx);
     paintWarden(ctx);
     paintConch(ctx, !!state?.flags?.salt_conch_found);
     vignette(ctx, W, H, 0.4);

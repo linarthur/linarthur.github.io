@@ -78,6 +78,29 @@ function paintFloor(ctx) {
   texturedFloor(ctx, { x: 0, y: 700, w: W, h: H - 700, vanishX: 960, speckleColor: "rgba(255,220,200,0.05)" });
 }
 
+function paintDescentStair(ctx) {
+  ctx.save();
+  ctx.translate(960, 960);
+  ctx.fillStyle = "#100c0e";
+  ctx.beginPath();
+  ctx.moveTo(-100, 0);
+  ctx.lineTo(100, 0);
+  ctx.lineTo(60, -40);
+  ctx.lineTo(-60, -40);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = "rgba(230,200,190,0.3)";
+  ctx.lineWidth = 2;
+  for (let i = 1; i < 4; i++) {
+    const t = i / 4;
+    ctx.beginPath();
+    ctx.moveTo(-100 + (-60 - -100) * t, 0 + (-40 - 0) * t);
+    ctx.lineTo(100 + (60 - 100) * t, 0 + (-40 - 0) * t);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
 function paintDraghi(ctx, met) {
   ctx.save();
   ctx.translate(1500, 880);
@@ -110,8 +133,9 @@ export const calderaApproach = {
     lightWash(ctx, [960, 200, 960, 700], "255,200,170", 0.1);
     paintCraterRim(ctx);
     paintSteamVents(ctx, performance.now());
-    paintCraterGlow(ctx);
     paintFloor(ctx);
+    paintCraterGlow(ctx);
+    paintDescentStair(ctx);
     paintDraghi(ctx, !!state?.flags?.draghi_caldera_met);
     vignette(ctx, W, H, 0.5);
   },

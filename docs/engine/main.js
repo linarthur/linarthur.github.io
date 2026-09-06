@@ -41,6 +41,7 @@ import {
   createCreditsUI,
   createChapterCardUI,
   createPathChoiceUI,
+  createSignInGateUI,
   createHintToast,
   createSkipOverlay,
   removeSkipOverlay,
@@ -101,12 +102,33 @@ function refreshOfflineBadge() {
   offlineBadge.hidden = !trulyOffline;
 }
 
+// Resolves the first time we actually know the player's sign-in state —
+// either Firebase's own onAuthStateChanged has reported it, or Firebase
+// never became available at all (nothing to wait for then). The
+// tap-to-begin gate awaits this (with a timeout, so a slow connection
+// can never block play) so a returning signed-in player doesn't get
+// flashed the sign-in gate before their session is restored.
+let settleAuthWait;
+const authStateSettled = new Promise((resolve) => {
+  settleAuthWait = resolve;
+});
+let authWaitSettled = false;
+function settleAuthOnce() {
+  if (authWaitSettled) return;
+  authWaitSettled = true;
+  settleAuthWait();
+}
+
 initFirebase((user) => {
   refreshOfflineBadge();
   if (user) ensureUserDoc(gameState.grit);
+  settleAuthOnce();
 }).then((ok) => {
   firebaseReady = ok;
   refreshOfflineBadge();
+  signInGateUI.setCloudAvailable(ok);
+  if (!ok) settleAuthOnce(); // cloud never came up — nothing left to wait for
+  return ok;
 });
 window.addEventListener("online", refreshOfflineBadge);
 window.addEventListener("offline", refreshOfflineBadge);
@@ -370,13 +392,29 @@ function markPuzzleSolved(id, def) {
 }
 
 function openPuzzle(id, def) {
-  const onClose = () => setSentence("Ready.");
+  // Resonance and echo puzzles are solved by ear — the background score
+  // fights with the tones/echoes the player is trying to listen for, so
+  // duck it for the duration and bring it back once the puzzle closes.
+  const needsQuiet = def.type === "resonance" || def.type === "echo";
+  if (needsQuiet) music.duck();
+  const restoreMusic = () => {
+    if (needsQuiet) music.unduck();
+  };
+  const onClose = () => {
+    restoreMusic();
+    setSentence("Ready.");
+  };
+  const onSolved = () => {
+    restoreMusic();
+    markPuzzleSolved(id, def);
+  };
   if (def.type === "resonance") {
     openResonancePuzzle(overlaysRoot, {
       targets: def.targets,
+      targetLabels: def.targetLabels,
       title: def.title,
       flavor: def.flavor,
-      onSolved: () => markPuzzleSolved(id, def),
+      onSolved,
       onClose,
     });
   } else if (def.type === "tileSlide") {
@@ -384,7 +422,7 @@ function openPuzzle(id, def) {
       size: def.size,
       title: def.title,
       flavor: def.flavor,
-      onSolved: () => markPuzzleSolved(id, def),
+      onSolved,
       onClose,
     });
   } else if (def.type === "echo") {
@@ -394,7 +432,7 @@ function openPuzzle(id, def) {
       delayMs: def.delayMs,
       title: def.title,
       flavor: def.flavor,
-      onSolved: () => markPuzzleSolved(id, def),
+      onSolved,
       onClose,
     });
   } else if (def.type === "stunt") {
@@ -678,10 +716,40 @@ const pauseUI = createPauseMenuUI(overlaysRoot);
 const creditsUI = createCreditsUI(document.body);
 const chapterCardUI = createChapterCardUI(document.body);
 const pathChoiceUI = createPathChoiceUI(document.body);
+const signInGateUI = createSignInGateUI(document.body);
 const hintToast = createHintToast(overlaysRoot);
 
 const dialogueRunner = createDialogueRunner(flagApi);
 const hintTracker = createHintTracker(flagApi);
+
+function showHint() {
+  const goals = computeGoals(GOALS, gameState.flags);
+  const undone = goals.find((g) => !g.done);
+  if (!undone) {
+    hintToast.show("Nothing to nudge you toward right now — you're all caught up.");
+  } else {
+    hintToast.show(hintTracker.next(undone.id, HINTS));
+  }
+}
+
+// On-screen Menu/Hint buttons — the only way into the pause menu (Save,
+// Load, Journal) or the hint system on a touch device, since there's no
+// keyboard there for Space/J/H.
+const menuButton = document.getElementById("menu-button");
+const hintButton = document.getElementById("hint-button");
+menuButton.addEventListener("click", () => {
+  if (dialogueUI.isVisible() || chapterCardUI.isVisible()) return;
+  if (pauseUI.isVisible()) {
+    pauseUI.hide();
+    paused = false;
+  } else {
+    openPauseMenu();
+  }
+});
+hintButton.addEventListener("click", () => {
+  if (inputBlocked()) return;
+  showHint();
+});
 
 function refreshDialogueUI() {
   if (!dialogueRunner.isActive()) {
@@ -1022,13 +1090,7 @@ attachInput(canvas, {
       return;
     }
     if (key === "h") {
-      const goals = computeGoals(GOALS, gameState.flags);
-      const undone = goals.find((g) => !g.done);
-      if (!undone) {
-        hintToast.show("Nothing to nudge you toward right now — you're all caught up.");
-      } else {
-        hintToast.show(hintTracker.next(undone.id, HINTS));
-      }
+      showHint();
       return;
     }
     if (key === "c" && devToolsEnabled) {
@@ -1093,13 +1155,108 @@ const loop = createLoop(update, draw);
 // ---------- tap-to-begin gate ----------
 
 const tapGate = document.getElementById("tap-gate");
-function begin() {
+
+// Shown once, the very first time anyone plays (gated on a flag saved with
+// everything else, so a returning player who loads a save never sees it
+// again). Kids landing cold in the gallery with an empty crate and a hole
+// in the floor had no idea who they were playing or why any of it
+// mattered — this fills in the who/what/why in plain language, then walks
+// through the actual controls before handing control over.
+function showCard(title, lines, buttonText) {
+  return new Promise((resolve) => {
+    chapterCardUI.show(title, lines, buttonText, resolve);
+  });
+}
+
+async function playIntro() {
+  await showCard(
+    "Who You Are",
+    [
+      "You are Indiana Jones — teacher, explorer, and treasure hunter.",
+      "You work at Barnett College, where old and important objects are kept safe.",
+    ],
+    "Next"
+  );
+  await showCard(
+    "What Happened Tonight",
+    [
+      "Late at night, someone broke into the college museum.",
+      "They smashed open a locked crate and blew a hole in the floor to get away!",
+      "Inside the crate was a strange old diving bell. People say it came from the lost city of Atlantis.",
+    ],
+    "Next"
+  );
+  await showCard(
+    "Your Mission",
+    [
+      "The thieves are gone, and so is the diving bell.",
+      "Follow their trail, solve the clues they left behind, and find the truth about the Drowned Bell of Atlantis.",
+      "Grab your hat. The adventure starts now!",
+    ],
+    "Next"
+  );
+  await showCard(
+    "How to Play",
+    [
+      "Tap or click the floor to walk there.",
+      "Tap or click something you see — like a crate or a door — to look at it.",
+      "Pick an action first (Look, Take, Use, Talk...), then tap the thing you want to use it on.",
+      "Stuck? Tap the ? button any time for a hint.",
+      "Tap ☰ to open the menu — save your game, or check your Journal for goals.",
+    ],
+    "Let's Go!"
+  );
+  setFlag(gameState, "intro_seen", true);
+  setSentence("Ready.");
+}
+
+function startGame() {
   unlockAudio();
   music.unlock();
   music.playTrack(ROOM_THEMES[room.id] || "barnett");
-  tapGate.style.display = "none";
   loop.start();
-  setSentence("Ready.");
+  if (getFlag(gameState, "intro_seen")) {
+    setSentence("Ready.");
+  } else {
+    playIntro();
+  }
+}
+
+let beginStarted = false;
+
+function withTimeout(promise, ms) {
+  return Promise.race([promise, new Promise((resolve) => setTimeout(resolve, ms))]);
+}
+
+function begin() {
+  if (beginStarted) return;
+  beginStarted = true;
+
+  // Wait to actually know the sign-in state before deciding whether to
+  // show the gate, so a returning signed-in player doesn't see it flash
+  // up before their session is restored — capped so a slow connection
+  // can never leave the tap gate stuck.
+  withTimeout(authStateSettled, 2500).then(() => {
+    tapGate.style.display = "none";
+
+    if (getCurrentUser()) {
+      startGame();
+      return;
+    }
+
+    signInGateUI.show({
+      cloudPending: !firebaseReady,
+      onSignIn: async () => {
+        signInGateUI.hide();
+        startGame();
+        await signInWithGoogle();
+      },
+      onContinueOffline: () => {
+        signInGateUI.hide();
+        startGame();
+      },
+    });
+  });
 }
 tapGate.addEventListener("click", begin);
 tapGate.addEventListener("touchend", (e) => {

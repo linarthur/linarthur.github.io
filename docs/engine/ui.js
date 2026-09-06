@@ -259,6 +259,58 @@ export function createChapterCardUI(root) {
   };
 }
 
+// ---------------- Sign-in gate (shown once, right after tap-to-begin) ----------------
+
+export function createSignInGateUI(root) {
+  const panel = el("div", "signin-gate-panel");
+  panel.hidden = true;
+  panel.innerHTML = `
+    <div class="signin-gate-inner">
+      <h2 class="signin-gate-title">Save your progress</h2>
+      <p class="signin-gate-text">
+        Sign in with Google to save your progress to your account, so you
+        can pick up right where you left off on any device. If you play
+        without signing in, your progress only saves on this browser —
+        clear its data, switch devices, or come back on a different
+        computer, and you'll be starting over from the beginning.
+      </p>
+      <div class="signin-gate-buttons">
+        <button class="menu-btn signin-gate-google">Sign in with Google</button>
+        <button class="menu-btn signin-gate-offline">Continue Offline</button>
+      </div>
+      <p class="signin-gate-note"></p>
+    </div>
+  `;
+  root.appendChild(panel);
+
+  const googleBtn = panel.querySelector(".signin-gate-google");
+  const offlineBtn = panel.querySelector(".signin-gate-offline");
+  const note = panel.querySelector(".signin-gate-note");
+
+  return {
+    show({ onSignIn, onContinueOffline, cloudPending }) {
+      panel.hidden = false;
+      googleBtn.disabled = !!cloudPending;
+      note.textContent = cloudPending ? "Checking for Google Sign-In..." : "";
+      googleBtn.onclick = () => onSignIn();
+      offlineBtn.onclick = () => onContinueOffline();
+    },
+    // Called once engine/firebaseSync.js's init promise settles, in case
+    // the player is still looking at the gate when it resolves.
+    setCloudAvailable(available) {
+      if (panel.hidden) return;
+      googleBtn.disabled = !available;
+      note.textContent = available ? "" : "Cloud save isn't available right now — you can still play offline.";
+    },
+    hide() {
+      panel.hidden = true;
+    },
+    isVisible() {
+      return !panel.hidden;
+    },
+  };
+}
+
 // ---------------- Path choice (end of Act 1) ----------------
 
 export function createPathChoiceUI(root) {

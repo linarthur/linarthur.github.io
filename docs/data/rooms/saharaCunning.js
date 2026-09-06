@@ -127,6 +127,31 @@ function paintFork(ctx, found) {
   ctx.restore();
 }
 
+function paintTrackSouth(ctx) {
+  ctx.save();
+  ctx.translate(1745, 900);
+  ctx.strokeStyle = "rgba(90,70,50,0.6)";
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.moveTo(-85, -40);
+  ctx.lineTo(85, -40);
+  ctx.moveTo(-85, -10);
+  ctx.lineTo(85, -10);
+  ctx.stroke();
+  ctx.fillStyle = "#5c4838";
+  ctx.fillRect(-6, -100, 12, 100);
+  ctx.beginPath();
+  ctx.moveTo(-6, -90);
+  ctx.lineTo(-70, -78);
+  ctx.lineTo(-70, -58);
+  ctx.lineTo(-6, -70);
+  ctx.closePath();
+  ctx.fillStyle = "#c9a468";
+  ctx.fill();
+  rimLight(ctx, () => ctx.rect(-70, -78, 64, 20), { color: "255,220,170", alpha: 0.3, width: 2 });
+  ctx.restore();
+}
+
 export const saharaCunning = {
   id: "saharaCunning",
   name: "The Eye of the Sahara — Mauritania",
@@ -138,6 +163,7 @@ export const saharaCunning = {
     paintDunes(ctx);
     paintStall(ctx);
     paintBroker(ctx);
+    paintTrackSouth(ctx);
     paintFork(ctx, !!state?.flags?.storm_fork_found);
     vignette(ctx, W, H, 0.4);
   },

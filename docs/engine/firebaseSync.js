@@ -54,6 +54,13 @@ export async function initFirebase(onAuthChange) {
       currentUser = user;
       authChangeCb?.(user);
     });
+    // Catches the user coming back from a signInWithRedirect() fallback
+    // (see signInWithGoogle) — onAuthStateChanged above already picks up
+    // the signed-in state either way, this just swallows the promise so
+    // a redirect error doesn't surface as an unhandled rejection.
+    sdk.getRedirectResult(auth).catch((e) => {
+      console.warn("Redirect sign-in did not complete:", e);
+    });
     available = true;
     return true;
   } catch (e) {
@@ -77,12 +84,24 @@ export function getCurrentUser() {
 
 export async function signInWithGoogle() {
   if (!available) return null;
+  const provider = new sdk.GoogleAuthProvider();
   try {
-    const provider = new sdk.GoogleAuthProvider();
     const result = await sdk.signInWithPopup(auth, provider);
     await ensureUserDoc();
     return result.user;
   } catch (e) {
+    // Popups get blocked by browser settings, some mobile browsers, and
+    // most in-app webviews — fall back to a full-page redirect instead of
+    // just failing. The page navigates away and back; getRedirectResult
+    // in initFirebase picks the signed-in user back up on return.
+    if (e?.code === "auth/popup-blocked" || e?.code === "auth/operation-not-supported-in-this-environment") {
+      try {
+        await sdk.signInWithRedirect(auth, provider);
+      } catch (redirectErr) {
+        console.warn("Google sign-in redirect fallback also failed:", redirectErr);
+      }
+      return null;
+    }
     console.warn("Google sign-in failed or was cancelled:", e);
     return null;
   }

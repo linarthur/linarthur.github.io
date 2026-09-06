@@ -156,8 +156,9 @@ export const PUZZLES = {
   drowned_bell_finale: {
     type: "resonance",
     title: "The Drowned Bell of Atlantis",
-    flavor: "The Salt Conch, the Storm Fork, and the Star Bell, all three at once. Match every note and hold the chord.",
+    flavor: "The Salt Conch, the Storm Fork, and the Star Bell, all three at once. Match every note.",
     targets: [130.81, 261.63, 523.25], // the three Voices together
+    targetLabels: ["Salt Conch — the low voice", "Storm Fork — the middle voice", "Star Bell — the high voice"],
     flagOnSolve: "drowned_bell_awakened",
     grit: 150,
     solvedLine:

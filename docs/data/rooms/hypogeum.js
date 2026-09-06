@@ -129,8 +129,8 @@ export const hypogeum = {
     paintChamber(ctx);
     lightWash(ctx, [960, 0, 960, 700], "230,190,130", 0.14);
     paintOracleNiche(ctx);
-    paintHarbourPassage(ctx);
     paintFloor(ctx);
+    paintHarbourPassage(ctx);
     vignette(ctx, W, H, 0.6);
   },
 
