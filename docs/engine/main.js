@@ -886,7 +886,8 @@ function refreshDialogueUI() {
     dialogueRunner.currentNpcName(),
     dialogueRunner.currentLine(),
     dialogueRunner.currentOptions(),
-    onSelectDialogueOption
+    onSelectDialogueOption,
+    dialogueRunner.currentMood()
   );
 }
 

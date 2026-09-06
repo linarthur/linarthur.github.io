@@ -23,6 +23,7 @@ export const higginsDialogue = {
       npcLine:
         "Came in this morning, screaming like a kettle when the delivery man near dropped it. Gone an hour later — whoever took it knew exactly which crate, and exactly when this room would be empty. More planning than the Dean's ever put into a maintenance schedule.",
       setFlag: "learned_crate_theft",
+      mood: "surprised",
       options: [{ id: "back1", text: "(Ask something else.)", goto: "root" }],
     },
     water_info: {

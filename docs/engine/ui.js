@@ -32,19 +32,32 @@ export function bellFlourishSVG(size = 64) {
 
 // ---------------- Dialogue panel ----------------
 
+// Hero close-up portraits shown opposite the NPC's line during dialogue —
+// real art (see data/dialogue/*.js's optional per-node `mood` field,
+// engine/dialogue.js's currentMood()). Every other speaker still has no
+// portrait at all; this is hero-only for now.
+const HERO_PORTRAITS = {
+  talk: "assets/sprites/hero-portrait-talk.png",
+  surprised: "assets/sprites/hero-portrait-surprised.png",
+};
+
 export function createDialogueUI(root) {
   const panel = el("div", "dlg-panel");
   panel.hidden = true;
   panel.innerHTML = `
-    <div class="dlg-name"></div>
-    <div class="dlg-line"></div>
-    <div class="dlg-options"></div>
+    <div class="dlg-portrait"><img class="dlg-hero-portrait" alt="Indy" /></div>
+    <div class="dlg-body">
+      <div class="dlg-name"></div>
+      <div class="dlg-line"></div>
+      <div class="dlg-options"></div>
+    </div>
   `;
   root.appendChild(panel);
 
   return {
-    show(npcName, line, options, onSelect) {
+    show(npcName, line, options, onSelect, mood = "talk") {
       panel.hidden = false;
+      panel.querySelector(".dlg-hero-portrait").src = HERO_PORTRAITS[mood] || HERO_PORTRAITS.talk;
       panel.querySelector(".dlg-name").textContent = npcName;
       panel.querySelector(".dlg-line").textContent = line;
       const optWrap = panel.querySelector(".dlg-options");

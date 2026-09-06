@@ -1,31 +1,32 @@
 // engine/renderer.js — single canvas, layered draw. 1920x1080 logical space.
 
+import { loadChromaKeyedSprite } from "./spriteLoader.js";
+
 export const LOGICAL_W = 1920;
 export const LOGICAL_H = 1080;
 
 const ACCENT = "#ff7a1a"; // signal orange — reserved for interactive hotspots at rest
 const HINT_COLOR = "#ffd23f"; // gold — reserved for the hint system's call-out highlight
 
+// The hero's real art: a single idle pose, facing right. Left-facing is the
+// same sprite mirrored in code (ctx.scale(-1,1)) — see drawHeroSprite below
+// — and walking is the same static pose translated across the screen with
+// a small bob/sway, not a frame-swapped walk cycle. Every other character
+// (Mo, Draghi, Ferro, ...) is still the procedural silhouette drawn by its
+// own room file — this sprite is only ever used for the player actor.
+const HERO_SPRITE = loadChromaKeyedSprite("assets/sprites/hero-idle-right.png");
+const HERO_SPRITE_HEIGHT = 210; // local units — matches the old silhouette's head-to-heel span
+
 export function createRenderer(canvas) {
   const ctx = canvas.getContext("2d");
   canvas.width = LOGICAL_W;
   canvas.height = LOGICAL_H;
 
-  function drawActor(actor) {
-    const { x, y, facing } = actor;
-    const scale = 0.55 + 0.45 * (y / LOGICAL_H); // scale zone: bigger near camera
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.scale(scale, scale);
-
-    // soft contact shadow
-    ctx.fillStyle = "rgba(0,0,0,0.35)";
-    ctx.beginPath();
-    ctx.ellipse(0, 8, 42, 14, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    // silhouette body — cheap, classy, matches the art-direction note about
-    // rendering the hero from behind/in silhouette wherever possible
+  // Cheap, classy fallback while the real sprite loads (or if it fails to)
+  // — same shape the hero used everywhere before real art existed, and
+  // still what every other character in the game uses.
+  function drawSilhouette(actor) {
+    const { facing } = actor;
     ctx.fillStyle = "#1c1712";
     ctx.beginPath();
     ctx.ellipse(0, -70, 30, 55, 0, 0, Math.PI * 2); // torso
@@ -43,7 +44,7 @@ export function createRenderer(canvas) {
     ctx.closePath();
     ctx.fill();
 
-    // facing indicator (legs) — tiny nod to walk direction until sprites land
+    // facing indicator (legs)
     const dx = facing === "left" ? -10 : facing === "right" ? 10 : 0;
     ctx.strokeStyle = "#1c1712";
     ctx.lineWidth = 14;
@@ -54,6 +55,47 @@ export function createRenderer(canvas) {
     ctx.moveTo(10, -18);
     ctx.lineTo(10 + dx, 30);
     ctx.stroke();
+  }
+
+  function drawHeroSprite(actor, now) {
+    const { facing, moving } = actor;
+    // Idle sway is slower and smaller; walking bob is quicker and a bit
+    // more pronounced — both just a translate + slight rotation of the
+    // one static pose, per the "no walk-cycle frames" rule.
+    const bobFreq = moving ? 130 : 900;
+    const bobAmp = moving ? 6 : 2.5;
+    const bob = Math.sin(now / bobFreq) * bobAmp;
+    const sway = Math.sin(now / (bobFreq * 1.3)) * (moving ? 0.035 : 0.012);
+
+    const h = HERO_SPRITE_HEIGHT;
+    const w = h * (HERO_SPRITE.width / HERO_SPRITE.height);
+
+    ctx.save();
+    ctx.translate(0, bob);
+    ctx.rotate(sway);
+    if (facing === "left") ctx.scale(-1, 1);
+    ctx.drawImage(HERO_SPRITE.canvas, -w / 2, 10 - h, w, h);
+    ctx.restore();
+  }
+
+  function drawActor(actor) {
+    const { x, y } = actor;
+    const scale = 0.55 + 0.45 * (y / LOGICAL_H); // scale zone: bigger near camera
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scale, scale);
+
+    // soft contact shadow
+    ctx.fillStyle = "rgba(0,0,0,0.35)";
+    ctx.beginPath();
+    ctx.ellipse(0, 8, 42, 14, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (HERO_SPRITE.ready) {
+      drawHeroSprite(actor, performance.now());
+    } else {
+      drawSilhouette(actor);
+    }
 
     ctx.restore();
   }

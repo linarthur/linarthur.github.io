@@ -14,6 +14,7 @@
 //       setFlag: "flagName",           // optional, set on arrival
 //       grit: 20,                      // optional, awarded once on arrival
 //       cutscene: "cutsceneId",        // optional, fired once on arrival
+//       mood: "surprised",             // optional, hero portrait during this node — defaults to "talk"
 //       options: [
 //         { id, text, goto: "nodeId" | null, once: true,
 //           requiresFlag: "flag", forbidsFlag: "flag", requiresItem: "itemId" }
@@ -74,6 +75,15 @@ export function createDialogueRunner({ getFlag, setFlag, hasItem, addGrit }) {
 
     currentLine() {
       return tree.nodes[nodeId].npcLine;
+    },
+
+    // Optional per-node `mood` ("talk" | "surprised", ...) picks which
+    // hero close-up portrait the dialogue UI shows opposite the NPC's
+    // line — see data/dialogue/higgins.js's crate_info node for the one
+    // node currently opted in. Defaults to "talk" so every existing node
+    // (no mood field at all) keeps working unchanged.
+    currentMood() {
+      return tree.nodes[nodeId].mood || "talk";
     },
 
     currentOptions() {
