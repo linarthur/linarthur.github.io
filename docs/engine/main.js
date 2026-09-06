@@ -802,7 +802,15 @@ function resolveHintTarget(goalId) {
 
 function showHint() {
   const goals = computeGoals(GOALS, gameState.flags);
-  const undone = goals.find((g) => !g.done);
+  const undoneGoals = goals.filter((g) => !g.done);
+  // Goal order in data/journal.js follows the story's usual sequence, but a
+  // player who backtracks to an earlier room can still have a later goal
+  // sitting "undone" ahead of it in that list. Prefer whichever undone goal
+  // is actually about the room Indy is standing in right now, so the hint
+  // describes THIS scene, not a scene further down the checklist. Falls
+  // back to the old story-order pick when nothing undone maps to this room
+  // (e.g. reach_caldera, which spans several possible rooms).
+  const undone = undoneGoals.find((g) => HINT_TARGETS[g.id]?.room === room.id) || undoneGoals[0];
   if (!undone) {
     hintToast.show("Nothing to nudge you toward right now — you're all caught up.");
     clearHintHighlight();

@@ -3,7 +3,8 @@
 // so the play is disguise: local robes plus a headscarf, worn together,
 // buy enough distance to pass unremarked.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, paintWorldItem } from "../../engine/artHelpers.js";
+import { getItem } from "../items.js";
 
 const W = 1920, H = 1080;
 
@@ -84,6 +85,20 @@ function paintStall(ctx) {
     ctx.stroke();
   }
   ctx.restore();
+}
+
+// The robes and headscarf sold no visual before this — same fix as the
+// warden's desk in donanaCunning.js: reuse each item's own inventory icon
+// (data/items.js) on the stall counter, hidden once picked up (or once
+// combined into desert_disguise — see combinesWith in engine/main.js).
+function paintStallItems(ctx, state) {
+  const inv = state?.inventory || [];
+  if (!inv.includes("local_robes") && !inv.includes("desert_disguise")) {
+    paintWorldItem(ctx, getItem("local_robes"), 445, 760, 40);
+  }
+  if (!inv.includes("headscarf") && !inv.includes("desert_disguise")) {
+    paintWorldItem(ctx, getItem("headscarf"), 585, 765, 36);
+  }
 }
 
 function paintBroker(ctx) {
@@ -182,6 +197,7 @@ export const saharaCunning = {
     lightWash(ctx, [500, 0, 900, 700], "255,220,170", 0.14);
     paintDunes(ctx);
     paintStall(ctx);
+    paintStallItems(ctx, state);
     paintBroker(ctx);
     paintTrackSouth(ctx);
     paintFork(ctx, !!state?.flags?.storm_fork_found);

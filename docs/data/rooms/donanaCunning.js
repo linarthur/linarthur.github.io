@@ -3,7 +3,8 @@
 // "two person" puzzle becomes a one-person forgery: find a blank permit,
 // find the Consortium's own stamp, and let paperwork do the talking.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, paintWorldItem } from "../../engine/artHelpers.js";
+import { getItem } from "../items.js";
 
 const W = 1920, H = 1080;
 
@@ -102,6 +103,45 @@ function paintWarden(ctx) {
   ctx.restore();
 }
 
+// The warden's desk (and the permit/stamp sitting on it) had no visual at
+// all before this — just an invisible hotspot/item polygon over open
+// ground, so the pickups looked broken. Draws right where the "desk",
+// "blank_permit", and "consortium_stamp" polygons below already are.
+function paintDesk(ctx) {
+  ctx.save();
+  ctx.translate(1575, 700);
+  ctx.fillStyle = "rgba(0,0,0,0.25)";
+  ctx.beginPath();
+  ctx.ellipse(0, 55, 90, 16, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#6a4c34";
+  ctx.beginPath();
+  ctx.roundRect(-85, -10, 170, 50, 4);
+  ctx.fill();
+  rimLight(ctx, () => ctx.roundRect(-85, -10, 170, 50, 4), { color: "255,220,170", alpha: 0.3, width: 2 });
+  ctx.strokeStyle = "#4a3423";
+  ctx.lineWidth = 3;
+  ctx.strokeRect(-85, -10, 170, 50);
+  ctx.fillStyle = "#4a3423";
+  ctx.fillRect(-78, 38, 10, 40);
+  ctx.fillRect(68, 38, 10, 40);
+  ctx.restore();
+}
+
+// Reuses each item's own inventory-slot icon (data/items.js) to draw it
+// sitting on the desk, hidden once picked up (or, for the pair, once
+// combined into the forged_permit — see the combinesWith handling in
+// engine/main.js's runAction, same rule worldItems() already uses there).
+function paintDeskItems(ctx, state) {
+  const inv = state?.inventory || [];
+  if (!inv.includes("blank_permit") && !inv.includes("forged_permit")) {
+    paintWorldItem(ctx, getItem("blank_permit"), 1550, 675, 40);
+  }
+  if (!inv.includes("consortium_stamp") && !inv.includes("forged_permit")) {
+    paintWorldItem(ctx, getItem("consortium_stamp"), 1615, 685, 40);
+  }
+}
+
 function paintConch(ctx, found) {
   if (found) return;
   ctx.save();
@@ -145,6 +185,8 @@ export const donanaCunning = {
     paintShack(ctx);
     paintWater(ctx);
     paintChannelOut(ctx);
+    paintDesk(ctx);
+    paintDeskItems(ctx, state);
     paintWarden(ctx);
     paintConch(ctx, !!state?.flags?.salt_conch_found);
     vignette(ctx, W, H, 0.4);

@@ -3,7 +3,8 @@
 // (design doc: "a full con on the Consortium's dockyard") — forge a
 // requisition form, talk the foreman into believing it, dive alone.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, paintWorldItem } from "../../engine/artHelpers.js";
+import { getItem } from "../items.js";
 
 const W = 1920, H = 1080;
 
@@ -35,6 +36,20 @@ function paintCrates(ctx) {
     ctx.fillText("A.S.C.", 0, -25);
     ctx.restore();
   });
+}
+
+// The requisition form and seal sold no visual before this — same fix as
+// donanaCunning.js's desk and saharaCunning.js's stall: reuse each item's
+// own inventory icon (data/items.js), tucked between the crates, hidden
+// once picked up (or combined into forged_requisition).
+function paintCrateItems(ctx, state) {
+  const inv = state?.inventory || [];
+  if (!inv.includes("requisition_form") && !inv.includes("forged_requisition")) {
+    paintWorldItem(ctx, getItem("requisition_form"), 255, 765, 38);
+  }
+  if (!inv.includes("official_seal") && !inv.includes("forged_requisition")) {
+    paintWorldItem(ctx, getItem("official_seal"), 375, 775, 30);
+  }
 }
 
 function paintFerro(ctx) {
@@ -142,6 +157,7 @@ export const biminiCunning = {
     paintFerro(ctx);
     paintDock(ctx);
     paintCrates(ctx);
+    paintCrateItems(ctx, state);
     paintForeman(ctx);
     paintLadder(ctx, !!state?.flags?.star_bell_found);
     vignette(ctx, W, H, 0.45);

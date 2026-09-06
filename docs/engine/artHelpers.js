@@ -79,3 +79,19 @@ export function paintedGradient(ctx, x0, y0, x1, y1, stops) {
   stops.forEach(([offset, color]) => g.addColorStop(offset, color));
   return g;
 }
+
+// Draws a carryable item's own inventory icon out in the world (plus a
+// contact shadow), so a pickup reads as a specific object rather than an
+// invisible click zone. `item` is a data/items.js entry — its `drawIcon`
+// is the exact function already used to render it in the inventory slot
+// (see engine/main.js's makeInvSlot), just placed on the ground instead.
+export function paintWorldItem(ctx, item, x, y, size = 44) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.fillStyle = "rgba(0,0,0,0.3)";
+  ctx.beginPath();
+  ctx.ellipse(0, size * 0.42, size * 0.36, size * 0.12, 0, 0, Math.PI * 2);
+  ctx.fill();
+  item.drawIcon(ctx, size);
+  ctx.restore();
+}
