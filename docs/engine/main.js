@@ -31,7 +31,7 @@ import {
 } from "./firebaseSync.js";
 import { createDialogueRunner } from "./dialogue.js";
 import { runCutscene } from "./cutscene.js";
-import { saveToSlot, loadFromSlot, listSlots, validateState } from "./save.js";
+import { saveToSlot, loadFromSlot, listSlots, validateState, AUTOSAVE_ID } from "./save.js";
 import { computeGoals, computeCodex } from "./journal.js";
 import { createHintTracker } from "./hints.js";
 import {
@@ -389,6 +389,7 @@ function markPuzzleSolved(id, def) {
   setSentence(def.solvedLine || "Solved.");
   checkAct2Complete();
   checkAct3Complete();
+  doAutosave();
 }
 
 function openPuzzle(id, def) {
@@ -531,6 +532,7 @@ async function fallToRoom(nextRoomId, spawn, caption) {
   if (arrivalCutscene && !getFlag(gameState, `cs_ran_${arrivalCutscene}`)) {
     await playCutscene(arrivalCutscene);
   }
+  doAutosave();
 }
 
 // ---------- Prologue completion ----------
@@ -875,6 +877,19 @@ async function playCutscene(id) {
 function syncActorToState() {
   gameState.actor = { x: actor.x, y: actor.y, facing: actor.facing };
   gameState.roomId = room.id;
+}
+
+// The pause menu has always shown an "Autosave" slot, but nothing ever
+// actually wrote to it — every save required the player to open the menu
+// and press Save by hand. This is the real autosave: fired at natural
+// checkpoints (arriving in a new room, solving a puzzle) so progress is
+// never lost to forgetting to save, regardless of whether the player is
+// signed in — signing in only adds the cloud copy on top of the same
+// local write.
+function doAutosave() {
+  syncActorToState();
+  saveToSlot(AUTOSAVE_ID, gameState);
+  cloudSaveSlot(AUTOSAVE_ID, gameState);
 }
 
 function applyLoadedState(data) {
@@ -1228,6 +1243,10 @@ function startGame() {
   } else {
     playIntro();
   }
+  // Safety-net autosave on top of the room-transition/puzzle-solve ones,
+  // for a player who stays in one room a long time (a lot of dialogue, or
+  // just poking around) between those checkpoints.
+  setInterval(doAutosave, 60000);
 }
 
 let beginStarted = false;
