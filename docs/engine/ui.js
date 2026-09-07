@@ -239,6 +239,16 @@ export function createPauseMenuUI(root) {
       const newGame = el("button", "menu-btn danger", "New Game\n開始新遊戲");
       newGame.addEventListener("click", callbacks.onNewGame);
       panel.appendChild(newGame);
+
+      // Only ever rendered for the one admin account (main.js decides
+      // `account.isAdmin`, gated on the signed-in email) — everyone else's
+      // pause menu simply has no such button, on top of the Firestore
+      // rules that would reject the read anyway.
+      if (account?.isAdmin) {
+        const admin = el("button", "menu-btn", "Admin — Play Analytics\n管理員 — 遊玩紀錄");
+        admin.addEventListener("click", callbacks.onOpenAdmin);
+        panel.appendChild(admin);
+      }
     },
     hide() {
       panel.hidden = true;

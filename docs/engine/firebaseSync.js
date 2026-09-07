@@ -171,3 +171,51 @@ export async function cloudLoadSlot(slotId) {
     return null;
   }
 }
+
+// ---------- play analytics (see engine/analytics.js, engine/adminUI.js) ----------
+
+// Gives every visitor — including one who never touches "Sign in with
+// Google" — a stable, Firestore-trusted auth uid, purely so analytics.js
+// has an identity to attach a session document to. Silent: no UI, and it
+// deliberately does NOT fire authChangeCb, so it can never be mistaken for
+// a real Google sign-in by the rest of the game (main.js's tap-gate check
+// and the pause menu's account row both key off currentUser.isAnonymous).
+export async function signInAnonymously() {
+  if (!available || currentUser) return currentUser;
+  try {
+    const result = await sdk.signInAnonymously(auth);
+    currentUser = result.user;
+    return currentUser;
+  } catch (e) {
+    console.warn("Anonymous sign-in failed — this session just won't appear in analytics:", e);
+    return null;
+  }
+}
+
+// One document per PLAY SESSION (not one per player) — see analytics.js for
+// the field shape. `merge: true` so repeated calls during the same session
+// patch the same doc instead of clobbering fields the caller didn't pass.
+export async function writeSession(sessionId, data) {
+  if (!available || !currentUser) return;
+  try {
+    const ref = sdk.doc(db, "sessions", sessionId);
+    await sdk.setDoc(ref, data, { merge: true });
+  } catch (e) {
+    console.warn("Analytics session write failed (never affects gameplay):", e);
+  }
+}
+
+// Admin-only (Firestore rules reject anyone else) — used by adminUI.js.
+// Sorted newest-first, capped at `limit` since this is a small hobby
+// project's dashboard, not a paginated data warehouse.
+export async function fetchAllSessions(limit = 500) {
+  if (!available || !currentUser) return [];
+  try {
+    const q = sdk.query(sdk.collection(db, "sessions"), sdk.orderBy("lastSeenAt", "desc"), sdk.limit(limit));
+    const snap = await sdk.getDocs(q);
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  } catch (e) {
+    console.warn("Fetching analytics sessions failed (are you signed in as the admin account?):", e);
+    return [];
+  }
+}

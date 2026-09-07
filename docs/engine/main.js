@@ -28,7 +28,10 @@ import {
   ensureUserDoc,
   cloudSaveSlot,
   cloudLoadSlot,
+  fetchAllSessions,
 } from "./firebaseSync.js";
+import { startSession, reportRoom, reportPath, reportGrit, reportGameComplete } from "./analytics.js";
+import { createAdminUI } from "./adminUI.js";
 import { createDialogueRunner } from "./dialogue.js";
 import { runCutscene } from "./cutscene.js";
 import { saveToSlot, loadFromSlot, listSlots, validateState, AUTOSAVE_ID } from "./save.js";
@@ -244,6 +247,7 @@ function inputBlocked() {
     dialogueUI.isVisible() ||
     journalUI.isVisible() ||
     pauseUI.isVisible() ||
+    adminUI.isVisible() ||
     chapterCardUI.isVisible() ||
     pathChoiceUI.isVisible() ||
     isResonanceOpen() ||
@@ -497,6 +501,7 @@ const PATH_START_ROOM = {
 function openPathChoice() {
   pathChoiceUI.show((path) => {
     setPath(gameState, path);
+    reportPath(path);
     setFlag(gameState, "act1_complete", true);
 
     const startRoomId = PATH_START_ROOM[path];
@@ -551,6 +556,7 @@ async function fallToRoom(nextRoomId, spawn, caption) {
   clearHintHighlight();
   room = ROOMS[nextRoomId];
   gameState.roomId = nextRoomId;
+  reportRoom(nextRoomId);
   const theme = ROOM_THEMES[nextRoomId];
   if (theme) music.playTrack(theme);
   actor.x = spawn.x;
@@ -670,6 +676,7 @@ function checkAct3Complete() {
   if (!getFlag(gameState, "drowned_bell_awakened")) return;
   setFlag(gameState, "game_complete", true);
   addGrit(gameState, 100);
+  reportGameComplete();
   playCutscene("bell_awakens").then(() => {
     playChapterEndChime();
     music.playTrack("title");
@@ -762,6 +769,8 @@ const overlaysRoot = document.getElementById("overlays");
 const dialogueUI = createDialogueUI(overlaysRoot);
 const journalUI = createJournalUI(overlaysRoot);
 const pauseUI = createPauseMenuUI(overlaysRoot);
+const adminUI = createAdminUI(overlaysRoot);
+const ADMIN_EMAIL = "linarthur@gmail.com";
 const creditsUI = createCreditsUI(document.body);
 const chapterCardUI = createChapterCardUI(document.body);
 const pathChoiceUI = createPathChoiceUI(document.body);
@@ -1022,6 +1031,7 @@ function doAutosave() {
   syncActorToState();
   saveToSlot(AUTOSAVE_ID, gameState);
   cloudSaveSlot(AUTOSAVE_ID, gameState);
+  reportGrit(gameState.grit);
 }
 
 function applyLoadedState(data) {
@@ -1029,6 +1039,7 @@ function applyLoadedState(data) {
   gameState.actor = { ...gameState.actor, ...(data.actor || {}) };
   clearHintHighlight();
   room = ROOMS[gameState.roomId] || room;
+  reportRoom(room.id);
   const theme = ROOM_THEMES[room.id];
   if (theme) music.playTrack(theme);
   actor.x = gameState.actor.x;
@@ -1085,10 +1096,19 @@ function openPauseMenu() {
         applyLoadedState(createGameState());
         playIntro();
       },
+      async onOpenAdmin() {
+        pauseUI.hide();
+        paused = false; // adminUI.isVisible() takes over input-blocking duty, same as the journal
+        const sessions = await fetchAllSessions();
+        adminUI.show(sessions, async () => {
+          adminUI.setSessions(await fetchAllSessions());
+        });
+      },
     },
     {
       available: firebaseReady,
       user,
+      isAdmin: user?.email === ADMIN_EMAIL,
       gritTotal: gameState.grit,
       gritTitle: gritTitle(gameState.grit),
       async onSignIn() {
@@ -1384,6 +1404,8 @@ function startGame() {
   music.unlock();
   music.playTrack(ROOM_THEMES[room.id] || "barnett");
   loop.start();
+  startSession(); // fire-and-forget — never delays gameplay, see engine/analytics.js
+  reportRoom(room.id);
   if (getFlag(gameState, "intro_seen")) {
     setSentence("Ready.\n準備就緒。");
   } else {
