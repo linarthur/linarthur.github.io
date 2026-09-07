@@ -14,6 +14,16 @@ function el(tag, className, text) {
   return e;
 }
 
+// Filtered out here too, not just at write time (engine/analytics.js
+// already skips creating new sessions for this account) — a client-side
+// belt-and-suspenders so the dashboard never shows the admin's own
+// playtesting, including any rows already written before that write-side
+// guard existed, or written by a stale cached copy of the old code.
+const ADMIN_EMAIL = "linarthur@gmail.com";
+function excludeAdmin(sessions) {
+  return (sessions || []).filter((s) => s.email !== ADMIN_EMAIL);
+}
+
 const ACT_LABEL = {
   prologue: "Prologue",
   act1: "Act 1",
@@ -196,13 +206,13 @@ export function createAdminUI(root) {
 
   return {
     show(sessions, refreshCb) {
-      allSessions = sessions || [];
+      allSessions = excludeAdmin(sessions);
       onRefresh = refreshCb || null;
       panel.hidden = false;
       render();
     },
     setSessions(sessions) {
-      allSessions = sessions || [];
+      allSessions = excludeAdmin(sessions);
       render();
     },
     hide() {
