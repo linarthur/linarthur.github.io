@@ -15,7 +15,7 @@ const HINT_COLOR = "#ffd23f"; // gold — reserved for the hint system's call-ou
 // (Mo, Draghi, Ferro, ...) is still the procedural silhouette drawn by its
 // own room file — this sprite is only ever used for the player actor.
 const HERO_SPRITE = loadChromaKeyedSprite("assets/sprites/hero-idle-right.png");
-const HERO_SPRITE_HEIGHT = 210; // local units — matches the old silhouette's head-to-heel span
+const HERO_SPRITE_HEIGHT = 252; // local units — 20% bigger than the old silhouette's head-to-heel span (210), per feedback that the real sprite read too small next to the scenery
 
 export function createRenderer(canvas) {
   const ctx = canvas.getContext("2d");
