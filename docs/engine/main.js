@@ -501,9 +501,12 @@ function openPathChoice() {
 
     const startRoomId = PATH_START_ROOM[path];
     const departureCaption = {
-      partners: "Mo's waiting at the dock, already arguing with a boatman about the fare.",
-      cunning: "No sense dragging anyone else into what comes next. Best to travel light, and lie well.",
-      nerve: "No boat, no partner, no paperwork — just his own legs and however fast they can move.",
+      partners:
+        "Mo's waiting at the dock, already arguing with a boatman about the fare.\n莫已經在碼頭等著了，正跟船夫為了船資吵得不可開交。",
+      cunning:
+        "No sense dragging anyone else into what comes next. Best to travel light, and lie well.\n接下來的事沒必要拖別人下水。輕裝上路，謊話說得漂亮點就好。",
+      nerve:
+        "No boat, no partner, no paperwork — just his own legs and however fast they can move.\n沒有船，沒有夥伴，沒有文件——只有他自己的兩條腿，還有它們能跑多快。",
     };
     if (startRoomId) {
       // Built path — walk straight into Act 2 rather than a placeholder card.
@@ -512,13 +515,13 @@ function openPathChoice() {
     }
 
     chapterCardUI.show(
-      "End of Act 1",
+      "End of Act 1\n第一幕 完",
       [
-        `Path chosen: ${path[0].toUpperCase()}${path.slice(1)}.`,
-        "Faster to move alone, and easier to run.",
-        "This path's Act 2 arrives in a later milestone — the Partners and Cunning paths are playable now if you'd like to see Act 2 in action.",
+        `Path chosen: ${path[0].toUpperCase()}${path.slice(1)}.\n已選擇路線：${path[0].toUpperCase()}${path.slice(1)}。`,
+        "Faster to move alone, and easier to run.\n獨自行動比較快，逃跑也比較容易。",
+        "This path's Act 2 arrives in a later milestone — the Partners and Cunning paths are playable now if you'd like to see Act 2 in action.\n這條路線的第二幕會在之後的版本推出——如果想先體驗第二幕，目前「夥伴之路」和「狡詐之路」已經可以遊玩。",
       ],
-      "Continue",
+      "Continue\n繼續",
       () => setSentence("Ready.\n準備就緒。")
     );
   });
@@ -576,13 +579,13 @@ function checkPrologueComplete() {
   playCutscene("prologue_end").then(() => {
     playChapterEndChime();
     chapterCardUI.show(
-      "End of the Prologue",
+      "End of the Prologue\n序章 完",
       [
-        "The trail out of Barnett College ends with a chart, three anchorages, and more questions than answers.",
-        "Next: Lisbon, Portugal.",
-        "The street grate stairwell is open when you're ready to go.",
+        "The trail out of Barnett College ends with a chart, three anchorages, and more questions than answers.\n巴奈特學院這條線索，最後只換來一張地圖、三個錨地，還有比答案更多的疑問。",
+        "Next: Lisbon, Portugal.\n下一站：葡萄牙，里斯本。",
+        "The street grate stairwell is open when you're ready to go.\n準備好的時候，街邊的排水柵欄樓梯已經開啟。",
       ],
-      "Continue",
+      "Continue\n繼續",
       () => setSentence("Ready.\n準備就緒。")
     );
   });
@@ -605,13 +608,13 @@ function checkAct2PartnersComplete() {
   setFlag(gameState, "act2_complete", true);
   playChapterEndChime();
   chapterCardUI.show(
-    "End of Act 2 — Partners Path",
+    "End of Act 2 — Partners Path\n第二幕 完 — 夥伴之路",
     [
-      "Three voices, three continents, and Mo hasn't once let him carry his own gear.",
-      "The Salt Conch, the Storm Fork, and the Star Bell — the chord is complete. Somewhere, something is listening back.",
-      "One way left to go: down, into whatever's waiting at the bottom of the water.",
+      "Three voices, three continents, and Mo hasn't once let him carry his own gear.\n三個聲音，三個大陸，莫一次都沒讓他自己扛過裝備。",
+      "The Salt Conch, the Storm Fork, and the Star Bell — the chord is complete. Somewhere, something is listening back.\n海鹽螺、風暴叉、星辰鐘——和絃已經齊全。在某個地方，有什麼東西正在回應。",
+      "One way left to go: down, into whatever's waiting at the bottom of the water.\n只剩一條路可走：往下，潛入水底等待著的一切。",
     ],
-    "Continue",
+    "Continue\n繼續",
     () => setSentence("Ready.\n準備就緒。")
   );
 }
@@ -627,13 +630,13 @@ function checkAct2CunningComplete() {
   setFlag(gameState, "act2_complete", true);
   playChapterEndChime();
   chapterCardUI.show(
-    "End of Act 2 — Cunning Path",
+    "End of Act 2 — Cunning Path\n第二幕 完 — 狡詐之路",
     [
-      "Three voices, three continents, and not one honest conversation in any of them.",
-      "The Salt Conch, the Storm Fork, and the Star Bell — the chord is complete, and the Consortium doesn't even know it's gone.",
-      "One way left to go: down, into whatever's waiting at the bottom of the water.",
+      "Three voices, three continents, and not one honest conversation in any of them.\n三個聲音，三個大陸，沒有一次是老實談出來的。",
+      "The Salt Conch, the Storm Fork, and the Star Bell — the chord is complete, and the Consortium doesn't even know it's gone.\n海鹽螺、風暴叉、星辰鐘——和絃已經齊全，財團甚至還不知道東西不見了。",
+      "One way left to go: down, into whatever's waiting at the bottom of the water.\n只剩一條路可走：往下，潛入水底等待著的一切。",
     ],
-    "Continue",
+    "Continue\n繼續",
     () => setSentence("Ready.\n準備就緒。")
   );
 }
@@ -649,13 +652,13 @@ function checkAct2NerveComplete() {
   setFlag(gameState, "act2_complete", true);
   playChapterEndChime();
   chapterCardUI.show(
-    "End of Act 2 — Nerve Path",
+    "End of Act 2 — Nerve Path\n第二幕 完 — 膽識之路",
     [
-      "Three voices, three continents, and not one clean landing in any of them.",
-      "The Salt Conch, the Storm Fork, and the Star Bell — the chord is complete, and Ferro's still picking gravel out of his knuckles.",
-      "One way left to go: down, into whatever's waiting at the bottom of the water.",
+      "Three voices, three continents, and not one clean landing in any of them.\n三個聲音，三個大陸，沒有一次是平安落地的。",
+      "The Salt Conch, the Storm Fork, and the Star Bell — the chord is complete, and Ferro's still picking gravel out of his knuckles.\n海鹽螺、風暴叉、星辰鐘——和絃已經齊全，費羅的指節上還在挑著碎石。",
+      "One way left to go: down, into whatever's waiting at the bottom of the water.\n只剩一條路可走：往下，潛入水底等待著的一切。",
     ],
-    "Continue",
+    "Continue\n繼續",
     () => setSentence("Ready.\n準備就緒。")
   );
 }
@@ -672,13 +675,15 @@ function checkAct3Complete() {
     music.playTrack("title");
     const epilogueByPath = {
       partners:
-        "Mo's already sketching the chamber from memory, insisting nobody at Cambridge will believe a word of this without her notes — and she started taking them before the light even settled.",
+        "Mo's already sketching the chamber from memory, insisting nobody at Cambridge will believe a word of this without her notes — and she started taking them before the light even settled.<br>莫已經憑記憶開始描繪這間石室了，堅持說劍橋沒有她的筆記，誰都不會相信這一切——而她早在光芒還沒散去之前，就已經動筆記錄了。",
       cunning:
-        "A forged permit, a forged disguise, a forged requisition — and not one forgery in the world explains what's happening at the bottom of this chamber. For once, that seems to be exactly the point.",
+        "A forged permit, a forged disguise, a forged requisition — and not one forgery in the world explains what's happening at the bottom of this chamber. For once, that seems to be exactly the point.<br>一張偽造的許可證、一套偽裝、一份偽造的申請單——但世上再高明的偽造，也解釋不了這間石室底部正在發生的事。這一次，這似乎正是重點所在。",
       nerve:
-        "The boardwalk, the tram, Ferro's crate — every bruise between Doñana and the dockyard, and not one of them for nothing.",
+        "The boardwalk, the tram, Ferro's crate — every bruise between Doñana and the dockyard, and not one of them for nothing.<br>木棧道、纜車、費羅的板條箱——從多尼亞納到船塢，一路上的每一道瘀青，沒有一道是白挨的。",
     };
-    const epilogue = epilogueByPath[gameState.path] || "The chord is complete, and Atlantis, for one held breath, was not a legend.";
+    const epilogue =
+      epilogueByPath[gameState.path] ||
+      "The chord is complete, and Atlantis, for one held breath, was not a legend.<br>和絃已經齊全，就在那一口氣屏住的瞬間，亞特蘭提斯不再只是傳說。";
     creditsUI.show(
       identity,
       [
