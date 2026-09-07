@@ -44,14 +44,24 @@ html, body {
   flex: 0 1 auto;
 }
 
-/* Reverted per feedback: stretching the 16:9 scene to fill more of a tall
-   phone screen looked visibly warped/distorted (all the room art was
-   authored at true 16:9). Keep the exact aspect ratio and just let it be
-   a smaller, correctly-proportioned box on very narrow/short screens. */
+/* Keep the exact 16:9 ratio on narrow/short screens (stretching it looked
+   visibly warped — reverted per feedback). But `width: 100vw` alone was
+   only ever safe for PORTRAIT phones, where a width-locked 16:9 box comes
+   out shorter than the screen (small, letterboxed, fine). On a LANDSCAPE
+   phone (wide but short — this same query also matches via max-height),
+   a width-locked box comes out TALLER than the screen and its bottom
+   portion is simply off-screen below the fold — "only shows the top
+   part" was this, not a zoom/sizing illusion. Dropping the forced width
+   and giving both a max-width AND a max-height lets the browser's own
+   aspect-ratio sizing pick whichever axis actually binds, so the box
+   always fits entirely on screen either way — pillarboxed (black at the
+   sides) in landscape instead of clipped at the bottom. 130px reserves
+   room for the sentence line above and the touch-hint strip below. */
 @media (max-height: 600px), (orientation: portrait) {
   #stage-wrap {
+    width: auto;
     max-width: 100vw;
-    width: 100vw;
+    max-height: calc(100vh - 130px);
   }
 }
 
@@ -381,16 +391,24 @@ body.touch #inventory-drawer { display: grid; }
 }
 
 /* ---------- dialogue panel ---------- */
+/* Fixed to the real viewport, not absolute within #stage-wrap — on a
+   small letterboxed phone/tablet view, `bottom:6%`/`max-height:70vh`
+   measured against a tiny stage-wrap could push the panel's own top edge
+   above the true screen (y<0), which no amount of internal overflow-y
+   scrolling can bring back — the box itself was off-screen, not just its
+   content. Anchoring to the viewport keeps it fully on-screen no matter
+   how small the game area is. */
 .dlg-panel {
-  position: absolute;
+  position: fixed;
   left: 4%;
   right: 4%;
-  bottom: 6%;
-  max-height: 70vh;
+  bottom: 4%;
+  max-height: 80vh;
   display: flex;
   gap: 14px;
   align-items: flex-start;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: linear-gradient(180deg, rgba(16,22,29,0.96), rgba(10,14,18,0.98));
   border: 1px solid var(--bronze);
   border-radius: 10px;
