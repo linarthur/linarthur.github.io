@@ -693,17 +693,25 @@ body.touch #inventory-drawer { display: grid; }
 .credits-lines { color: var(--cream); opacity: 0.85; line-height: 1.7; }
 
 /* ---------- hint toast ---------- */
+/* Fixed flush to the top of the real viewport — same spot #sentence-line
+   already occupies — instead of floating inside the canvas overlay at
+   top:10px. It used to sit ON TOP of the game scene, which on a small
+   letterboxed phone/tablet view (and now that hint text is two lines,
+   English + 繁體中文, so taller) could cover the exact hotspot the third
+   hint stage highlights on the canvas below. Docking it to the top strip
+   means it never overlaps the canvas at all, on any screen size. */
 .hint-toast {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 80%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: none;
   background: rgba(16,22,29,0.95);
-  border: 1px solid var(--ochre);
+  border: none;
+  border-bottom: 1px solid var(--ochre);
   color: var(--cream);
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 0.9rem;
   z-index: 30;
   text-align: center;
