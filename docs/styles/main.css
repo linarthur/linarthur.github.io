@@ -44,20 +44,14 @@ html, body {
   flex: 0 1 auto;
 }
 
-/* A 16:9 game on a tall, narrow phone can't keep that exact ratio AND
-   fill the screen — width-locked to 100vw, a strict 16:9 box is only
-   ~210px tall on a 375px-wide phone, pinned to the top with most of the
-   screen left black underneath. Trading the exact ratio for a flex-grown
-   box (filling whatever vertical space sentence-line/control-bar don't
-   use) makes the scene mildly taller than authored, but actually usable —
-   the standard trade a landscape-designed game makes for portrait play. */
+/* Reverted per feedback: stretching the 16:9 scene to fill more of a tall
+   phone screen looked visibly warped/distorted (all the room art was
+   authored at true 16:9). Keep the exact aspect ratio and just let it be
+   a smaller, correctly-proportioned box on very narrow/short screens. */
 @media (max-height: 600px), (orientation: portrait) {
   #stage-wrap {
     max-width: 100vw;
     width: 100vw;
-    aspect-ratio: unset;
-    flex: 1 1 auto;
-    min-height: 0;
   }
 }
 
@@ -720,18 +714,26 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
   z-index: 95;
   padding: 16px;
 }
 
 .resonance-overlay[hidden] { display: none; }
 
+/* The Act 3 finale stacks three full choice-groups (title + listen button +
+   four choices + confirm) in one card — tall enough to run off a short or
+   mobile screen with nothing to scroll it back into view, which silently
+   blocked finishing the game. max-height + its own scroll fixes that; the
+   overlay's overflow-y above is a second safety net either way. */
 .resonance-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
   max-width: min(560px, 94vw);
+  max-height: 100%;
+  overflow-y: auto;
   padding: 24px 28px;
   background: linear-gradient(180deg, #1b140d, #100c08);
   border: 1px solid var(--bronze);
@@ -885,6 +887,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
   z-index: 95;
   padding: 16px;
 }
@@ -897,6 +900,8 @@ body.touch #inventory-drawer { display: grid; }
   align-items: center;
   gap: 12px;
   max-width: min(460px, 94vw);
+  max-height: 100%;
+  overflow-y: auto;
   padding: 24px 28px;
   background: linear-gradient(180deg, #1b140d, #100c08);
   border: 1px solid var(--bronze);
@@ -958,6 +963,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
   z-index: 95;
   padding: 16px;
 }
@@ -970,6 +976,8 @@ body.touch #inventory-drawer { display: grid; }
   align-items: center;
   gap: 14px;
   max-width: min(480px, 94vw);
+  max-height: 100%;
+  overflow-y: auto;
   padding: 24px 28px;
   background: linear-gradient(180deg, #1b140d, #100c08);
   border: 1px solid var(--bronze);
@@ -1006,6 +1014,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
   z-index: 95;
   padding: 16px;
 }
@@ -1018,6 +1027,8 @@ body.touch #inventory-drawer { display: grid; }
   align-items: center;
   gap: 14px;
   max-width: min(480px, 94vw);
+  max-height: 100%;
+  overflow-y: auto;
   padding: 24px 28px;
   background: linear-gradient(180deg, #1b140d, #100c08);
   border: 1px solid var(--bronze);
