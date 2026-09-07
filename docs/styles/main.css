@@ -479,8 +479,11 @@ body.touch #inventory-drawer { display: grid; }
 .dlg-option.used, .dlg-option:disabled { opacity: 0.4; cursor: default; }
 
 /* ---------- journal panel ---------- */
+/* Fixed to the real viewport, not absolute within the small (often
+   letterboxed) game canvas — same fix as .dlg-panel and .admin-panel,
+   see the note on .admin-panel below for why this matters on phones. */
 .journal-panel {
-  position: absolute;
+  position: fixed;
   inset: 4%;
   background: linear-gradient(180deg, #14100b, #1b140d);
   border: 2px solid var(--bronze);
@@ -516,8 +519,17 @@ body.touch #inventory-drawer { display: grid; }
 .journal-body { display: flex; flex-direction: column; gap: 18px; }
 
 /* ---------- admin analytics dashboard ---------- */
+/* Fixed to the real viewport, not absolute within #stage-wrap. That was
+   the actual bug: `inset: 4%` on `position: absolute` is still a bounded
+   box on paper, but on a phone/tablet the game canvas itself is often a
+   small letterboxed rectangle (see main.css's own portrait/landscape
+   media query above) — 4% of a ~200px-tall canvas leaves almost nothing
+   for the header/filters row before the table even gets a chance to
+   scroll. `position: fixed` sizes this against the actual screen instead,
+   so the internal `.admin-table-wrap` scroll region always has real room
+   to work with, and the panel itself never gets squeezed off-screen. */
 .admin-panel {
-  position: absolute;
+  position: fixed;
   inset: 4%;
   background: linear-gradient(180deg, #14100b, #1b140d);
   border: 2px solid var(--bronze);
@@ -643,8 +655,9 @@ body.touch #inventory-drawer { display: grid; }
 .journal-codex li.empty { border-left-color: #444; color: #999; }
 
 /* ---------- pause / save-load panel ---------- */
+/* Fixed to the real viewport — same reasoning as .journal-panel/.admin-panel above. */
 .pause-panel {
-  position: absolute;
+  position: fixed;
   inset: 10% 20%;
   background: linear-gradient(180deg, #14100b, #1b140d);
   border: 2px solid var(--bronze);
