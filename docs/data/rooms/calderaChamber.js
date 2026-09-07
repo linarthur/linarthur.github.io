@@ -115,8 +115,8 @@ export const calderaChamber = {
       kind: "scenery",
       polygon: [[200, 500], [640, 500], [640, 860], [200, 860]],
       responses: {
-        look: "Worked stone, not natural rock — a hall built by hands, and drowned by something bigger than any of them.",
-        default: "Nothing here but the weight of a very long time.",
+        look: "Worked stone, not natural rock — a hall built by hands, and drowned by something bigger than any of them.\n經過雕琢的石頭,不是天然岩石——這是一座人工建造的大廳,卻被比任何人都巨大的東西給淹沒了。",
+        default: "Nothing here but the weight of a very long time.\n這裡除了漫長歲月的重量,什麼也沒有。",
       },
     },
     {
@@ -126,9 +126,9 @@ export const calderaChamber = {
       polygon: [[820, 680], [1100, 680], [1100, 960], [820, 960]],
       hideWhenFlag: "drowned_bell_awakened",
       responses: {
-        look: "Bronze gone the colour of the sea itself, and silent — but not dead. Three Voices found it. Maybe three Voices can wake it.",
-        use: "Salt Conch, Storm Fork, Star Bell — he's carried all three of them this far for exactly this moment.",
-        default: "This is what the whole trip was for.",
+        look: "Bronze gone the colour of the sea itself, and silent — but not dead. Three Voices found it. Maybe three Voices can wake it.\n青銅早已染上大海本身的顏色,寂靜無聲——但並非死寂。三個「聲音」找到了它,或許三個「聲音」也能喚醒它。",
+        use: "Salt Conch, Storm Fork, Star Bell — he's carried all three of them this far for exactly this moment.\n鹽螺、風暴音叉、星辰鐘——他一路帶著這三樣東西,就是為了這一刻。",
+        default: "This is what the whole trip was for.\n這趟旅程,為的就是這一刻。",
       },
       puzzleOnVerb: { use: "drowned_bell_finale" },
     },
@@ -138,8 +138,8 @@ export const calderaChamber = {
       kind: "scenery",
       polygon: [[820, 680], [1100, 680], [1100, 960], [820, 960]],
       responses: {
-        look: "Ringing still, a note underneath hearing, and the whole chamber lit like the sea forgot it was supposed to be dark down here.",
-        default: "It's done what it was going to do. The rest is just standing here, watching.",
+        look: "Ringing still, a note underneath hearing, and the whole chamber lit like the sea forgot it was supposed to be dark down here.\n鐘聲依舊迴盪,一個幾乎聽不見的音符,整個殿堂亮得彷彿大海忘了這裡本該一片漆黑。",
+        default: "It's done what it was going to do. The rest is just standing here, watching.\n它該做的都做完了。剩下的,就只是站在這裡看著。",
       },
     },
   ],

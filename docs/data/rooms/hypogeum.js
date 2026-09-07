@@ -141,9 +141,9 @@ export const hypogeum = {
       kind: "scenery",
       polygon: [[840, 420], [1080, 420], [1080, 700], [840, 700]],
       responses: {
-        look: "A hollow cut into the living rock, angled just so. Every word spoken into it comes back a half-tone lower, and twice as loud. Three answering alcoves ring the chamber — but only the middle one narrows to a throat before it opens, the kind of carving that catches a voice and throws it straight back before the others even feel the sound arrive.",
-        use: "Come to think of it, that's less something to look at than something to test.",
-        default: "Best not to shout into three-thousand-year-old stonework for fun.",
+        look: "A hollow cut into the living rock, angled just so. Every word spoken into it comes back a half-tone lower, and twice as loud. Three answering alcoves ring the chamber — but only the middle one narrows to a throat before it opens, the kind of carving that catches a voice and throws it straight back before the others even feel the sound arrive.\n一個鑿進岩壁的凹龕,角度恰到好處。對著它說的每個字,回來時都低了半音,音量卻大了一倍。這間石室四周有三個回音龕——但只有中間那個在開口前先收窄成喉狀,這種鑿法能截住聲音,搶在其他兩龕感應到聲響之前就把它彈回來。",
+        use: "Come to think of it, that's less something to look at than something to test.\n仔細想想,這東西與其說是拿來看的,不如說是拿來試的。",
+        default: "Best not to shout into three-thousand-year-old stonework for fun.\n別為了好玩對著三千年的石雕大吼大叫。",
       },
       puzzleOnVerb: { use: "hypogeum_echo" },
     },
@@ -153,8 +153,8 @@ export const hypogeum = {
       kind: "scenery",
       polygon: [[220, 200], [420, 200], [420, 420], [220, 420]],
       responses: {
-        look: "Red ochre spirals, painted freehand, thousands of years before anyone here had heard the word 'Fibonacci.' They still haven't faded.",
-        default: "Beautiful. Also several millennia too old to touch.",
+        look: "Red ochre spirals, painted freehand, thousands of years before anyone here had heard the word 'Fibonacci.' They still haven't faded.\n赭紅色的螺旋圖案,徒手畫成,早在「費波那契」這個詞被發明的幾千年前就已存在。至今顏色依然沒有褪去。",
+        default: "Beautiful. Also several millennia too old to touch.\n美是很美,但也老得幾千年了,還是別碰的好。",
       },
     },
     {
@@ -163,11 +163,11 @@ export const hypogeum = {
       kind: "exit",
       polygon: [[1560, 760], [1760, 760], [1760, 960], [1560, 960]],
       requiresFlag: "hypogeum_echo_solved",
-      lockedLine: "The way up is a maze of chambers — no sense wandering it blind before he's worked out how the acoustics run.",
+      lockedLine: "The way up is a maze of chambers — no sense wandering it blind before he's worked out how the acoustics run.\n往上的路是一座石室迷宮——在搞懂這裡的聲學原理之前,盲目亂闖沒有意義。",
       to: { room: "harborBar", spawn: { x: 300, y: 900, facing: "down" } },
-      fallCaption: "Up through the warren of chambers and out into the salt air of Valletta's Grand Harbour.",
+      fallCaption: "Up through the warren of chambers and out into the salt air of Valletta's Grand Harbour.\n穿過層層石室向上,最終走進瓦萊塔大港口那股帶著鹹味的空氣中。",
       responses: {
-        look: "A narrow stair, cut into the rock, climbing toward a coin of daylight.",
+        look: "A narrow stair, cut into the rock, climbing toward a coin of daylight.\n一道窄窄的石階,朝著一枚硬幣大小的天光向上延伸。",
       },
     },
   ],

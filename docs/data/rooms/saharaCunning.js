@@ -211,9 +211,9 @@ export const saharaCunning = {
       kind: "actor",
       polygon: [[440, 780], [560, 780], [560, 950], [440, 950]],
       responses: {
-        look: "A broker who's rented camels to enough treasure hunters to smell one coming from a mile off. He's looking straight at him.",
-        talk: "\"No outsiders past the first ring,\" he says, arms folded. \"Bad enough business already, without foreigners drawing eyes.\"",
-        default: "He's not budging for a stranger in a tweed jacket.",
+        look: "A broker who's rented camels to enough treasure hunters to smell one coming from a mile off. He's looking straight at him.\n一位租駱駝給無數尋寶人的商人，老遠就能聞出這行的人。他正直直地盯著他看。",
+        talk: "\"No outsiders past the first ring,\" he says, arms folded. \"Bad enough business already, without foreigners drawing eyes.\"\n「外人不得進入第一環之後，」他抱著手臂說。「生意已經夠難做了，別再招來外國人惹眼。」",
+        default: "He's not budging for a stranger in a tweed jacket.\n對一個穿粗花呢外套的陌生人，他是不會讓步的。",
       },
       hideWhenFlag: "desert_disguise_worn",
     },
@@ -223,9 +223,9 @@ export const saharaCunning = {
       kind: "actor",
       polygon: [[440, 780], [560, 780], [560, 950], [440, 950]],
       responses: {
-        look: "The same broker, who nodded him through without a second glance the moment the robes and scarf went on.",
-        talk: "He barely looks up. Just another guide, as far as he's concerned.",
-        default: "He's already stopped paying attention.",
+        look: "The same broker, who nodded him through without a second glance the moment the robes and scarf went on.\n還是同一個商人，長袍和頭巾一穿上，他看都沒多看一眼就點頭放行了。",
+        talk: "He barely looks up. Just another guide, as far as he's concerned.\n他幾乎沒抬頭。在他看來，不過是又一個嚮導罷了。",
+        default: "He's already stopped paying attention.\n他早就沒在注意了。",
       },
     },
     {
@@ -234,8 +234,8 @@ export const saharaCunning = {
       kind: "scenery",
       polygon: [[380, 700], [640, 700], [640, 830], [380, 830]],
       responses: {
-        look: "Robes, scarves, waterskins, and a price for every one of them that assumes he doesn't know better. He does, but that's not the point today.",
-        default: "Everything worth taking here is already within reach.",
+        look: "Robes, scarves, waterskins, and a price for every one of them that assumes he doesn't know better. He does, but that's not the point today.\n長袍、頭巾、水袋，每樣東西都標著一個假設他不懂行情的價錢。他當然懂，但今天重點不在這。",
+        default: "Everything worth taking here is already within reach.\n這裡值得拿的東西，伸手就能拿到。",
       },
     },
     {
@@ -244,8 +244,8 @@ export const saharaCunning = {
       kind: "scenery",
       polygon: [[700, 500], [1220, 500], [1220, 740], [700, 740]],
       responses: {
-        look: "Ridge after ridge, radiating out from the centre. From ground level they all look identical — no wonder the broker doesn't let just anyone wander in.",
-        default: "Best appreciated from a very great height, which he does not currently have.",
+        look: "Ridge after ridge, radiating out from the centre. From ground level they all look identical — no wonder the broker doesn't let just anyone wander in.\n一圈又一圈的環狀山脊，從中心向外擴散。從地面看全都長得一樣——難怪商人不肯讓人隨便亂闖。",
+        default: "Best appreciated from a very great height, which he does not currently have.\n最好從高空俯瞰才看得出門道，可惜他目前沒這個高度。",
       },
     },
     {
@@ -256,9 +256,9 @@ export const saharaCunning = {
       hideWhenFlag: "storm_fork_found",
       puzzleRequiresFlag: "desert_disguise_worn",
       responses: {
-        look: "Two bronze tines, just breaking the surface at the dead centre of the rings, humming faintly in the heat-shimmer.",
-        use: "Getting this far without being stopped mattered rather a lot. Best make sure nobody's still watching.",
-        default: "It's not coming loose without digging, and it's not worth digging in the wrong spot.",
+        look: "Two bronze tines, just breaking the surface at the dead centre of the rings, humming faintly in the heat-shimmer.\n兩根青銅音叉，才剛露出地面，就在環狀中心的熱浪中微微嗡鳴。",
+        use: "Getting this far without being stopped mattered rather a lot. Best make sure nobody's still watching.\n能一路走到這裡沒被攔下，可不容易。最好先確認沒人還在盯著看。",
+        default: "It's not coming loose without digging, and it's not worth digging in the wrong spot.\n不挖是不會鬆動的，而挖錯地方也是白費工夫。",
       },
       puzzleOnVerb: { use: "storm_fork_resonance" },
     },
@@ -268,11 +268,11 @@ export const saharaCunning = {
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "storm_fork_found",
-      lockedLine: "Leaving without the fork would mean the whole detour through the Sahara was for nothing.",
+      lockedLine: "Leaving without the fork would mean the whole detour through the Sahara was for nothing.\n沒拿到音叉就離開，這趟繞來撒哈拉沙漠可就白跑了。",
       to: { room: "biminiCunning", spawn: { x: 300, y: 900, facing: "down" } },
-      fallCaption: "The disguise comes off at the airstrip. A cargo plane and a very quiet boat later, the Sahara gives way to Bimini.",
+      fallCaption: "The disguise comes off at the airstrip. A cargo plane and a very quiet boat later, the Sahara gives way to Bimini.\n偽裝在飛機跑道旁卸下。搭了貨機、又坐了一艘十分安靜的船，撒哈拉沙漠終於換成了比米尼群島。",
       responses: {
-        look: "The track back to the airstrip.",
+        look: "The track back to the airstrip.\n通往飛機跑道的小徑。",
       },
     },
   ],
@@ -282,14 +282,14 @@ export const saharaCunning = {
       id: "local_robes",
       polygon: [[420, 730], [470, 730], [470, 790], [420, 790]],
       responses: {
-        look: "Loose pale robes, hung for sale at the edge of the stall.",
+        look: "Loose pale robes, hung for sale at the edge of the stall.\n寬鬆的淺色長袍，掛在攤位邊緣待售。",
       },
     },
     {
       id: "headscarf",
       polygon: [[560, 740], [610, 740], [610, 790], [560, 790]],
       responses: {
-        look: "A sun-bleached headscarf, folded on the stall counter.",
+        look: "A sun-bleached headscarf, folded on the stall counter.\n一條被太陽曬得褪色的頭巾，摺放在攤位櫃檯上。",
       },
     },
   ],

@@ -178,8 +178,8 @@ export const biminiPartners = {
       polygon: [[220, 60], [400, 60], [400, 200], [220, 200]],
       dialogue: "mo_bimini",
       responses: {
-        look: "Mo, a shimmering silhouette at the surface, minding the air line like she's willing it to behave.",
-        default: "She's fifteen feet up and mid-conversation with a pump. It'll have to wait.",
+        look: "Mo, a shimmering silhouette at the surface, minding the air line like she's willing it to behave.\n莫，水面上一道晃動的剪影，緊盯著空氣管，好像光靠意志就能讓它乖乖聽話。",
+        default: "She's fifteen feet up and mid-conversation with a pump. It'll have to wait.\n她在十五呎高的地方跟幫浦「談話」，這事得等等了。",
       },
     },
     {
@@ -188,8 +188,8 @@ export const biminiPartners = {
       kind: "scenery",
       polygon: [[500, 830], [1420, 830], [1420, 930], [500, 930]],
       responses: {
-        look: "A dead-straight line of megalithic blocks along the sea floor. Officially beach rock. Unofficially, beach rock doesn't usually keep this good a right angle.",
-        default: "Interesting geology. Or not geology at all. Either way, it's not going anywhere.",
+        look: "A dead-straight line of megalithic blocks along the sea floor. Officially beach rock. Unofficially, beach rock doesn't usually keep this good a right angle.\n海底一條筆直的巨石陣列。官方說法是海灘岩。非官方說法是，海灘岩通常不會這麼會抓直角。",
+        default: "Interesting geology. Or not geology at all. Either way, it's not going anywhere.\n有趣的地質現象。或者根本不是地質現象。不管怎樣，它哪裡也不會去。",
       },
     },
     // Checked before "wreck" below, since its polygon sits inside the
@@ -203,9 +203,9 @@ export const biminiPartners = {
       hideWhenFlag: "star_bell_found",
       puzzleRequiresFlag: "mo_helped_bimini",
       responses: {
-        look: "Wedged tight in the wreck's ribs, catching what little light makes it down here. Silent, for now.",
-        use: "The current here would spin him around without a fixed air line to work against — Mo needs to be minding the pump first.",
-        default: "It's not coming free by looking at it.",
+        look: "Wedged tight in the wreck's ribs, catching what little light makes it down here. Silent, for now.\n死死卡在沉船的肋骨之間，接收著這裡僅有的一點光線。暫時，還是沉默的。",
+        use: "The current here would spin him around without a fixed air line to work against — Mo needs to be minding the pump first.\n沒有固定的空氣管可以借力，這裡的水流會把他轉得暈頭轉向——得先讓莫顧好幫浦才行。",
+        default: "It's not coming free by looking at it.\n光看是弄不出來的。",
       },
       puzzleOnVerb: { use: "star_bell_resonance" },
     },
@@ -215,8 +215,8 @@ export const biminiPartners = {
       kind: "scenery",
       polygon: [[1140, 620], [1580, 620], [1580, 860], [1140, 860]],
       responses: {
-        look: "A hull broken open like a ribcage, timbers gone soft and green with a century underwater. Something crystalline glints deep in the third rib.",
-        default: "The current past the wreck is stronger than it looks. Best to be careful navigating around it.",
+        look: "A hull broken open like a ribcage, timbers gone soft and green with a century underwater. Something crystalline glints deep in the third rib.\n船殼裂開得像根肋骨架，木材泡了一世紀的水，早已發軟發綠。第三根肋骨深處有個晶亮的東西在閃。",
+        default: "The current past the wreck is stronger than it looks. Best to be careful navigating around it.\n沉船附近的水流比看起來還要強勁，繞行時最好小心點。",
       },
     },
     {
@@ -225,11 +225,11 @@ export const biminiPartners = {
       kind: "exit",
       polygon: [[60, 640], [260, 640], [260, 900], [60, 900]],
       requiresFlag: "act2_complete",
-      lockedLine: "Not yet — there's still a Voice or two left to find.",
+      lockedLine: "Not yet — there's still a Voice or two left to find.\n還不行——還有一兩個聲音沒找到呢。",
       to: { room: "calderaApproach", spawn: { x: 900, y: 900, facing: "down" } },
-      fallCaption: "Mo hauls him up, and this time neither of them pretends it isn't the last stop before whatever comes next.",
+      fallCaption: "Mo hauls him up, and this time neither of them pretends it isn't the last stop before whatever comes next.\n莫把他拉了上去，這次兩人都沒再假裝——這確實是接下來那件大事之前的最後一站了。",
       responses: {
-        look: "The line back up to the surface — and, from there, the last leg of the journey.",
+        look: "The line back up to the surface — and, from there, the last leg of the journey.\n通往水面的繩索——再過去，就是這趟旅程的最後一段路了。",
       },
     },
   ],

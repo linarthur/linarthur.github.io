@@ -147,8 +147,8 @@ export const calderaApproach = {
       kind: "scenery",
       polygon: [[200, 600], [700, 600], [700, 700], [200, 700]],
       responses: {
-        look: "Still warm, after all these centuries. Whatever's down there hasn't finished cooling.",
-        default: "Best to keep clear of the vents.",
+        look: "Still warm, after all these centuries. Whatever's down there hasn't finished cooling.\n都過了這麼多世紀,還是溫的。下面那東西,顯然還沒涼透。",
+        default: "Best to keep clear of the vents.\n還是離噴氣孔遠一點比較好。",
       },
     },
     {
@@ -158,8 +158,8 @@ export const calderaApproach = {
       polygon: [[1440, 780], [1560, 780], [1560, 950], [1440, 950]],
       dialogue: "draghi_caldera",
       responses: {
-        look: "She's come alone, which is either a very good sign or a very bad one.",
-        default: "There's nothing left to do here but talk to her.",
+        look: "She's come alone, which is either a very good sign or a very bad one.\n她一個人來了,這要嘛是好兆頭,要嘛是壞兆頭。",
+        default: "There's nothing left to do here but talk to her.\n現在也只能跟她談談了。",
       },
     },
     {
@@ -168,8 +168,8 @@ export const calderaApproach = {
       kind: "scenery",
       polygon: [[700, 780], [1220, 780], [1220, 940], [700, 940]],
       responses: {
-        look: "Something down in the flooded caldera is lit from within — the same pale blue-white as every Voice he's carried this far.",
-        default: "There's a way down, if he's ready for it.",
+        look: "Something down in the flooded caldera is lit from within — the same pale blue-white as every Voice he's carried this far.\n淹沒的火山口深處,有東西正從內部發光——跟他一路帶來的每個「聲音」一樣,是那種淡淡的藍白色。",
+        default: "There's a way down, if he's ready for it.\n只要他準備好了,下去的路就在那裡。",
       },
     },
     {
@@ -178,11 +178,11 @@ export const calderaApproach = {
       kind: "exit",
       polygon: [[860, 940], [1060, 940], [1060, 990], [860, 990]],
       requiresFlag: "draghi_caldera_met",
-      lockedLine: "Best to hear her out first — she came a long way to just stand here.",
+      lockedLine: "Best to hear her out first — she came a long way to just stand here.\n還是先聽她把話說完吧——她大老遠跑來,總不能就這樣站著。",
       to: { room: "calderaChamber", spawn: { x: 900, y: 900, facing: "down" } },
-      fallCaption: "The path down is old stone, and it remembers being stairs.",
+      fallCaption: "The path down is old stone, and it remembers being stairs.\n往下的路是古老的石頭砌成的,依稀還記得自己曾是階梯。",
       responses: {
-        look: "A cut-stone stairway, switchbacking down into the light.",
+        look: "A cut-stone stairway, switchbacking down into the light.\n一道鑿石階梯,蜿蜒向下沒入光中。",
       },
     },
   ],

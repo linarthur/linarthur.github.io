@@ -164,8 +164,8 @@ export const harborBar = {
       polygon: [[940, 700], [1070, 700], [1070, 950], [940, 950]],
       dialogue: "draghi_intro",
       responses: {
-        look: "Impeccably dressed for a harbour bar, and entirely unbothered by it. She's watching the door, not her drink.",
-        default: "She raises an eyebrow. That's answer enough.",
+        look: "Impeccably dressed for a harbour bar, and entirely unbothered by it. She's watching the door, not her drink.\n穿得無懈可擊,和港口酒吧的氣氛格格不入,她卻毫不在意。她盯著的是門口,不是自己的酒。",
+        default: "She raises an eyebrow. That's answer enough.\n她挑了挑眉,這反應已經說明一切。",
       },
     },
     {
@@ -174,8 +174,8 @@ export const harborBar = {
       kind: "scenery",
       polygon: [[1450, 120], [1830, 120], [1830, 540], [1450, 540]],
       responses: {
-        look: "The Grand Harbour at dusk — bastion walls, a forest of masts, and somewhere out past the breakwater, three anchorages marked on a chart that shouldn't exist.",
-        default: "Just a view. A good one, though.",
+        look: "The Grand Harbour at dusk — bastion walls, a forest of masts, and somewhere out past the breakwater, three anchorages marked on a chart that shouldn't exist.\n黃昏中的大港口——稜堡城牆、密密麻麻的船桅,而在防波堤外的某處,標著三個錨地,標在一張根本不該存在的海圖上。",
+        default: "Just a view. A good one, though.\n只是個景色,不過確實不錯。",
       },
     },
     {
@@ -184,9 +184,9 @@ export const harborBar = {
       kind: "scenery",
       polygon: [[40, 640], [560, 640], [560, 820], [40, 820]],
       responses: {
-        look: "Local wine, English gin, and a bartender who has clearly seen stranger things than an archaeologist in a fedora.",
-        take: "The bartender clears his throat, pointedly.",
-        default: "Best not to help himself.",
+        look: "Local wine, English gin, and a bartender who has clearly seen stranger things than an archaeologist in a fedora.\n當地的葡萄酒、英式琴酒,還有一個酒保,顯然見過比戴著呢帽的考古學家更怪的場面。",
+        take: "The bartender clears his throat, pointedly.\n酒保故意清了清喉嚨。",
+        default: "Best not to help himself.\n還是別自己動手拿的好。",
       },
     },
     {
@@ -195,10 +195,10 @@ export const harborBar = {
       kind: "exit",
       polygon: [[1600, 760], [1780, 760], [1780, 960], [1600, 960]],
       requiresFlag: "met_draghi",
-      lockedLine: "No sense heading for the docks without finding out what that woman by the bar actually wants.",
+      lockedLine: "No sense heading for the docks without finding out what that woman by the bar actually wants.\n連酒吧那位女士到底想幹嘛都還沒搞清楚,現在去碼頭也沒用。",
       pathChoice: true,
       responses: {
-        look: "The door out to the quay, and whatever comes next.",
+        look: "The door out to the quay, and whatever comes next.\n通往碼頭的門,門後是接下來的一切。",
       },
     },
   ],

@@ -199,14 +199,14 @@ export const donanaCunning = {
       kind: "actor",
       polygon: [[1140, 780], [1260, 780], [1260, 950], [1140, 950]],
       responses: {
-        look: "A warden in a faded uniform, more interested in his paperwork than the marsh itself. He hasn't looked up once.",
-        talk: "\"No permit, no marsh,\" he says, without looking up. \"Rules are rules.\"",
+        look: "A warden in a faded uniform, more interested in his paperwork than the marsh itself. He hasn't looked up once.\n一位制服褪色的巡警，對文書工作的興趣遠勝過沼澤本身。他一次都沒抬過頭。",
+        talk: "\"No permit, no marsh,\" he says, without looking up. \"Rules are rules.\"\n「沒有許可證，就別想進沼澤，」他頭也不抬地說。「規矩就是規矩。」",
         give: {
           forged_permit:
-            "He barely glances at it before stamping the air with an invisible rubber stamp of pure disinterest. \"Should've said so.\" He still hasn't looked up.",
-          default: "He'd want to see it in writing, not in hand.",
+            "He barely glances at it before stamping the air with an invisible rubber stamp of pure disinterest. \"Should've said so.\" He still hasn't looked up.\n他只是瞄了一眼，就用一枚看不見的橡皮章在空中蓋下純粹的興趣缺缺。「早說嘛。」他還是沒抬頭。",
+          default: "He'd want to see it in writing, not in hand.\n他要看的是白紙黑字，不是空口白話。",
         },
-        default: "He's not moving until the paperwork's in order.",
+        default: "He's not moving until the paperwork's in order.\n文件不齊，他是不會讓路的。",
       },
     },
     {
@@ -215,8 +215,8 @@ export const donanaCunning = {
       kind: "scenery",
       polygon: [[1500, 620], [1650, 620], [1650, 760], [1500, 760]],
       responses: {
-        look: "A cluttered desk just inside the shack door — permits, forms, and a heavy brass stamp, all left carelessly in reach.",
-        default: "Nothing here he needs to do more than look and take.",
+        look: "A cluttered desk just inside the shack door — permits, forms, and a heavy brass stamp, all left carelessly in reach.\n小屋門邊一張雜亂的桌子——許可證、表格，還有一枚沉甸甸的黃銅印章，全都隨手擺在伸手可及之處。",
+        default: "Nothing here he needs to do more than look and take.\n這裡不需要多做什麼，看一眼、拿了就走。",
       },
     },
     {
@@ -225,8 +225,8 @@ export const donanaCunning = {
       kind: "scenery",
       polygon: [[60, 400], [320, 400], [320, 640], [60, 640]],
       responses: {
-        look: "Head-high reeds. A punt is tied off somewhere in there, for whoever the warden decides can use it.",
-        default: "Nothing to do here but wait on the warden's good graces — or the paperwork to fake them.",
+        look: "Head-high reeds. A punt is tied off somewhere in there, for whoever the warden decides can use it.\n齊頭高的蘆葦叢。裡頭某處繫著一艘平底船，就看巡警願不願意讓誰用。",
+        default: "Nothing to do here but wait on the warden's good graces — or the paperwork to fake them.\n這裡除了等巡警開恩，或是偽造一份文件讓他「開恩」，也沒別的事可做。",
       },
     },
     {
@@ -239,12 +239,12 @@ export const donanaCunning = {
       responses: {
         look: {
           forged_permit:
-            "Still half-buried, still out of reach — but paper like this has a way of making a warden forget where his own shack ends.",
+            "Still half-buried, still out of reach — but paper like this has a way of making a warden forget where his own shack ends.\n仍然半埋在泥裡，仍然搆不著——不過這種紙，總有辦法讓巡警忘記自家小屋的地界在哪。",
           default:
-            "Something pale and spiral-ridged, humming faintly under the mud whenever the wind drops. The warden's shack blocks the only dry path to it.",
+            "Something pale and spiral-ridged, humming faintly under the mud whenever the wind drops. The warden's shack blocks the only dry path to it.\n某個蒼白、螺旋紋路的東西，每當風停下來就在泥下微微嗡鳴。巡警的小屋擋住了唯一一條乾燥的路。",
         },
-        use: "Not without the warden waving him through first — and he's not waving anyone through without paper.",
-        default: "It's not coming free without a plan.",
+        use: "Not without the warden waving him through first — and he's not waving anyone through without paper.\n沒有巡警放行是不行的——而他不見到白紙黑字，是誰都不會放行的。",
+        default: "It's not coming free without a plan.\n沒有計畫，這東西是不會鬆動的。",
       },
       puzzleOnVerb: { use: "salt_conch_resonance" },
     },
@@ -254,11 +254,11 @@ export const donanaCunning = {
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "salt_conch_found",
-      lockedLine: "No sense leaving the marsh without the conch.",
+      lockedLine: "No sense leaving the marsh without the conch.\n沒拿到海螺就離開沼澤，一點道理也沒有。",
       to: { room: "saharaCunning", spawn: { x: 300, y: 900, facing: "down" } },
-      fallCaption: "The forged permit gets him out as easily as it got him in. Punt, train, and a very long journey later, the marsh gives way to the Sahara.",
+      fallCaption: "The forged permit gets him out as easily as it got him in. Punt, train, and a very long journey later, the marsh gives way to the Sahara.\n那張偽造的許可證讓他出去時跟進來時一樣順利。搭了平底船、坐了火車，經過一段漫長的旅程後，沼澤終於換成了撒哈拉沙漠。",
       responses: {
-        look: "The channel back out toward dry land.",
+        look: "The channel back out toward dry land.\n通往乾地的水道。",
       },
     },
   ],
@@ -268,14 +268,14 @@ export const donanaCunning = {
       id: "blank_permit",
       polygon: [[1520, 650], [1580, 650], [1580, 700], [1520, 700]],
       responses: {
-        look: "A blank marsh-access permit, official letterhead and all.",
+        look: "A blank marsh-access permit, official letterhead and all.\n一張空白的沼澤通行證，連官方信頭都齊全。",
       },
     },
     {
       id: "consortium_stamp",
       polygon: [[1590, 660], [1640, 660], [1640, 710], [1590, 710]],
       responses: {
-        look: "A brass desk stamp bearing the Adriatic Salvage Consortium's crest. Someone here has been doing business with Draghi's people.",
+        look: "A brass desk stamp bearing the Adriatic Salvage Consortium's crest. Someone here has been doing business with Draghi's people.\n一枚刻著亞得里亞海撈財聯盟徽記的黃銅印章。看來這裡有人一直在跟德拉基的人打交道。",
       },
       setFlagOn: { look: "learned_consortium_at_donana" },
     },

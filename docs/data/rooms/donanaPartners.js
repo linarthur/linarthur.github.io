@@ -168,8 +168,8 @@ export const donanaPartners = {
       polygon: [[1360, 780], [1480, 780], [1480, 950], [1360, 950]],
       dialogue: "mo_donana",
       responses: {
-        look: "Mo, already reading the marsh like a page of text he can't quite make out yet.",
-        default: "She's got better things to do than be pushed around a marsh.",
+        look: "Mo, already reading the marsh like a page of text he can't quite make out yet.\n莫已經在讀這片沼澤了，像在看一頁還看不太懂的書。",
+        default: "She's got better things to do than be pushed around a marsh.\n她可沒空被人推來推去逛沼澤。",
       },
     },
     {
@@ -178,8 +178,8 @@ export const donanaPartners = {
       kind: "scenery",
       polygon: [[380, 480], [620, 480], [620, 620], [380, 620]],
       responses: {
-        look: "A wading line of flamingos, pink from the brine shrimp they filter out of the mud. They never once stand where the ground won't hold.",
-        default: "They scatter if he gets any closer. Best to just watch where they don't walk.",
+        look: "A wading line of flamingos, pink from the brine shrimp they filter out of the mud. They never once stand where the ground won't hold.\n一排涉水的紅鶴，因為濾食泥裡的鹵蟲而一身粉紅。牠們從不站在撐不住重量的地方。",
+        default: "They scatter if he gets any closer. Best to just watch where they don't walk.\n再靠近牠們就會嚇跑了。最好的辦法就是看牠們不走哪裡。",
       },
     },
     {
@@ -188,8 +188,8 @@ export const donanaPartners = {
       kind: "scenery",
       polygon: [[60, 400], [340, 400], [340, 640], [60, 640]],
       responses: {
-        look: "Head-high reeds, and somewhere in them a punt he hasn't found the nerve to trust yet.",
-        default: "Nothing to do with the reeds but admire how well they hide a boat.",
+        look: "Head-high reeds, and somewhere in them a punt he hasn't found the nerve to trust yet.\n高過頭的蘆葦叢，裡頭藏著一艘他還沒鼓起勇氣信任的平底船。",
+        default: "Nothing to do with the reeds but admire how well they hide a boat.\n對這些蘆葦，除了佩服它們藏船的本事，也沒別的辦法。",
       },
     },
     {
@@ -200,9 +200,9 @@ export const donanaPartners = {
       hideWhenFlag: "salt_conch_found",
       puzzleRequiresFlag: "mo_helped_donana",
       responses: {
-        look: "Something pale and spiral-ridged, humming faintly under the mud whenever the wind drops.",
-        use: "The mud out here would swallow him to the knee without knowing the safe channel first — best ask Mo.",
-        default: "It's not coming free without a plan.",
+        look: "Something pale and spiral-ridged, humming faintly under the mud whenever the wind drops.\n某個蒼白帶螺紋的東西，風一停就在泥裡隱隱作響。",
+        use: "The mud out here would swallow him to the knee without knowing the safe channel first — best ask Mo.\n不先弄清楚安全的水道，這裡的爛泥會把他陷到膝蓋——最好先問問莫。",
+        default: "It's not coming free without a plan.\n沒個計畫，這東西是弄不出來的。",
       },
       puzzleOnVerb: { use: "salt_conch_resonance" },
     },
@@ -212,12 +212,12 @@ export const donanaPartners = {
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "salt_conch_found",
-      lockedLine: "No sense leaving the marsh without the conch — it's the whole reason they're both ankle-deep in it.",
+      lockedLine: "No sense leaving the marsh without the conch — it's the whole reason they're both ankle-deep in it.\n沒拿到海螺就離開沼澤，那可沒道理——他們倆泡在泥裡就是為了這個。",
       to: { room: "saharaPartners", spawn: { x: 300, y: 900, facing: "down" } },
       fallCaption:
-        "Punt, train, and one deeply unimpressed camel broker later, the marsh gives way to the wide flat nothing of the Sahara.",
+        "Punt, train, and one deeply unimpressed camel broker later, the marsh gives way to the wide flat nothing of the Sahara.\n撐船、搭火車，再加上一位一臉不耐煩的駱駝經紀人，沼澤終於讓位給撒哈拉那片空曠的荒蕪。",
       responses: {
-        look: "The channel back out toward dry land and, eventually, a very long train journey south.",
+        look: "The channel back out toward dry land and, eventually, a very long train journey south.\n通往陸地的水道，接下來還有一段漫長的南下火車之旅。",
       },
     },
   ],

@@ -340,9 +340,9 @@ export const subbasement = {
       kind: "scenery",
       polygon: [[850, 350], [1050, 350], [1050, 510], [850, 510]],
       responses: {
-        look: "Lettering older than Linear A, cut clean into basalt. “Three voices wake the ninth wave.” Someone translated it in pencil in the margin — then scratched the translation out.",
-        use: "Indy runs a thumb along the grooves. Whatever wore them smooth did it a very long time ago.",
-        default: "It's stone, it's ancient, and it is not going anywhere no matter how hard he pulls on it.",
+        look: "Lettering older than Linear A, cut clean into basalt. “Three voices wake the ninth wave.” Someone translated it in pencil in the margin — then scratched the translation out.\n刻在玄武岩上的文字，比線形文字A還要古老。「三聲喚醒第九浪。」有人在旁邊用鉛筆寫了翻譯——後來又把它劃掉了。",
+        use: "Indy runs a thumb along the grooves. Whatever wore them smooth did it a very long time ago.\n印第用拇指摸過刻痕。不管是什麼東西把它磨得這麼平滑，都已經是很久以前的事了。",
+        default: "It's stone, it's ancient, and it is not going anywhere no matter how hard he pulls on it.\n這是塊石頭，年代久遠，不管怎麼拉都不會動的。",
       },
       setFlagOn: { look: "saw_tablet" },
     },
@@ -353,9 +353,9 @@ export const subbasement = {
       polygon: [[500, 690], [630, 690], [630, 910], [500, 910]],
       dialogue: "higgins_intro",
       responses: {
-        look: "Higgins, the porter, fighting a mop-shaped war he isn't winning.",
+        look: "Higgins, the porter, fighting a mop-shaped war he isn't winning.\n工友希金斯，正在打一場拿拖把也打不贏的仗。",
         talk: null, // handled by the dialogue system — see engine main.js
-        default: "He's got enough on his plate without being pushed around.",
+        default: "He's got enough on his plate without being pushed around.\n他自己的麻煩已經夠多了，不需要再被人為難。",
       },
     },
     {
@@ -364,14 +364,14 @@ export const subbasement = {
       kind: "scenery",
       polygon: [[150, 500], [360, 500], [360, 760], [150, 760]],
       responses: {
-        look: "Three jars of something the department calls 'preserved samples' and the janitorial staff calls 'not my problem.'",
-        open: "The jars are sealed with wax. Whatever's inside has been marinating since roughly the Coolidge administration.",
+        look: "Three jars of something the department calls 'preserved samples' and the janitorial staff calls 'not my problem.'\n三罐東西，系上稱之為「保存樣本」，工友則稱之為「不關我的事」。",
+        open: "The jars are sealed with wax. Whatever's inside has been marinating since roughly the Coolidge administration.\n罐子用蠟封住了。裡面的東西大概從柯立芝總統任內就開始醃到現在了。",
         use: {
           crowbar:
-            "He gets the crowbar halfway to the wax seal before some deep, professional instinct stops him. Whatever's in there has waited this long. It can keep waiting.",
-          default: "He's not touching the jars. Some professional curiosities are better left curious.",
+            "He gets the crowbar halfway to the wax seal before some deep, professional instinct stops him. Whatever's in there has waited this long. It can keep waiting.\n撬棍才伸到蠟封一半，某種身為專業人士的直覺就叫他停手了。裡面的東西已經等了這麼久，不差再多等一下。",
+          default: "He's not touching the jars. Some professional curiosities are better left curious.\n他才不要碰那些罐子。有些學術上的好奇心，還是留著當好奇心就好。",
         },
-        default: "He's not touching the jars. Some professional curiosities are better left curious.",
+        default: "He's not touching the jars. Some professional curiosities are better left curious.\n他才不要碰那些罐子。有些學術上的好奇心，還是留著當好奇心就好。",
       },
     },
     {
@@ -380,10 +380,10 @@ export const subbasement = {
       kind: "scenery",
       polygon: [[850, 660], [1160, 660], [1160, 900], [850, 900]],
       responses: {
-        look: "TAGVS, stencilled on the side — the Tagus estuary dredge. The lid's been pried off and whatever rang like a church bell an hour ago is long gone.",
-        open: "Already open. Somebody in a hurry didn't bother with the crowbar sitting right here.",
-        push: "It's nailed to the floor skid. It rocks two inches and stops, smug as anything.",
-        default: "There's nothing left inside but packing straw and a very strong smell of the sea.",
+        look: "TAGVS, stencilled on the side — the Tagus estuary dredge. The lid's been pried off and whatever rang like a church bell an hour ago is long gone.\n箱側印著「TAGVS」——塔古斯河口打撈上來的東西。蓋子已經被撬開，一小時前響得像教堂鐘聲的那玩意兒早就不見蹤影。",
+        open: "Already open. Somebody in a hurry didn't bother with the crowbar sitting right here.\n已經開了。當時匆忙開箱的人根本沒用到就放在這裡的撬棍。",
+        push: "It's nailed to the floor skid. It rocks two inches and stops, smug as anything.\n它被釘在底座滑板上，晃了兩吋就停住，一副事不關己的樣子。",
+        default: "There's nothing left inside but packing straw and a very strong smell of the sea.\n裡面除了包裝用的稻草，什麼也沒剩，只有一股濃濃的海味。",
       },
     },
     {
@@ -392,11 +392,11 @@ export const subbasement = {
       kind: "scenery",
       polygon: [[1500, 250], [1660, 250], [1660, 630], [1500, 630]],
       responses: {
-        look: "Cast iron, sweating condensation, humming very faintly at a pitch that sets his teeth on edge. Pipes don't hold a note. This one's holding a note.",
-        pull: "It doesn't budge, but it rings when struck — one low tone, sustained a beat too long for ordinary plumbing — and dust sifts down from the joists.",
-        push: "Solid as the day it was laid. Whatever's making it hum isn't coming out through muscle — this wants matching, not moving.",
-        use: "Quiet now. Whatever needed proving, it's proven.",
-        default: "It's forty years of college plumbing. It has survived worse ideas than his.",
+        look: "Cast iron, sweating condensation, humming very faintly at a pitch that sets his teeth on edge. Pipes don't hold a note. This one's holding a note.\n鑄鐵管，表面凝結著水珠，微微嗡嗡作響，音頻聽得他牙齒發酸。水管不應該會發出持續的音，但這根就是在發出持續的音。",
+        pull: "It doesn't budge, but it rings when struck — one low tone, sustained a beat too long for ordinary plumbing — and dust sifts down from the joists.\n拉不動，但敲下去會發出鐘鳴——一個低沉的音，持續的時間長得不像普通水管——樑上的灰塵也跟著簌簌落下。",
+        push: "Solid as the day it was laid. Whatever's making it hum isn't coming out through muscle — this wants matching, not moving.\n跟剛裝上去那天一樣堅固。讓它嗡嗡作響的東西，光靠蠻力是弄不出來的——這需要的是共鳴，不是推動。",
+        use: "Quiet now. Whatever needed proving, it's proven.\n現在安靜下來了。該證明的事，已經證明了。",
+        default: "It's forty years of college plumbing. It has survived worse ideas than his.\n這是學院用了四十年的水管，比他更糟的點子它都撐過來了。",
       },
       puzzleOnVerb: { use: "pipe_resonance" },
     },
@@ -406,9 +406,9 @@ export const subbasement = {
       kind: "scenery",
       polygon: [[300, 850], [1650, 850], [1780, 1080], [140, 1080]],
       responses: {
-        look: "Brackish, ankle-deep, and rising slowly from somewhere the college's insurance policy definitely doesn't cover.",
-        use: "He is not going for a swim in his good boots. Not yet, anyway.",
-        default: "Wading through it further would mean explaining wet socks to the Dean, again.",
+        look: "Brackish, ankle-deep, and rising slowly from somewhere the college's insurance policy definitely doesn't cover.\n又鹹又濁的水，深及腳踝，還在慢慢上升，源頭肯定不在學院保單的理賠範圍內。",
+        use: "He is not going for a swim in his good boots. Not yet, anyway.\n他才不要穿著這雙好靴子下去游泳，至少現在還不想。",
+        default: "Wading through it further would mean explaining wet socks to the Dean, again.\n再往裡走，就得再一次跟院長解釋為什麼襪子又濕了。",
       },
     },
     {
@@ -417,12 +417,12 @@ export const subbasement = {
       kind: "exit",
       polygon: [[700, 560], [940, 560], [940, 720], [700, 720]],
       requiresFlag: "prologue_complete",
-      lockedLine: "Nothing more to do down here until he's worked out what he's actually looking for.",
+      lockedLine: "Nothing more to do down here until he's worked out what he's actually looking for.\n在搞清楚自己到底在找什麼之前，這裡沒什麼好做的了。",
       to: { room: "lisbonAlley", spawn: { x: 900, y: 920, facing: "down" } },
       fallCaption:
-        "Three months, two continents, and one very patient travel agent later, Barnett College is a long way behind him — Lisbon smells of salt and diesel and old stone.",
+        "Three months, two continents, and one very patient travel agent later, Barnett College is a long way behind him — Lisbon smells of salt and diesel and old stone.\n三個月過去，橫跨兩個大陸，還有一位極有耐心的旅行社人員幫忙張羅，巴奈特學院早已被遠遠拋在身後——里斯本瀰漫著海鹽、柴油與古老石頭的氣味。",
       responses: {
-        look: "The stairwell up to the street grate, and the ordinary Barnett College afternoon waiting above it.",
+        look: "The stairwell up to the street grate, and the ordinary Barnett College afternoon waiting above it.\n通往街頭柵欄的樓梯，上面等著他的是巴奈特學院再平常不過的一個下午。",
       },
     },
   ],
@@ -432,7 +432,7 @@ export const subbasement = {
       id: "crowbar",
       polygon: [[1090, 770], [1210, 770], [1210, 860], [1090, 860]],
       responses: {
-        look: "A yard of rusty iron, property of Maintenance. It's leaving with him.",
+        look: "A yard of rusty iron, property of Maintenance. It's leaving with him.\n一根一碼長的生鏽鐵撬，登記在維修部名下。它要跟他一起走了。",
       },
       setFlagOn: { take: "crowbar_taken" },
     },
@@ -440,7 +440,7 @@ export const subbasement = {
       id: "lantern",
       polygon: [[200, 500], [300, 500], [300, 600], [200, 600]],
       responses: {
-        look: "Half a tank of oil and a soot-stained chimney. It'll do where the grate-light doesn't reach.",
+        look: "Half a tank of oil and a soot-stained chimney. It'll do where the grate-light doesn't reach.\n油箱裡還剩半罐油，玻璃罩也被燻黑了。柵欄透下來的光照不到的地方，就靠它了。",
       },
       setFlagOn: { take: "lantern_taken" },
     },
@@ -448,7 +448,7 @@ export const subbasement = {
       id: "chart",
       polygon: [[1360, 850], [1480, 850], [1480, 950], [1360, 950]],
       responses: {
-        look: "A sealed leather map tube, snagged against the pipe joint. Whoever dropped this down here either lost it in the panic, or wanted it found.",
+        look: "A sealed leather map tube, snagged against the pipe joint. Whoever dropped this down here either lost it in the panic, or wanted it found.\n一個密封的皮製地圖筒，卡在水管接頭處。掉在這裡的人，不是慌亂中弄丟的，就是故意要讓人找到的。",
       },
       setFlagOn: { take: "found_chart" },
     },

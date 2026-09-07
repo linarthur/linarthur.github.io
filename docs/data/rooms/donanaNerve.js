@@ -144,8 +144,8 @@ export const donanaNerve = {
       kind: "scenery",
       polygon: [[220, 660], [420, 660], [420, 760], [220, 760]],
       responses: {
-        look: "A low grey skiff, engine idling, working its way along the channel toward the reed line. They haven't spotted him yet — but they will.",
-        default: "Best not to wait around and find out how fast that thing can move.",
+        look: "A low grey skiff, engine idling, working its way along the channel toward the reed line. They haven't spotted him yet — but they will.\n一艘灰色的低矮巡邏艇，引擎還在空轉，正沿著水道朝蘆葦叢摸過來。他們還沒發現他——但遲早會。",
+        default: "Best not to wait around and find out how fast that thing can move.\n最好別留在這裡驗證那艘船到底能開多快。",
       },
     },
     {
@@ -154,8 +154,8 @@ export const donanaNerve = {
       kind: "scenery",
       polygon: [[60, 400], [320, 400], [320, 640], [60, 640]],
       responses: {
-        look: "Head-high reeds — good cover, if the skiff's crew are as lazy about looking as they are about steering.",
-        default: "Nothing to do here but keep moving.",
+        look: "Head-high reeds — good cover, if the skiff's crew are as lazy about looking as they are about steering.\n齊頭高的蘆葦叢——只要那艘船上的人跟開船一樣懶得看，這裡就是不錯的掩護。",
+        default: "Nothing to do here but keep moving.\n在這裡沒什麼好做的，繼續走吧。",
       },
     },
     {
@@ -165,9 +165,9 @@ export const donanaNerve = {
       polygon: [[680, 800], [1420, 800], [1420, 920], [680, 920]],
       hideWhenFlag: "donana_boardwalk_crossed",
       responses: {
-        look: "A half-collapsed plank walkway is the only dry line across to the far bank. Half the boards look ready to give.",
-        use: "No time to test each board — better to move fast and trust his feet.",
-        default: "Standing here just gives the skiff more time to close the distance.",
+        look: "A half-collapsed plank walkway is the only dry line across to the far bank. Half the boards look ready to give.\n一條半坍塌的木棧道，是唯一能乾著腳走到對岸的路。一半的木板看起來隨時會斷。",
+        use: "No time to test each board — better to move fast and trust his feet.\n沒時間一塊一塊木板去試——不如放膽衝過去，相信自己的腳。",
+        default: "Standing here just gives the skiff more time to close the distance.\n站在這裡只會讓那艘船有更多時間追上來。",
       },
       puzzleOnVerb: { use: "donana_pursuit" },
     },
@@ -179,9 +179,9 @@ export const donanaNerve = {
       hideWhenFlag: "salt_conch_found",
       puzzleRequiresFlag: "donana_boardwalk_crossed",
       responses: {
-        look: "Something pale and spiral-ridged, humming faintly under the mud whenever the wind drops.",
-        use: "Worth the crossing, if his feet are still under him.",
-        default: "It's not coming free without a plan.",
+        look: "Something pale and spiral-ridged, humming faintly under the mud whenever the wind drops.\n泥裡埋著一個蒼白帶螺紋的東西，風一停就隱約傳出嗡鳴。",
+        use: "Worth the crossing, if his feet are still under him.\n只要雙腳還聽使喚，這趟跑過來就值得。",
+        default: "It's not coming free without a plan.\n沒個計畫，這東西不會自己出來。",
       },
       puzzleOnVerb: { use: "salt_conch_resonance" },
     },
@@ -191,12 +191,12 @@ export const donanaNerve = {
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "salt_conch_found",
-      lockedLine: "No sense leaving the marsh without the conch — not with that skiff still out there.",
+      lockedLine: "No sense leaving the marsh without the conch — not with that skiff still out there.\n巡邏艇還在附近晃，沒拿到海螺就離開這片沼澤，一點道理都沒有。",
       to: { room: "saharaNerve", spawn: { x: 300, y: 900, facing: "down" } },
       fallCaption:
-        "The skiff never catches more than his shadow. A long, breathless run and a longer train ride later, the marsh gives way to the Sahara.",
+        "The skiff never catches more than his shadow. A long, breathless run and a longer train ride later, the marsh gives way to the Sahara.\n那艘船到頭來只追上了他的影子。一路狂奔、再搭上一段更長的火車後，沼澤地換成了撒哈拉沙漠。",
       responses: {
-        look: "The channel back out toward dry land, well clear of the skiff's patrol line.",
+        look: "The channel back out toward dry land, well clear of the skiff's patrol line.\n通往乾地的水道，早已遠離那艘船的巡邏範圍。",
       },
     },
   ],

@@ -200,9 +200,9 @@ export const gallery = {
       kind: "scenery",
       polygon: [[595, 720], [790, 720], [790, 830], [595, 830]],
       responses: {
-        look: "The Tagus dredge crate, hasp snapped clean off. Whatever rang loud enough to crack a floor is long gone — but someone scratched a line into the lip before they ran: “Three voices wake the ninth wave.” Not a warning. A recipe.",
-        open: "It's already open. Whoever did the opening wasn't gentle, and wasn't planning to explain it to the Dean.",
-        default: "It's done its damage for one day. Best not to touch it further.",
+        look: "The Tagus dredge crate, hasp snapped clean off. Whatever rang loud enough to crack a floor is long gone — but someone scratched a line into the lip before they ran: “Three voices wake the ninth wave.” Not a warning. A recipe.\n塔古斯河打撈上來的板條箱，鎖扣整個被扯斷了。不管是什麼東西響到能把地板震裂，早就不知去向——但有人跑之前在箱緣刻了一行字：「三聲喚醒第九浪。」這不是警告，是配方。",
+        open: "It's already open. Whoever did the opening wasn't gentle, and wasn't planning to explain it to the Dean.\n已經被打開了。動手的人下手可不輕，顯然也沒打算跟院長解釋。",
+        default: "It's done its damage for one day. Best not to touch it further.\n今天造的孽已經夠多了，還是別再碰它了。",
       },
       setFlagOn: { look: "read_crate_etching" },
     },
@@ -212,8 +212,8 @@ export const gallery = {
       kind: "scenery",
       polygon: [[1290, 60], [1510, 60], [1510, 480], [1290, 480]],
       responses: {
-        look: "Every pane on this side of the hall is starred with cracks, radiating out from nothing at all. Sound did that. He's spent fifteen years teaching that glass doesn't work this way.",
-        default: "Best not to lean on cracked glass three floors up. He's already had one bad night.",
+        look: "Every pane on this side of the hall is starred with cracks, radiating out from nothing at all. Sound did that. He's spent fifteen years teaching that glass doesn't work this way.\n大廳這一側的每一片玻璃都裂成了蜘蛛網，裂痕就這樣憑空炸開。是聲音幹的。他教了十五年書，一直告訴學生玻璃不是這樣裂的。",
+        default: "Best not to lean on cracked glass three floors up. He's already had one bad night.\n三層樓高的地方，最好別靠在裂開的玻璃上。他今晚已經夠倒楣了。",
       },
     },
     {
@@ -222,8 +222,8 @@ export const gallery = {
       kind: "scenery",
       polygon: [[330, 160], [470, 160], [470, 340], [330, 340]],
       responses: {
-        look: "Dean Whitfield, painted mid-scowl, as always — the artist clearly worked from life. He is going to have opinions about the hole in his gallery floor, and all of them will involve Indy's budget.",
-        default: "The Dean's portrait glowers back. Even in oil paint, the man disapproves.",
+        look: "Dean Whitfield, painted mid-scowl, as always — the artist clearly worked from life. He is going to have opinions about the hole in his gallery floor, and all of them will involve Indy's budget.\n惠特菲爾德院長，畫中一如往常皺著眉——畫家顯然是照真人畫的。他對展廳地板上這個洞肯定會有意見，而且每一條都會扯到印第的經費。",
+        default: "The Dean's portrait glowers back. Even in oil paint, the man disapproves.\n院長的畫像瞪了回來。就算只是油畫，這個人也是一臉不贊同。",
       },
     },
     {
@@ -232,11 +232,11 @@ export const gallery = {
       kind: "exit",
       polygon: [[990, 810], [1310, 810], [1310, 940], [990, 940]],
       requiresFlag: "rope_taken",
-      lockedLine: "Not before he's got something to hold onto on the way down.",
+      lockedLine: "Not before he's got something to hold onto on the way down.\n下去之前，得先找點東西能抓著才行。",
       to: { room: "stacks", spawn: { x: 300, y: 900, facing: "down" } },
-      fallCaption: "He swings through the gap and drops into the dark below.",
+      fallCaption: "He swings through the gap and drops into the dark below.\n他盪過缺口，墜入下方的黑暗之中。",
       responses: {
-        look: "Raw, splintered edges, and a straight drop into blackness. Whoever left this way in a hurry didn't stop to check the landing.",
+        look: "Raw, splintered edges, and a straight drop into blackness. Whoever left this way in a hurry didn't stop to check the landing.\n粗糙的裂口，木屑四散，往下就是一片漆黑。走這條路逃走的人顯然沒空回頭確認下面是什麼。",
       },
     },
   ],
@@ -246,7 +246,7 @@ export const gallery = {
       id: "rope",
       polygon: [[985, 790], [1055, 790], [1055, 875], [985, 875]],
       responses: {
-        look: "A stout length of hemp, still knotted around a floor joist. Someone meant to come back for it.",
+        look: "A stout length of hemp, still knotted around a floor joist. Someone meant to come back for it.\n一段粗麻繩，還牢牢綁在地板的橫樑上。看來有人本來打算回來拿的。",
       },
       setFlagOn: { take: "rope_taken" },
     },

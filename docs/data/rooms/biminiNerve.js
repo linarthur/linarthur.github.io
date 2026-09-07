@@ -137,9 +137,9 @@ export const biminiNerve = {
       dialogue: "ferro_bimini",
       puzzleRequiresFlag: "talked_to_ferro",
       responses: {
-        look: "Draghi's salvage master, built like something the dockyard crane could barely lift. He's planted himself right between the professor and the ladder.",
-        use: "One elbow already on the crate lid. He's waiting.",
-        default: "Talking seems like the safer opening move.",
+        look: "Draghi's salvage master, built like something the dockyard crane could barely lift. He's planted himself right between the professor and the ladder.\n德拉基的打撈隊長，體格壯得連碼頭吊車都吊不太動。他就這麼站在教授和梯子中間，動都不動。",
+        use: "One elbow already on the crate lid. He's waiting.\n他一隻手肘已經撐在板條箱上了，就等著開始。",
+        default: "Talking seems like the safer opening move.\n先開口聊聊，看來是比較安全的第一步。",
       },
       puzzleOnVerb: { use: "ferro_arm_wrestle" },
     },
@@ -149,8 +149,8 @@ export const biminiNerve = {
       kind: "scenery",
       polygon: [[200, 720], [420, 720], [420, 860], [200, 860]],
       responses: {
-        look: "Salvage gear, stencilled with the Consortium's crest. Nothing here is worth the argument it'd start to touch.",
-        default: "Best leave the crates alone — Ferro's watching more than the ladder.",
+        look: "Salvage gear, stencilled with the Consortium's crest. Nothing here is worth the argument it'd start to touch.\n打撈裝備，噴著財團的徽記。這些東西沒一樣值得為它惹上麻煩。",
+        default: "Best leave the crates alone — Ferro's watching more than the ladder.\n最好別碰這些箱子——費羅盯著的可不只有梯子。",
       },
     },
     {
@@ -160,11 +160,11 @@ export const biminiNerve = {
       polygon: [[1350, 640], [1450, 640], [1450, 760], [1350, 760]],
       hideWhenFlag: "star_bell_found",
       requiresFlag: "ferro_beaten",
-      lockedLine: "Not past Ferro. Not without winning that wager first.",
+      lockedLine: "Not past Ferro. Not without winning that wager first.\n過不了費羅這關。除非先贏了那場比賽。",
       to: { room: "biminiNerveDive", spawn: { x: 900, y: 900, facing: "down" } },
-      fallCaption: "Ferro steps aside, rubbing his forearm, muttering something about a rematch someday. Down the ladder, into the water alone.",
+      fallCaption: "Ferro steps aside, rubbing his forearm, muttering something about a rematch someday. Down the ladder, into the water alone.\n費羅讓開身子，揉著手臂，嘴裡嘟囔著改天要再比一場。他順著梯子下水，獨自一人。",
       responses: {
-        look: "A steel ladder down to the water, and from there, the wreck.",
+        look: "A steel ladder down to the water, and from there, the wreck.\n一道通往水裡的鋼梯，從那裡再過去，就是沉船。",
       },
     },
   ],

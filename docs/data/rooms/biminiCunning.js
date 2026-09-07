@@ -171,13 +171,13 @@ export const biminiCunning = {
       polygon: [[940, 780], [1060, 780], [1060, 950], [940, 950]],
       dialogue: "foreman_bimini",
       responses: {
-        look: "A Consortium foreman, clipboard in hand, checking every crate against a manifest and every diver against a list he clearly takes seriously.",
+        look: "A Consortium foreman, clipboard in hand, checking every crate against a manifest and every diver against a list he clearly takes seriously.\n聯盟的工頭，手拿板夾，逐一核對每個板條箱和貨單，也逐一核對每個潛水員和名單——顯然他很把這件事當回事。",
         give: {
           forged_requisition:
-            "He barely glances at the form before waving toward the ladder. \"Should've said.\" He still hasn't asked a single question.",
-          default: "He's not accepting deliveries. Paperwork's the only thing he wants to see.",
+            "He barely glances at the form before waving toward the ladder. \"Should've said.\" He still hasn't asked a single question.\n他只瞄了表格一眼，就朝梯子揮揮手。「早說嘛。」他連一個問題都沒問。",
+          default: "He's not accepting deliveries. Paperwork's the only thing he wants to see.\n他不收貨。他只想看文件。",
         },
-        default: "He's not letting anyone near that ladder without paperwork.",
+        default: "He's not letting anyone near that ladder without paperwork.\n沒有文件，誰都別想靠近那座梯子。",
       },
     },
     {
@@ -186,8 +186,8 @@ export const biminiCunning = {
       kind: "scenery",
       polygon: [[200, 720], [420, 720], [420, 860], [200, 860]],
       responses: {
-        look: "Salvage gear, stencilled with the same crest as everything else the Consortium touches. Somewhere in this stack is exactly the paperwork he needs — or the makings of it.",
-        default: "Best not to be caught rifling through Consortium property in the open.",
+        look: "Salvage gear, stencilled with the same crest as everything else the Consortium touches. Somewhere in this stack is exactly the paperwork he needs — or the makings of it.\n打撈裝備，印著跟聯盟所有東西一樣的徽記。這堆箱子裡的某處，正藏著他需要的文件——或是能拼湊出來的材料。",
+        default: "Best not to be caught rifling through Consortium property in the open.\n光天化日之下翻聯盟的財產，最好別被逮到。",
       },
     },
     {
@@ -196,8 +196,8 @@ export const biminiCunning = {
       kind: "scenery",
       polygon: [[1650, 560], [1800, 560], [1800, 780], [1650, 780]],
       responses: {
-        look: "Big enough to be mistaken for part of the crane, if the crane occasionally turned to watch you. Ferro, Draghi's salvage master, doesn't so much as glance over. Best keep it that way.",
-        default: "Whatever he's doing over there, it's not worth the walk to find out.",
+        look: "Big enough to be mistaken for part of the crane, if the crane occasionally turned to watch you. Ferro, Draghi's salvage master, doesn't so much as glance over. Best keep it that way.\n塊頭大到可以被誤認成吊車的一部分，如果吊車偶爾會轉頭盯著你看的話。德拉基的打撈總管費羅，連瞄都沒瞄過來一眼。最好繼續保持這樣。",
+        default: "Whatever he's doing over there, it's not worth the walk to find out.\n他在那邊做什麼，不值得走過去一探究竟。",
       },
     },
     {
@@ -207,11 +207,11 @@ export const biminiCunning = {
       polygon: [[1350, 640], [1450, 640], [1450, 760], [1350, 760]],
       hideWhenFlag: "star_bell_found",
       requiresItem: "forged_requisition",
-      lockedLine: "Not past the foreman without paperwork that says he's allowed down that ladder.",
+      lockedLine: "Not past the foreman without paperwork that says he's allowed down that ladder.\n沒有文件證明他有權下那座梯子，工頭是不會放行的。",
       to: { room: "biminiCunningDive", spawn: { x: 900, y: 900, facing: "down" } },
-      fallCaption: "The foreman barely glances at the requisition before waving him through. Down the ladder, into the water alone.",
+      fallCaption: "The foreman barely glances at the requisition before waving him through. Down the ladder, into the water alone.\n工頭只瞄了申請書一眼就揮手放行。順著梯子而下，獨自潛入水中。",
       responses: {
-        look: "A steel ladder down to the water, and from there, the wreck.",
+        look: "A steel ladder down to the water, and from there, the wreck.\n一座通往水面的鋼梯，再往下，就是那艘沉船。",
       },
     },
   ],
@@ -221,14 +221,14 @@ export const biminiCunning = {
       id: "requisition_form",
       polygon: [[230, 740], [280, 740], [280, 790], [230, 790]],
       responses: {
-        look: "A blank Consortium dive-authorisation form, tucked between two crates.",
+        look: "A blank Consortium dive-authorisation form, tucked between two crates.\n一張空白的聯盟潛水許可表格，塞在兩個板條箱之間。",
       },
     },
     {
       id: "official_seal",
       polygon: [[350, 750], [400, 750], [400, 800], [350, 800]],
       responses: {
-        look: "A wax-and-ribbon seal, still attached to a shipping manifest nobody's checked in weeks.",
+        look: "A wax-and-ribbon seal, still attached to a shipping manifest nobody's checked in weeks.\n一枚火漆緞帶封印，還黏在一張已經好幾週沒人核對過的貨運單上。",
       },
     },
   ],

@@ -246,9 +246,9 @@ export const lisbonAlley = {
       kind: "scenery",
       polygon: [[30, 340], [610, 340], [610, 700], [30, 700]],
       responses: {
-        look: "A whole wall of unfinished azulejo panels, waiting to be fired. One half-assembled chart panel looks like it's meant to be a map, not a decoration.",
-        use: "The panel's a puzzle, not a window. Best to actually try assembling it.",
-        default: "Careful — the tiles look freshly glazed.",
+        look: "A whole wall of unfinished azulejo panels, waiting to be fired. One half-assembled chart panel looks like it's meant to be a map, not a decoration.\n一整面牆的瓷磚壁畫都還沒燒製,靜靜等著進窯。其中一片拼到一半的圖板,看起來不像裝飾,倒像是張地圖。",
+        use: "The panel's a puzzle, not a window. Best to actually try assembling it.\n這片圖板是拼圖,不是窗戶,還是動手拼拼看吧。",
+        default: "Careful — the tiles look freshly glazed.\n小心點——這些磁磚看起來才剛上釉。",
       },
       puzzleOnVerb: { use: "lisbon_azulejo" },
     },
@@ -259,8 +259,8 @@ export const lisbonAlley = {
       polygon: [[1400, 780], [1510, 780], [1510, 950], [1400, 950]],
       dialogue: "fado_intro",
       responses: {
-        look: "She's been singing the same aching verse for an hour, and the whole alley has gone quiet to listen.",
-        default: "Better to let the song finish.",
+        look: "She's been singing the same aching verse for an hour, and the whole alley has gone quiet to listen.\n她唱同一句心碎的歌詞已經唱了一個鐘頭,整條巷子都靜下來聽她唱。",
+        default: "Better to let the song finish.\n還是先讓她把歌唱完吧。",
       },
     },
     {
@@ -269,8 +269,8 @@ export const lisbonAlley = {
       kind: "scenery",
       polygon: [[920, 540], [1000, 540], [1000, 980], [920, 980]],
       responses: {
-        look: "Gas, not electric — this street hasn't caught up to the twentieth century yet, and seems proud of it.",
-        default: "It's bolted to the cobbles. It isn't going anywhere.",
+        look: "Gas, not electric — this street hasn't caught up to the twentieth century yet, and seems proud of it.\n是瓦斯燈,不是電燈——這條街還沒跟上二十世紀,而且看起來還挺自豪的。",
+        default: "It's bolted to the cobbles. It isn't going anywhere.\n燈柱牢牢鎖在鵝卵石路上,哪裡也去不了。",
       },
     },
     {
@@ -279,11 +279,11 @@ export const lisbonAlley = {
       kind: "exit",
       polygon: [[1620, 700], [1820, 700], [1820, 960], [1620, 960]],
       requiresFlag: "lisbon_azulejo_solved",
-      lockedLine: "No sense heading for the docks without knowing where he's headed. That chart in the workshop window isn't finished yet.",
+      lockedLine: "No sense heading for the docks without knowing where he's headed. That chart in the workshop window isn't finished yet.\n連目的地都還不知道,去碼頭也沒用。工作坊櫥窗裡那張圖板還沒拼完呢。",
       to: { room: "hypogeum", spawn: { x: 300, y: 900, facing: "down" } },
-      fallCaption: "The funicular rattles down through the Alfama, out past the Tagus, and — three connections and one very long ferry later — into the limestone hush of Malta.",
+      fallCaption: "The funicular rattles down through the Alfama, out past the Tagus, and — three connections and one very long ferry later — into the limestone hush of Malta.\n纜車一路轟隆隆駛下阿爾法瑪區,穿過特茹河——轉了三趟車、搭了一趟漫長的渡輪之後,終於抵達馬爾他那片寂靜的石灰岩地。",
       responses: {
-        look: "The little yellow funicular car, waiting at the top of the incline.",
+        look: "The little yellow funicular car, waiting at the top of the incline.\n那輛黃色小纜車,正停在坡頂等著。",
       },
     },
   ],

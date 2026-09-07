@@ -149,8 +149,8 @@ export const biminiNerveDive = {
       kind: "scenery",
       polygon: [[500, 830], [1420, 830], [1420, 930], [500, 930]],
       responses: {
-        look: "The same dead-straight megaliths every guidebook argues about. Nobody down here to argue about them with.",
-        default: "It's not going anywhere.",
+        look: "The same dead-straight megaliths every guidebook argues about. Nobody down here to argue about them with.\n就是每本旅遊指南都在爭論的那排筆直巨石。可惜這裡沒人能陪他一起爭論。",
+        default: "It's not going anywhere.\n它哪裡都不會去。",
       },
     },
     {
@@ -160,9 +160,9 @@ export const biminiNerveDive = {
       polygon: [[1300, 720], [1420, 720], [1420, 840], [1300, 840]],
       hideWhenFlag: "star_bell_found",
       responses: {
-        look: "Wedged tight in the wreck's ribs. Silent, for now.",
-        use: "His arm's still sore from Ferro, but his lungs are his own problem now.",
-        default: "It's not coming free by looking at it.",
+        look: "Wedged tight in the wreck's ribs. Silent, for now.\n緊緊卡在沉船的骨架裡，暫時還沒發出聲音。",
+        use: "His arm's still sore from Ferro, but his lungs are his own problem now.\n手臂還因為費羅那一場而痠痛，但現在該擔心的是自己的肺。",
+        default: "It's not coming free by looking at it.\n光用看的，它是不會自己鬆脫的。",
       },
       puzzleOnVerb: { use: "star_bell_resonance" },
     },
@@ -172,8 +172,8 @@ export const biminiNerveDive = {
       kind: "scenery",
       polygon: [[1140, 620], [1580, 620], [1580, 860], [1140, 860]],
       responses: {
-        look: "No topside crew, no cover story — just the current and something crystalline glinting in the third rib.",
-        default: "The current past the wreck is stronger than it looks.",
+        look: "No topside crew, no cover story — just the current and something crystalline glinting in the third rib.\n沒有支援船隊，也沒有藉口可以掰——只有水流，和第三根肋骨處閃爍的某種晶狀物。",
+        default: "The current past the wreck is stronger than it looks.\n沉船邊的水流比看起來還要強勁。",
       },
     },
     {
@@ -182,11 +182,11 @@ export const biminiNerveDive = {
       kind: "exit",
       polygon: [[60, 640], [260, 640], [260, 900], [60, 900]],
       requiresFlag: "act2_complete",
-      lockedLine: "Not yet — there's still a Voice or two left to find.",
+      lockedLine: "Not yet — there's still a Voice or two left to find.\n還不行——還有一兩個「聲音」沒找到。",
       to: { room: "calderaApproach", spawn: { x: 900, y: 900, facing: "down" } },
-      fallCaption: "He surfaces with a sore arm, three Voices, and absolutely no intention of telling Ferro that last bit hurt.",
+      fallCaption: "He surfaces with a sore arm, three Voices, and absolutely no intention of telling Ferro that last bit hurt.\n他浮出水面，帶著痠痛的手臂和三個「聲音」，完全沒打算告訴費羅剛才那下有多痛。",
       responses: {
-        look: "The way back up — and, from there, the last leg of the journey.",
+        look: "The way back up — and, from there, the last leg of the journey.\n通往水面的路——從那之後，就是這趟旅程的最後一段。",
       },
     },
   ],

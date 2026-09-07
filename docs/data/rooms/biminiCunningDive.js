@@ -149,8 +149,8 @@ export const biminiCunningDive = {
       kind: "scenery",
       polygon: [[500, 830], [1420, 830], [1420, 930], [500, 930]],
       responses: {
-        look: "The same dead-straight megaliths every guidebook argues about. No one arguing with him down here, at least.",
-        default: "It's not going anywhere.",
+        look: "The same dead-straight megaliths every guidebook argues about. No one arguing with him down here, at least.\n就是每本旅遊指南都在爭論不休的那排筆直巨石。至少在這下面，沒人跟他爭這個。",
+        default: "It's not going anywhere.\n它哪也不會去。",
       },
     },
     // Listed before "wreck" — its polygon sits inside the wreck's larger
@@ -162,9 +162,9 @@ export const biminiCunningDive = {
       polygon: [[1300, 720], [1420, 720], [1420, 840], [1300, 840]],
       hideWhenFlag: "star_bell_found",
       responses: {
-        look: "Wedged tight in the wreck's ribs. Silent, for now.",
-        use: "No Mo minding a line this time — he'll have to work fast and trust the current.",
-        default: "It's not coming free by looking at it.",
+        look: "Wedged tight in the wreck's ribs. Silent, for now.\n緊緊卡在沉船的肋骨結構裡。暫時還悄然無聲。",
+        use: "No Mo minding a line this time — he'll have to work fast and trust the current.\n這次沒有莫在上頭幫他看著繩索——他得動作快，並且相信水流。",
+        default: "It's not coming free by looking at it.\n光看是不會鬆脫的。",
       },
       puzzleOnVerb: { use: "star_bell_resonance" },
     },
@@ -174,8 +174,8 @@ export const biminiCunningDive = {
       kind: "scenery",
       polygon: [[1140, 620], [1580, 620], [1580, 860], [1140, 860]],
       responses: {
-        look: "No topside crew minding an air line this time — just his own lungs, the current, and something crystalline glinting in the third rib.",
-        default: "The current past the wreck is stronger than it looks.",
+        look: "No topside crew minding an air line this time — just his own lungs, the current, and something crystalline glinting in the third rib.\n這次沒有水面上的人手照看空氣管——只有他自己的肺、水流，還有第三根肋骨結構裡閃著晶亮光澤的東西。",
+        default: "The current past the wreck is stronger than it looks.\n沉船周圍的水流比看起來還要強勁。",
       },
     },
     {
@@ -184,11 +184,11 @@ export const biminiCunningDive = {
       kind: "exit",
       polygon: [[60, 640], [260, 640], [260, 900], [60, 900]],
       requiresFlag: "act2_complete",
-      lockedLine: "Not yet — there's still a Voice or two left to find.",
+      lockedLine: "Not yet — there's still a Voice or two left to find.\n還不行——還有一兩個「聲音」尚未找到。",
       to: { room: "calderaApproach", spawn: { x: 900, y: 900, facing: "down" } },
-      fallCaption: "No one to haul him up this time — just his own arms, and a forged requisition he won't be needing again.",
+      fallCaption: "No one to haul him up this time — just his own arms, and a forged requisition he won't be needing again.\n這次沒人把他拉上去——只靠自己的雙臂，還有一張再也用不著的偽造申請書。",
       responses: {
-        look: "The way back up — and, from there, the last leg of the journey.",
+        look: "The way back up — and, from there, the last leg of the journey.\n通往水面的路——從那裡開始，就是這趟旅程的最後一段。",
       },
     },
   ],
