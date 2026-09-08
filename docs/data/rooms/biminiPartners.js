@@ -118,8 +118,17 @@ function paintMoTopside(ctx) {
   // language as every other NPC (see e.g. paintDraghi in harborBar.js), at
   // real character proportions, in her own solid color so she doesn't melt
   // into the boat hull underneath her.
+  //
+  // Anchored well clear of (460+, 190+) rather than the extreme top-left
+  // corner (used to be translate(320,170), hotspot [[220,60]..[400,200]]):
+  // the menu/hint/reveal-hotspots buttons are CSS-positioned at a fixed
+  // small pixel offset from the canvas's real top-left corner, which on a
+  // compact desktop window (canvas rendered small, e.g. ~500px wide for
+  // 1920 logical px) covers a much bigger chunk of LOGICAL space than it
+  // looks like at a glance — big enough to sit on top of most of her old
+  // hotspot, leaving only a sliver clickable underneath the button row.
   ctx.save();
-  ctx.translate(320, 170);
+  ctx.translate(560, 280);
   ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
 
   // the boat hull, dimmed by the water between it and the camera
@@ -200,7 +209,7 @@ export const biminiPartners = {
       name: "Mo (Topside)",
       nameZh: "莫（水面上）",
       kind: "actor",
-      polygon: [[220, 60], [400, 60], [400, 200], [220, 200]],
+      polygon: [[460, 190], [660, 190], [660, 350], [460, 350]],
       dialogue: "mo_bimini",
       responses: {
         look: "Mo, a shimmering silhouette at the surface, minding the air line like she's willing it to behave.\n莫，水面上一道晃動的剪影，緊盯著空氣管，好像光靠意志就能讓它乖乖聽話。",

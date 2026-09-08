@@ -110,10 +110,23 @@ canvas#stage {
 }
 
 /* ---------- sentence line ---------- */
+/* #game-root is a column flexbox, and #sentence-line is a flex item in it.
+   With an explicit min-height (1.6em, meant only as "stay at least one
+   line tall for a short message"), that number ALSO becomes this item's
+   shrink floor once the flex layout runs short on vertical space (a wide,
+   short desktop window, not just phones) — the browser compressed this
+   box down to one line even when the actual bilingual text needed 3-4
+   wrapped lines, and the opaque canvas below it (painted after it) simply
+   covered the overflow, silently. flex-shrink: 0 stops that: this box
+   always renders at its real content height, and the canvas below yields
+   the space instead (it already shrinks to fit under viewport-size
+   constraints elsewhere, see #stage-wrap) — narration text must never be
+   the thing that gets silently cut when space is tight. */
 #sentence-line {
   width: 100%;
   max-width: calc(100vh * 16 / 9 * 0.78);
   min-height: 1.6em;
+  flex-shrink: 0;
   padding: 6px 14px;
   font-size: 1.05rem;
   color: var(--cream);
@@ -300,18 +313,34 @@ body.touch #inventory-drawer { display: grid; }
 }
 
 /* ---------- tap-to-begin gate ---------- */
+/* Same fixed-viewport-centering trap as the overlay family above (see the
+   comment on .credits-panel): #tap-gate used to center its content with
+   align-items/justify-content: center directly on this fixed, inset:0
+   element — and, unlike the overlays, didn't even have overflow-y:auto, so
+   overflowing content (e.g. a long custom dedication message on a short
+   screen) would have had NO way to be reached at all. Fixed the same way:
+   no centering on this outer element, overflow-y:auto added, and the
+   actual content wrapped in .tap-gate-inner (see index.html) which gets
+   margin:auto to center when it fits and fall back to normal scrollable
+   top-anchored flow when it doesn't. */
 #tap-gate {
   position: fixed;
   inset: 0;
   background: #0c1116;
   color: var(--cream);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
+  overflow-y: auto;
   z-index: 100;
   cursor: pointer;
+}
+
+.tap-gate-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  gap: 18px;
+  padding: 24px 0;
 }
 
 #tap-gate h1 {
@@ -764,13 +793,26 @@ body.touch #inventory-drawer { display: grid; }
 .menu-btn.danger:hover { background: #3a1e1a; border-color: #c05a4a; }
 
 /* ---------- credits screen ---------- */
+/* This whole family of full-screen overlays (credits, chapter card,
+   resonance/tileslide/echo/stunt puzzles, sign-in gate, path choice) used
+   to center its card with `align-items: center` on this fixed, inset:0,
+   overflow-y:auto wrapper. That's a real CSS trap: when flex centers an
+   item that's taller than the container, the browser does NOT let you
+   scroll to the start of the overflow — only past the end — so the TOP of
+   a long card (e.g. long bilingual credits text on a short phone screen)
+   becomes permanently unreachable no matter how the viewer scrolls. Fixed
+   by dropping align-items/justify-content: center here and giving the
+   inner card `margin: auto` instead (see .credits-card etc.) — auto
+   margins center a flex item exactly the same way when it fits, but
+   degrade to 0 (normal top-anchored, fully scrollable flow) instead of
+   trapping content when it doesn't. Apply this same pair (no center on
+   the outer overlay + margin:auto on the inner card) to any new
+   full-screen overlay added later.  */
 .credits-panel {
   position: fixed;
   inset: 0;
   background: rgba(6,9,12,0.92);
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-y: auto;
   padding: 20px 0;
   z-index: 90;
@@ -789,8 +831,6 @@ body.touch #inventory-drawer { display: grid; }
   inset: 0;
   background: rgba(6,9,12,0.92);
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-y: auto;
   padding: 20px 0;
   z-index: 90;
@@ -800,6 +840,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   gap: 14px;
   max-width: min(600px, 90vw);
   max-height: 90vh;
@@ -838,6 +879,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   gap: 14px;
   max-width: min(640px, 90vw);
   padding: 32px 36px;
@@ -903,8 +945,6 @@ body.touch #inventory-drawer { display: grid; }
   inset: 0;
   background: rgba(6,9,12,0.92);
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-y: auto;
   z-index: 95;
   padding: 16px;
@@ -921,6 +961,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   gap: 12px;
   max-width: min(560px, 94vw);
   max-height: 100%;
@@ -1076,8 +1117,6 @@ body.touch #inventory-drawer { display: grid; }
   inset: 0;
   background: rgba(6,9,12,0.92);
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-y: auto;
   z-index: 95;
   padding: 16px;
@@ -1089,6 +1128,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   gap: 12px;
   max-width: min(460px, 94vw);
   max-height: 100%;
@@ -1152,8 +1192,6 @@ body.touch #inventory-drawer { display: grid; }
   inset: 0;
   background: rgba(6,9,12,0.92);
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-y: auto;
   z-index: 95;
   padding: 16px;
@@ -1165,6 +1203,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   gap: 14px;
   max-width: min(480px, 94vw);
   max-height: 100%;
@@ -1203,8 +1242,6 @@ body.touch #inventory-drawer { display: grid; }
   inset: 0;
   background: rgba(6,9,12,0.92);
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-y: auto;
   z-index: 95;
   padding: 16px;
@@ -1216,6 +1253,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   gap: 14px;
   max-width: min(480px, 94vw);
   max-height: 100%;
@@ -1272,8 +1310,6 @@ body.touch #inventory-drawer { display: grid; }
   inset: 0;
   background: rgba(6,9,12,0.97);
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-y: auto;
   z-index: 97;
   padding: 20px;
@@ -1285,6 +1321,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   gap: 16px;
   max-width: 520px;
   text-align: center;
@@ -1327,8 +1364,6 @@ body.touch #inventory-drawer { display: grid; }
   inset: 0;
   background: rgba(6,9,12,0.95);
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-y: auto;
   z-index: 96;
   padding: 20px;
@@ -1340,6 +1375,7 @@ body.touch #inventory-drawer { display: grid; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   gap: 20px;
   max-width: 980px;
 }
