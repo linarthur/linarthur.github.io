@@ -1358,6 +1358,63 @@ body.touch #inventory-drawer { display: grid; }
   margin: 0;
 }
 
+/* ---------- start gate (Continue / New Game) ---------- */
+.startgate-panel {
+  position: fixed;
+  inset: 0;
+  background: rgba(6,9,12,0.97);
+  display: flex;
+  overflow-y: auto;
+  z-index: 97;
+  padding: 20px;
+}
+
+.startgate-panel[hidden] { display: none; }
+
+.startgate-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: auto;
+  gap: 14px;
+  width: min(480px, 100%);
+  text-align: center;
+}
+
+.startgate-title {
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  color: var(--ochre);
+  margin: 0;
+}
+
+.startgate-sub {
+  color: var(--cream);
+  opacity: 0.85;
+  line-height: 1.5;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.startgate-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.startgate-newgame {
+  align-self: center;
+  min-width: 200px;
+  margin-top: 6px;
+}
+
+.startgate-newgame-note {
+  color: rgba(245,236,217,0.55);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
 /* ---------- path choice ---------- */
 .pathchoice-panel {
   position: fixed;

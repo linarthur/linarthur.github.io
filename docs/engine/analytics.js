@@ -120,8 +120,13 @@ function flush(extra = {}) {
 // startGame()). Never awaited by the caller — this can take a moment
 // (anonymous sign-in + an IP lookup) and none of it should delay the
 // player actually seeing the game.
-export async function startSession() {
+export async function startSession(isDevSession = false) {
   try {
+    // localhost / ?debug=1 runs — Claude's own dev/testing sessions
+    // included — are development traffic, not real playtests; logging them
+    // just adds noise to the admin dashboard. Caller passes the same
+    // devToolsEnabled check main.js already uses to gate window.__debug.
+    if (isDevSession) return;
     let user = getCurrentUser();
     if (!user) user = await signInAnonymously();
     if (!user) return; // Firebase unavailable, or anonymous sign-in failed — skip analytics entirely.

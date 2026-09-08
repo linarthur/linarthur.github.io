@@ -359,6 +359,58 @@ export function createSignInGateUI(root) {
   };
 }
 
+// ---------------- Start gate (Continue / New Game, shown right after the
+// sign-in step when at least one save already exists on this device) ----------------
+
+export function createStartGateUI(root) {
+  const panel = el("div", "startgate-panel");
+  panel.hidden = true;
+  panel.innerHTML = `
+    <div class="startgate-inner">
+      <h2 class="startgate-title">Welcome Back<br>歡迎回來</h2>
+      <p class="startgate-sub">Pick up where you left off, or start a fresh case file.<br>從上次的進度繼續，或開始一個全新的案件檔案。</p>
+      <div class="startgate-slots"></div>
+      <button class="menu-btn startgate-newgame">New Game<br>開始新遊戲</button>
+      <p class="startgate-newgame-note">Playing continues autosaving over your most recent progress — case files 1-3 are untouched.<br>遊戲會持續自動存檔、覆蓋你最近的進度——案件檔案 1-3 不受影響。</p>
+    </div>
+  `;
+  root.appendChild(panel);
+
+  const slotsWrap = panel.querySelector(".startgate-slots");
+  const newGameBtn = panel.querySelector(".startgate-newgame");
+
+  const SLOT_LABELS = { 1: "Case File 1\n案件檔案 1", 2: "Case File 2\n案件檔案 2", 3: "Case File 3\n案件檔案 3", auto: "Autosave\n自動存檔" };
+
+  return {
+    show(slots, { onContinue, onNewGame }) {
+      panel.hidden = false;
+      slotsWrap.innerHTML = "";
+      slots
+        .filter((s) => s.data)
+        .sort((a, b) => (b.data.updatedAt || 0) - (a.data.updatedAt || 0))
+        .forEach((slot) => {
+          const row = el("div", "slot-row");
+          row.appendChild(el("span", "slot-label", SLOT_LABELS[slot.id] || String(slot.id)));
+          const meta = el("span", "slot-meta");
+          meta.appendChild(el("span", "slot-meta-when", new Date(slot.data.updatedAt).toLocaleString()));
+          if (slot.place) meta.appendChild(el("span", "slot-meta-place", slot.place));
+          row.appendChild(meta);
+          const btn = el("button", "slot-btn", "Continue\n繼續");
+          btn.addEventListener("click", () => onContinue(slot.id));
+          row.appendChild(btn);
+          slotsWrap.appendChild(row);
+        });
+      newGameBtn.onclick = () => onNewGame();
+    },
+    hide() {
+      panel.hidden = true;
+    },
+    isVisible() {
+      return !panel.hidden;
+    },
+  };
+}
+
 // ---------------- Path choice (end of Act 1) ----------------
 
 export function createPathChoiceUI(root) {

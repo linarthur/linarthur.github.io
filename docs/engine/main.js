@@ -45,6 +45,7 @@ import {
   createChapterCardUI,
   createPathChoiceUI,
   createSignInGateUI,
+  createStartGateUI,
   createHintToast,
   createSkipOverlay,
   removeSkipOverlay,
@@ -127,6 +128,19 @@ initFirebase((user) => {
   refreshOfflineBadge();
   if (user) ensureUserDoc(gameState.grit);
   settleAuthOnce();
+  // A returning Google session can take longer to restore than the
+  // authStateSettled timeout below allows for — the SDK itself loads from
+  // its CDN before Firebase can even check whether a persisted session
+  // exists, and that alone can outrun a couple of seconds on a real
+  // network. If that restore finishes late, AFTER the gate already had to
+  // guess and show itself, don't leave an already-signed-in player stuck
+  // staring at a sign-in prompt: proceed the moment we actually know.
+  // (Never fires for the silent analytics-only anonymous sign-in — see
+  // firebaseSync.js's signInAnonymously — only for a real account.)
+  if (user && signInGateUI.isVisible()) {
+    signInGateUI.hide();
+    proceedToGame();
+  }
 }).then((ok) => {
   firebaseReady = ok;
   refreshOfflineBadge();
@@ -797,6 +811,7 @@ const creditsUI = createCreditsUI(document.body);
 const chapterCardUI = createChapterCardUI(document.body);
 const pathChoiceUI = createPathChoiceUI(document.body);
 const signInGateUI = createSignInGateUI(document.body);
+const startGateUI = createStartGateUI(document.body);
 const hintToast = createHintToast(overlaysRoot);
 
 const dialogueRunner = createDialogueRunner(flagApi);
@@ -1463,7 +1478,7 @@ function startGame() {
   music.unlock();
   music.playTrack(ROOM_THEMES[room.id] || "barnett");
   loop.start();
-  startSession(); // fire-and-forget — never delays gameplay, see engine/analytics.js
+  startSession(devToolsEnabled); // fire-and-forget — never delays gameplay, see engine/analytics.js
   reportRoom(room.id);
   if (getFlag(gameState, "intro_seen")) {
     setSentence("Ready.\n準備就緒。");
@@ -1474,6 +1489,49 @@ function startGame() {
   // for a player who stays in one room a long time (a lot of dialogue, or
   // just poking around) between those checkpoints.
   setInterval(doAutosave, 60000);
+}
+
+let gameStarted = false;
+// startGame() is not safe to call twice (it re-registers the autosave
+// interval, restarts the music track, opens a second analytics session,
+// etc.) — every path that can reach it (an already-signed-in skip, a late
+// auth restore arriving after the gate already showed, Sign In, Continue
+// Offline, Continue, New Game) funnels through this guard instead of
+// calling startGame() directly.
+function startGameOnce() {
+  if (gameStarted) return;
+  gameStarted = true;
+  startGame();
+}
+
+// Shown once the sign-in step is resolved (skipped, signed in, or played
+// offline): if this device already has a save, let the player pick up
+// where they left off instead of silently dropping them into a brand new
+// game — the game state is always created fresh at boot (see `createGameState()`
+// above) and nothing auto-loads a save on its own, so without this a
+// returning player replayed the whole intro every single visit with no
+// obvious way back to their progress short of finding the pause menu's
+// Load button on their own.
+function proceedToGame() {
+  const slots = listSlots().map((s) => ({ ...s, place: s.data ? locationLabelFor(s.data.roomId) : null }));
+  if (!slots.some((s) => s.data)) {
+    startGameOnce();
+    return;
+  }
+  startGateUI.show(slots, {
+    async onContinue(id) {
+      let data = null;
+      if (getCurrentUser()) data = await cloudLoadSlot(id);
+      if (!data) data = loadFromSlot(id);
+      startGateUI.hide();
+      if (data && validateState(data)) applyLoadedState(data);
+      startGameOnce();
+    },
+    onNewGame() {
+      startGateUI.hide();
+      startGameOnce();
+    },
+  });
 }
 
 let beginStarted = false;
@@ -1489,12 +1547,14 @@ function begin() {
   // Wait to actually know the sign-in state before deciding whether to
   // show the gate, so a returning signed-in player doesn't see it flash
   // up before their session is restored — capped so a slow connection
-  // can never leave the tap gate stuck.
-  withTimeout(authStateSettled, 2500).then(() => {
+  // can never leave the tap gate stuck. (A restore that finishes AFTER
+  // this timeout is still handled: see the auto-dismiss in the
+  // initFirebase callback above.)
+  withTimeout(authStateSettled, 4000).then(() => {
     tapGate.style.display = "none";
 
     if (getCurrentUser()) {
-      startGame();
+      proceedToGame();
       return;
     }
 
@@ -1502,12 +1562,12 @@ function begin() {
       cloudPending: !firebaseReady,
       onSignIn: async () => {
         signInGateUI.hide();
-        startGame();
+        proceedToGame();
         await signInWithGoogle();
       },
       onContinueOffline: () => {
         signInGateUI.hide();
-        startGame();
+        proceedToGame();
       },
     });
   });
