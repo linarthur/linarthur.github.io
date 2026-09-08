@@ -3,7 +3,7 @@
 // (design doc: "a full con on the Consortium's dockyard") — forge a
 // requisition form, talk the foreman into believing it, dive alone.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, paintWorldItem } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, paintWorldItem, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 import { getItem } from "../items.js";
 
 const W = 1920, H = 1080;
@@ -94,6 +94,7 @@ function paintDock(ctx) {
 function paintForeman(ctx) {
   ctx.save();
   ctx.translate(1000, 860);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.25)";
   ctx.beginPath();
   ctx.ellipse(0, 78, 44, 12, 0, 0, Math.PI * 2);
@@ -167,6 +168,7 @@ export const biminiCunning = {
     {
       id: "foreman",
       name: "Dockyard Foreman",
+      nameZh: "碼頭工頭",
       kind: "actor",
       polygon: [[940, 780], [1060, 780], [1060, 950], [940, 950]],
       dialogue: "foreman_bimini",
@@ -183,6 +185,7 @@ export const biminiCunning = {
     {
       id: "crates",
       name: "Consortium Crates",
+      nameZh: "聯盟板條箱",
       kind: "scenery",
       polygon: [[200, 720], [420, 720], [420, 860], [200, 860]],
       responses: {
@@ -193,6 +196,7 @@ export const biminiCunning = {
     {
       id: "ferro_glimpse",
       name: "A Figure on the Far Pier",
+      nameZh: "遠方碼頭上的人影",
       kind: "scenery",
       polygon: [[1650, 560], [1800, 560], [1800, 780], [1650, 780]],
       responses: {
@@ -203,6 +207,7 @@ export const biminiCunning = {
     {
       id: "bell_site",
       name: "The Dive Ladder",
+      nameZh: "下潛鋼梯",
       kind: "exit",
       polygon: [[1350, 640], [1450, 640], [1450, 760], [1350, 760]],
       hideWhenFlag: "star_bell_found",

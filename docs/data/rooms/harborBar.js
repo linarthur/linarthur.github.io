@@ -4,7 +4,7 @@
 // in engine/main.js since there's no single next room — the three future
 // paths fork here).
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 
 const W = 1920, H = 1080;
 
@@ -111,6 +111,7 @@ function paintDocksDoor(ctx) {
 function paintDraghi(ctx) {
   ctx.save();
   ctx.translate(1000, 860);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.3)";
   ctx.beginPath();
   ctx.ellipse(0, 78, 46, 12, 0, 0, Math.PI * 2);
@@ -160,6 +161,7 @@ export const harborBar = {
     {
       id: "draghi",
       name: "Contessa Draghi",
+      nameZh: "德拉吉伯爵夫人",
       kind: "actor",
       polygon: [[940, 700], [1070, 700], [1070, 950], [940, 950]],
       dialogue: "draghi_intro",
@@ -171,6 +173,7 @@ export const harborBar = {
     {
       id: "window",
       name: "Harbour Window",
+      nameZh: "港口窗景",
       kind: "scenery",
       polygon: [[1450, 120], [1830, 120], [1830, 540], [1450, 540]],
       responses: {
@@ -181,6 +184,7 @@ export const harborBar = {
     {
       id: "bar",
       name: "The Bar",
+      nameZh: "吧台",
       kind: "scenery",
       polygon: [[40, 640], [560, 640], [560, 820], [40, 820]],
       responses: {
@@ -192,6 +196,7 @@ export const harborBar = {
     {
       id: "harbor_door",
       name: "Door to the Docks",
+      nameZh: "通往碼頭的門",
       kind: "exit",
       polygon: [[1600, 760], [1780, 760], [1780, 960], [1600, 960]],
       requiresFlag: "met_draghi",

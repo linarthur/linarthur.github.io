@@ -3,7 +3,7 @@
 // then the Star Bell — wedged in the wreck, silent in air — is a
 // resonance puzzle (the high voice). Solving it completes the path.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 
 const W = 1920, H = 1080;
 
@@ -112,17 +112,41 @@ function paintSurfaceLine(ctx) {
 }
 
 function paintMoTopside(ctx) {
-  // Mo stays topside on the boat — shown as a small silhouette at the
-  // surface, since this room is entirely underwater.
+  // Mo stays topside on the boat, seen from underwater — genuinely
+  // clickable/talkable (dialogue: "mo_bimini" below), so she needs to read
+  // as a person, not just a distant smudge. Same torso/head/hat silhouette
+  // language as every other NPC (see e.g. paintDraghi in harborBar.js), at
+  // real character proportions, in her own solid color so she doesn't melt
+  // into the boat hull underneath her.
   ctx.save();
-  ctx.translate(300, 140);
-  ctx.globalAlpha = 0.55;
+  ctx.translate(320, 170);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
+
+  // the boat hull, dimmed by the water between it and the camera
+  ctx.save();
+  ctx.globalAlpha = 0.5;
   ctx.fillStyle = "#0c2c34";
   ctx.beginPath();
-  ctx.roundRect(-60, -10, 200, 22, 6);
+  ctx.roundRect(-70, -6, 220, 24, 6);
+  ctx.fill();
+  ctx.restore();
+
+  // Mo herself — fully opaque, high-contrast against the bright surface
+  // water above, so she's easy to spot rather than just a dark blob.
+  ctx.fillStyle = "#0a1f26";
+  ctx.beginPath();
+  ctx.moveTo(-20, -8);
+  ctx.lineTo(-15, -62);
+  ctx.quadraticCurveTo(0, -82, 15, -62);
+  ctx.lineTo(20, -8);
+  ctx.closePath();
   ctx.fill();
   ctx.beginPath();
-  ctx.ellipse(0, -22, 14, 22, 0, 0, Math.PI * 2);
+  ctx.arc(0, -78, 15, 0, Math.PI * 2);
+  ctx.fill();
+  // her wide-brim hat, matching the portrait shown in dialogue
+  ctx.beginPath();
+  ctx.ellipse(0, -87, 21, 7, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
 }
@@ -174,6 +198,7 @@ export const biminiPartners = {
     {
       id: "mo",
       name: "Mo (Topside)",
+      nameZh: "莫（水面上）",
       kind: "actor",
       polygon: [[220, 60], [400, 60], [400, 200], [220, 200]],
       dialogue: "mo_bimini",
@@ -185,6 +210,7 @@ export const biminiPartners = {
     {
       id: "road",
       name: "The Bimini Road",
+      nameZh: "比米尼公路",
       kind: "scenery",
       polygon: [[500, 830], [1420, 830], [1420, 930], [500, 930]],
       responses: {
@@ -198,6 +224,7 @@ export const biminiPartners = {
     {
       id: "bell_site",
       name: "The Star Bell",
+      nameZh: "星辰鐘",
       kind: "scenery",
       polygon: [[1300, 720], [1420, 720], [1420, 840], [1300, 840]],
       hideWhenFlag: "star_bell_found",
@@ -212,6 +239,7 @@ export const biminiPartners = {
     {
       id: "wreck",
       name: "The Wreck",
+      nameZh: "沉船",
       kind: "scenery",
       polygon: [[1140, 620], [1580, 620], [1580, 860], [1140, 860]],
       responses: {
@@ -222,6 +250,7 @@ export const biminiPartners = {
     {
       id: "surface",
       name: "Back to the Surface",
+      nameZh: "返回水面",
       kind: "exit",
       polygon: [[60, 640], [260, 640], [260, 900], [60, 900]],
       requiresFlag: "act2_complete",

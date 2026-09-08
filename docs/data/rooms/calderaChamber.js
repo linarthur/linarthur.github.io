@@ -112,6 +112,7 @@ export const calderaChamber = {
     {
       id: "columns",
       name: "Sunken Colonnade",
+      nameZh: "沉沒的柱廊",
       kind: "scenery",
       polygon: [[200, 500], [640, 500], [640, 860], [200, 860]],
       responses: {
@@ -122,6 +123,7 @@ export const calderaChamber = {
     {
       id: "altar",
       name: "The Drowned Bell of Atlantis",
+      nameZh: "亞特蘭提斯沉鐘",
       kind: "scenery",
       polygon: [[820, 680], [1100, 680], [1100, 960], [820, 960]],
       hideWhenFlag: "drowned_bell_awakened",
@@ -135,6 +137,7 @@ export const calderaChamber = {
     {
       id: "altar_awake",
       name: "The Drowned Bell of Atlantis",
+      nameZh: "亞特蘭提斯沉鐘",
       kind: "scenery",
       polygon: [[820, 680], [1100, 680], [1100, 960], [820, 960]],
       responses: {

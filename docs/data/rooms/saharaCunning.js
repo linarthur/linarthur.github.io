@@ -3,7 +3,7 @@
 // so the play is disguise: local robes plus a headscarf, worn together,
 // buy enough distance to pass unremarked.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, paintWorldItem } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, paintWorldItem, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 import { getItem } from "../items.js";
 
 const W = 1920, H = 1080;
@@ -104,6 +104,7 @@ function paintStallItems(ctx, state) {
 function paintBroker(ctx) {
   ctx.save();
   ctx.translate(500, 880);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.25)";
   ctx.beginPath();
   ctx.ellipse(0, 78, 44, 12, 0, 0, Math.PI * 2);
@@ -208,6 +209,7 @@ export const saharaCunning = {
     {
       id: "broker",
       name: "Camel Broker",
+      nameZh: "駱駝商人",
       kind: "actor",
       polygon: [[440, 780], [560, 780], [560, 950], [440, 950]],
       responses: {
@@ -220,6 +222,7 @@ export const saharaCunning = {
     {
       id: "broker_fooled",
       name: "Camel Broker",
+      nameZh: "駱駝商人",
       kind: "actor",
       polygon: [[440, 780], [560, 780], [560, 950], [440, 950]],
       responses: {
@@ -231,6 +234,7 @@ export const saharaCunning = {
     {
       id: "stall",
       name: "Trading Stall",
+      nameZh: "交易攤位",
       kind: "scenery",
       polygon: [[380, 700], [640, 700], [640, 830], [380, 830]],
       responses: {
@@ -241,6 +245,7 @@ export const saharaCunning = {
     {
       id: "rings",
       name: "The Concentric Rings",
+      nameZh: "同心環狀山脊",
       kind: "scenery",
       polygon: [[700, 500], [1220, 500], [1220, 740], [700, 740]],
       responses: {
@@ -251,6 +256,7 @@ export const saharaCunning = {
     {
       id: "fork_site",
       name: "Buried Bronze",
+      nameZh: "掩埋的青銅音叉",
       kind: "scenery",
       polygon: [[1500, 880], [1650, 880], [1650, 990], [1500, 990]],
       hideWhenFlag: "storm_fork_found",
@@ -265,6 +271,7 @@ export const saharaCunning = {
     {
       id: "onward",
       name: "The Track South",
+      nameZh: "南向小徑",
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "storm_fork_found",

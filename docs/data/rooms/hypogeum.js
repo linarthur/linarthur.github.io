@@ -138,6 +138,7 @@ export const hypogeum = {
     {
       id: "oracle_niche",
       name: "The Oracle Niche",
+      nameZh: "神諭凹龕",
       kind: "scenery",
       polygon: [[840, 420], [1080, 420], [1080, 700], [840, 700]],
       responses: {
@@ -150,6 +151,7 @@ export const hypogeum = {
     {
       id: "spirals",
       name: "Ochre Spirals",
+      nameZh: "赭紅螺旋圖案",
       kind: "scenery",
       polygon: [[220, 200], [420, 200], [420, 420], [220, 420]],
       responses: {
@@ -160,6 +162,7 @@ export const hypogeum = {
     {
       id: "harbor_door",
       name: "Passage to the Harbour",
+      nameZh: "通往港口的通道",
       kind: "exit",
       polygon: [[1560, 760], [1760, 760], [1760, 960], [1560, 960]],
       requiresFlag: "hypogeum_echo_solved",

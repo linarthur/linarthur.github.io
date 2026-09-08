@@ -141,6 +141,7 @@ export const donanaNerve = {
     {
       id: "skiff",
       name: "Consortium Patrol Skiff",
+      nameZh: "聯盟巡邏艇",
       kind: "scenery",
       polygon: [[220, 660], [420, 660], [420, 760], [220, 760]],
       responses: {
@@ -151,6 +152,7 @@ export const donanaNerve = {
     {
       id: "reeds",
       name: "Reed Bank",
+      nameZh: "蘆葦叢",
       kind: "scenery",
       polygon: [[60, 400], [320, 400], [320, 640], [60, 640]],
       responses: {
@@ -161,6 +163,7 @@ export const donanaNerve = {
     {
       id: "boardwalk",
       name: "Rotten Boardwalk",
+      nameZh: "腐朽的木棧道",
       kind: "scenery",
       polygon: [[680, 800], [1420, 800], [1420, 920], [680, 920]],
       hideWhenFlag: "donana_boardwalk_crossed",
@@ -174,6 +177,7 @@ export const donanaNerve = {
     {
       id: "conch_site",
       name: "Half-Buried Shell",
+      nameZh: "半埋的貝殼",
       kind: "scenery",
       polygon: [[1500, 880], [1650, 880], [1650, 990], [1500, 990]],
       hideWhenFlag: "salt_conch_found",
@@ -188,6 +192,7 @@ export const donanaNerve = {
     {
       id: "boat_launch",
       name: "Channel Out",
+      nameZh: "出口水道",
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "salt_conch_found",

@@ -6,7 +6,9 @@
 //   onSmartTap(x, y)     - right click (desktop smart-default verb)
 //   onLongPress(x, y, screenX, screenY) - touch hold >=350ms (radial verb coin)
 //   onDoubleTap(x, y)    - skip walk animation
-//   onHover(x, y)        - mouse move, for the sentence line / highlight
+//   onHover(x, y, sx, sy) - mouse move (desktop only), for the cursor
+//                           tooltip / hover highlight; sx,sy are raw
+//                           client coordinates for positioning the tooltip
 //   onKey(key)           - single-character keydown, lowercased
 //
 // This module knows nothing about rooms, hotspots, or verbs — it only
@@ -52,7 +54,7 @@ export function attachInput(canvas, handlers) {
 
   canvas.addEventListener("mousemove", (e) => {
     const [x, y] = toLogical(e.clientX, e.clientY);
-    handlers.onHover?.(x, y);
+    handlers.onHover?.(x, y, e.clientX, e.clientY);
   });
 
   canvas.addEventListener("mouseleave", () => handlers.onHover?.(null, null));

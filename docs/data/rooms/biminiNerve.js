@@ -5,7 +5,7 @@
 // rematch — the design doc bars any combat minigame that can kill the
 // hero.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 
 const W = 1920, H = 1080;
 
@@ -65,6 +65,7 @@ function paintDock(ctx) {
 function paintFerro(ctx) {
   ctx.save();
   ctx.translate(1000, 860);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.3)";
   ctx.beginPath();
   ctx.ellipse(0, 82, 54, 14, 0, 0, Math.PI * 2);
@@ -132,6 +133,7 @@ export const biminiNerve = {
     {
       id: "ferro",
       name: "Ferro",
+      nameZh: "費羅",
       kind: "actor",
       polygon: [[940, 780], [1060, 780], [1060, 950], [940, 950]],
       dialogue: "ferro_bimini",
@@ -146,6 +148,7 @@ export const biminiNerve = {
     {
       id: "crates",
       name: "Consortium Crates",
+      nameZh: "財團板條箱",
       kind: "scenery",
       polygon: [[200, 720], [420, 720], [420, 860], [200, 860]],
       responses: {
@@ -156,6 +159,7 @@ export const biminiNerve = {
     {
       id: "bell_site",
       name: "The Dive Ladder",
+      nameZh: "下潛鋼梯",
       kind: "exit",
       polygon: [[1350, 640], [1450, 640], [1450, 760], [1350, 760]],
       hideWhenFlag: "star_bell_found",

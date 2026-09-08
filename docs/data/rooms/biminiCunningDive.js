@@ -146,6 +146,7 @@ export const biminiCunningDive = {
     {
       id: "road",
       name: "The Bimini Road",
+      nameZh: "比米尼公路",
       kind: "scenery",
       polygon: [[500, 830], [1420, 830], [1420, 930], [500, 930]],
       responses: {
@@ -158,6 +159,7 @@ export const biminiCunningDive = {
     {
       id: "bell_site",
       name: "The Star Bell",
+      nameZh: "星辰鐘",
       kind: "scenery",
       polygon: [[1300, 720], [1420, 720], [1420, 840], [1300, 840]],
       hideWhenFlag: "star_bell_found",
@@ -171,6 +173,7 @@ export const biminiCunningDive = {
     {
       id: "wreck",
       name: "The Wreck",
+      nameZh: "沉船",
       kind: "scenery",
       polygon: [[1140, 620], [1580, 620], [1580, 860], [1140, 860]],
       responses: {
@@ -181,6 +184,7 @@ export const biminiCunningDive = {
     {
       id: "surface",
       name: "Back to the Surface",
+      nameZh: "返回水面",
       kind: "exit",
       polygon: [[60, 640], [260, 640], [260, 900], [60, 900]],
       requiresFlag: "act2_complete",

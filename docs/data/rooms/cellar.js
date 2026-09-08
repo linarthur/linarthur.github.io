@@ -139,6 +139,7 @@ export const cellar = {
     {
       id: "barrel_stack",
       name: "Barrel Stack",
+      nameZh: "木桶堆",
       kind: "scenery",
       polygon: [[590, 650], [850, 650], [850, 900], [590, 900]],
       hideWhenFlag: "barrels_moved",
@@ -153,6 +154,7 @@ export const cellar = {
     {
       id: "winerack",
       name: "Wine Rack",
+      nameZh: "酒架",
       kind: "scenery",
       polygon: [[1360, 480], [1640, 480], [1640, 680], [1360, 680]],
       responses: {
@@ -164,6 +166,7 @@ export const cellar = {
     {
       id: "old_crates",
       name: "Stack of Old Crates",
+      nameZh: "舊木箱堆",
       kind: "scenery",
       polygon: [[200, 780], [360, 780], [360, 920], [200, 920]],
       responses: {
@@ -175,6 +178,7 @@ export const cellar = {
     {
       id: "stair_door",
       name: "Stairwell Archway",
+      nameZh: "樓梯拱門",
       kind: "exit",
       polygon: [[610, 780], [790, 780], [790, 960], [610, 960]],
       requiresFlag: "barrels_moved",

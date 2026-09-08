@@ -3,7 +3,7 @@
 // one dialogue+cutscene beat — see data/dialogue/mo.js) — then the Salt
 // Conch, half-buried in the mud, is a resonance puzzle (the low voice).
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 
 const W = 1920, H = 1080;
 
@@ -92,6 +92,7 @@ function paintWater(ctx) {
 function paintMoAndConch(ctx, found) {
   ctx.save();
   ctx.translate(1420, 860);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.25)";
   ctx.beginPath();
   ctx.ellipse(0, 78, 44, 12, 0, 0, Math.PI * 2);
@@ -164,6 +165,7 @@ export const donanaPartners = {
     {
       id: "mo",
       name: "Dr. Nomusa Adeyemi",
+      nameZh: "諾姆莎·阿德耶米博士",
       kind: "actor",
       polygon: [[1360, 780], [1480, 780], [1480, 950], [1360, 950]],
       dialogue: "mo_donana",
@@ -175,6 +177,7 @@ export const donanaPartners = {
     {
       id: "flamingos",
       name: "Flamingos",
+      nameZh: "紅鶴群",
       kind: "scenery",
       polygon: [[380, 480], [620, 480], [620, 620], [380, 620]],
       responses: {
@@ -185,6 +188,7 @@ export const donanaPartners = {
     {
       id: "reeds",
       name: "Reed Bank",
+      nameZh: "蘆葦叢",
       kind: "scenery",
       polygon: [[60, 400], [340, 400], [340, 640], [60, 640]],
       responses: {
@@ -195,6 +199,7 @@ export const donanaPartners = {
     {
       id: "conch_site",
       name: "Half-Buried Shell",
+      nameZh: "半埋的貝殼",
       kind: "scenery",
       polygon: [[1500, 880], [1650, 880], [1650, 990], [1500, 990]],
       hideWhenFlag: "salt_conch_found",
@@ -209,6 +214,7 @@ export const donanaPartners = {
     {
       id: "boat_launch",
       name: "Channel Out",
+      nameZh: "出口水道",
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "salt_conch_found",

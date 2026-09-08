@@ -144,7 +144,14 @@ export function createPauseMenuUI(root) {
   function renderSlotRow(label, slot, onSave, onLoad) {
     const row = el("div", "slot-row");
     row.appendChild(el("span", "slot-label", label));
-    row.appendChild(el("span", "slot-meta", slot?.data ? new Date(slot.data.updatedAt).toLocaleString() : "empty\n空白"));
+    const metaWrap = el("span", "slot-meta");
+    if (slot?.data) {
+      metaWrap.appendChild(el("span", "slot-meta-when", new Date(slot.data.updatedAt).toLocaleString()));
+      if (slot.place) metaWrap.appendChild(el("span", "slot-meta-place", slot.place));
+    } else {
+      metaWrap.appendChild(el("span", "slot-meta-when", "empty\n空白"));
+    }
+    row.appendChild(metaWrap);
     const saveBtn = el("button", "slot-btn", "Save\n儲存");
     saveBtn.addEventListener("click", onSave);
     const loadBtn = el("button", "slot-btn", "Load\n讀取");
@@ -219,9 +226,14 @@ export function createPauseMenuUI(root) {
       const autoSlot = slots.find((s) => s.id === "auto");
       const autoRow = el("div", "slot-row");
       autoRow.appendChild(el("span", "slot-label", "Autosave\n自動存檔"));
-      autoRow.appendChild(
-        el("span", "slot-meta", autoSlot?.data ? new Date(autoSlot.data.updatedAt).toLocaleString() : "empty\n空白")
-      );
+      const autoMeta = el("span", "slot-meta");
+      if (autoSlot?.data) {
+        autoMeta.appendChild(el("span", "slot-meta-when", new Date(autoSlot.data.updatedAt).toLocaleString()));
+        if (autoSlot.place) autoMeta.appendChild(el("span", "slot-meta-place", autoSlot.place));
+      } else {
+        autoMeta.appendChild(el("span", "slot-meta-when", "empty\n空白"));
+      }
+      autoRow.appendChild(autoMeta);
       const loadAuto = el("button", "slot-btn", "Load\n讀取");
       loadAuto.disabled = !autoSlot?.data;
       loadAuto.addEventListener("click", () => callbacks.onLoad("auto"));

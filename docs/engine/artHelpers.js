@@ -7,6 +7,14 @@
 // a vignette so the eye settles in the middle, and a warm rim-light on
 // every silhouette so foreground objects separate from the background.
 
+// Shared character scale — applied to the hero (engine/renderer.js
+// drawActor) and to every hand-painted NPC figure (the paint*() functions
+// in data/rooms/*.js, right after each one's anchor ctx.translate). One
+// constant so hero and NPC sizing always move together, and so it's the
+// same on every device — screen size must only change presentation, never
+// make one platform's characters a different relative size than another's.
+export const CHARACTER_SCALE = 1.2;
+
 // Darkens the frame edges so the composition reads as lit-from-within
 // rather than flat and evenly exposed, like a painted matte background.
 export function vignette(ctx, w, h, strength = 0.55) {

@@ -3,7 +3,7 @@
 // (engine/artHelpers.js) — layered dusk gradient, rim-lit rooftops,
 // textured cobblestones, warm lamp glow.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 
 const W = 1920, H = 1080;
 
@@ -187,6 +187,7 @@ function paintFunicular(ctx) {
 function paintFado(ctx) {
   ctx.save();
   ctx.translate(1450, 860);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.3)";
   ctx.beginPath();
   ctx.ellipse(0, 78, 44, 12, 0, 0, Math.PI * 2);
@@ -243,6 +244,7 @@ export const lisbonAlley = {
     {
       id: "tile_shop",
       name: "Tile Workshop Window",
+      nameZh: "瓷磚工作坊櫥窗",
       kind: "scenery",
       polygon: [[30, 340], [610, 340], [610, 700], [30, 700]],
       responses: {
@@ -255,6 +257,7 @@ export const lisbonAlley = {
     {
       id: "fado",
       name: "Fado Singer",
+      nameZh: "法朵歌手",
       kind: "actor",
       polygon: [[1400, 780], [1510, 780], [1510, 950], [1400, 950]],
       dialogue: "fado_intro",
@@ -266,6 +269,7 @@ export const lisbonAlley = {
     {
       id: "lamp",
       name: "Street Lamp",
+      nameZh: "瓦斯街燈",
       kind: "scenery",
       polygon: [[920, 540], [1000, 540], [1000, 980], [920, 980]],
       responses: {
@@ -276,6 +280,7 @@ export const lisbonAlley = {
     {
       id: "funicular",
       name: "Funicular Stop",
+      nameZh: "纜車站",
       kind: "exit",
       polygon: [[1620, 700], [1820, 700], [1820, 960], [1620, 960]],
       requiresFlag: "lisbon_azulejo_solved",

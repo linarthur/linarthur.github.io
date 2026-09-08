@@ -7,7 +7,7 @@
 //
 // Art retrofitted to the Act 1 technique bar (engine/artHelpers.js).
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 
 const W = 1920, H = 1080;
 
@@ -237,6 +237,7 @@ function paintCrowbar(ctx) {
 function paintHiggins(ctx) {
   ctx.save();
   ctx.translate(565, 800);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.3)";
   ctx.beginPath();
   ctx.ellipse(0, 78, 42, 12, 0, 0, Math.PI * 2);
@@ -337,6 +338,7 @@ export const subbasement = {
     {
       id: "tablet",
       name: "Etched Tablet",
+      nameZh: "刻字石板",
       kind: "scenery",
       polygon: [[850, 350], [1050, 350], [1050, 510], [850, 510]],
       responses: {
@@ -349,6 +351,7 @@ export const subbasement = {
     {
       id: "higgins",
       name: "Higgins",
+      nameZh: "希金斯",
       kind: "actor",
       polygon: [[500, 690], [630, 690], [630, 910], [500, 910]],
       dialogue: "higgins_intro",
@@ -361,6 +364,7 @@ export const subbasement = {
     {
       id: "shelf",
       name: "Specimen Shelf",
+      nameZh: "標本架",
       kind: "scenery",
       polygon: [[150, 500], [360, 500], [360, 760], [150, 760]],
       responses: {
@@ -377,6 +381,7 @@ export const subbasement = {
     {
       id: "crate",
       name: "Broken Shipping Crate",
+      nameZh: "破損的運輸木箱",
       kind: "scenery",
       polygon: [[850, 660], [1160, 660], [1160, 900], [850, 900]],
       responses: {
@@ -389,6 +394,7 @@ export const subbasement = {
     {
       id: "pipe",
       name: "Overhead Pipe",
+      nameZh: "頭頂水管",
       kind: "scenery",
       polygon: [[1500, 250], [1660, 250], [1660, 630], [1500, 630]],
       responses: {
@@ -403,6 +409,7 @@ export const subbasement = {
     {
       id: "water",
       name: "Floodwater",
+      nameZh: "積水",
       kind: "scenery",
       polygon: [[300, 850], [1650, 850], [1780, 1080], [140, 1080]],
       responses: {
@@ -414,6 +421,7 @@ export const subbasement = {
     {
       id: "grate_stair",
       name: "Street Grate Stairwell",
+      nameZh: "街頭柵欄樓梯",
       kind: "exit",
       polygon: [[700, 560], [940, 560], [940, 720], [700, 720]],
       requiresFlag: "prologue_complete",

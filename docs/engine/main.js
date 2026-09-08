@@ -59,6 +59,7 @@ import { ferroBiminiDialogue } from "../data/dialogue/ferro.js";
 import { CUTSCENES } from "../data/cutscenes.js";
 import { GOALS, CODEX } from "../data/journal.js";
 import { HINTS, HINT_TARGETS } from "../data/hints.js";
+import { locationLabelFor } from "../data/roomLabels.js";
 
 // Dev-only tooling (window.__debug, the 'c' credits preview) is gated on
 // this rather than deleted — it stays available for local testing, but
@@ -264,12 +265,32 @@ function setSentence(text) {
   sentenceEl.textContent = text;
 }
 
+// Mouse-only cursor tooltip (see engine/input.js onHover / styles/main.css
+// #hover-tip). This must stay separate from setSentence()/#sentence-line:
+// the narration bar has to show the exact same content on every device,
+// driven only by real game events, never by a mouse-only hover signal that
+// touch devices can't produce.
+const hoverTipEl = document.getElementById("hover-tip");
+const stageWrapEl = document.getElementById("stage-wrap");
+function showHoverTip(text, clientX, clientY) {
+  const wrapRect = stageWrapEl.getBoundingClientRect();
+  hoverTipEl.textContent = text;
+  hoverTipEl.style.left = `${clientX - wrapRect.left + 16}px`;
+  hoverTipEl.style.top = `${clientY - wrapRect.top + 16}px`;
+  hoverTipEl.hidden = false;
+}
+function hideHoverTip() {
+  hoverTipEl.hidden = true;
+}
+
 function previewFor(target, verb) {
   const verbDef = VERBS.find((v) => v.id === verb);
   const verbLabel = verbDef ? verbDef.previewLabel : "Walk to";
-  if (target.type === "floor") return "Walk here.";
-  const name = target.type === "item" ? getItem(target.def.id).name : target.def.name;
-  return `${verbLabel} ${name}.`;
+  const verbLabelZh = verbDef ? verbDef.previewLabelZh : "走到%s";
+  if (target.type === "floor") return "Walk here.\n走到這裡。";
+  const def = target.type === "item" ? getItem(target.def.id) : target.def;
+  const nameZh = def.nameZh || def.name;
+  return `${verbLabel} ${def.name}.\n${verbLabelZh.replace("%s", nameZh)}。`;
 }
 
 // ---------- movement ----------
@@ -338,10 +359,10 @@ function runAction(verb, target) {
         // dialogue beat or Nerve-path stunt, so all three paths total the
         // same maximum Grit regardless of which one's chosen.
         addGrit(gameState, 20);
-        setSentence(item.combineLine || `The two combine into something more useful.`);
+        setSentence(item.combineLine || `The two combine into something more useful.\n兩者結合成更有用的東西。`);
       } else {
         addItem(gameState, item.id);
-        setSentence(`You take the ${item.name}.`);
+        setSentence(`You take the ${item.name}.\n他拿起了${item.nameZh || item.name}。`);
       }
       renderInventory();
       applySetFlagOn(target.def, v);
@@ -554,6 +575,7 @@ async function fallToRoom(nextRoomId, spawn, caption) {
   await shake(200);
   await fadeOut(320);
   clearHintHighlight();
+  revealedHotspots = null;
   room = ROOMS[nextRoomId];
   gameState.roomId = nextRoomId;
   reportRoom(nextRoomId);
@@ -736,7 +758,7 @@ function makeInvSlot(id) {
   const slot = document.createElement("div");
   slot.className = "inv-slot";
   if (id === selectedItemId) slot.classList.add("selected");
-  slot.title = item.name;
+  slot.title = item.nameZh ? `${item.name}\n${item.nameZh}` : item.name;
   const c = document.createElement("canvas");
   c.width = 40;
   c.height = 40;
@@ -854,7 +876,9 @@ function showHint() {
     // the now-open exit instead of describing a scene not yet reached.
     const exit = findReachableExit();
     if (exit) {
-      hintToast.show(`Nothing left for him here — ${exit.name || "the way out"} is open now.`);
+      hintToast.show(
+        `Nothing left for him here — ${exit.name || "the way out"} is open now.\n這裡沒什麼好做的了——${exit.nameZh || exit.name || "出口"}已經開了。`
+      );
       hintHighlightPolygon = exit.polygon;
       hintHighlightExpiresAt = performance.now() + 6000;
       return;
@@ -891,6 +915,24 @@ menuButton.addEventListener("click", () => {
 hintButton.addEventListener("click", () => {
   if (inputBlocked()) return;
   showHint();
+});
+
+// "Show hotspots" button — a tap-to-reveal equivalent of the mouse-only
+// dashed outline that appears on hover. Touch devices have no hover signal,
+// so without this, only desktop players could ever see which shapes are
+// interactive before touching them (the same "content silently differs by
+// input method" bug class documented in CLAUDE.md, applied to affordance
+// rather than narration text). Every device gets the same feature; desktop
+// players can use it too, they just also have hover.
+const revealButton = document.getElementById("reveal-button");
+let revealedHotspots = null;
+let revealedExpiresAt = 0;
+const REVEAL_DURATION_MS = 3000;
+revealButton.addEventListener("click", () => {
+  if (inputBlocked()) return;
+  const visibleHotspots = room.hotspots.filter((hs) => !hs.hideWhenFlag || !getFlag(gameState, hs.hideWhenFlag));
+  revealedHotspots = [...worldItems().map((it) => it.polygon), ...visibleHotspots.map((hs) => hs.polygon)];
+  revealedExpiresAt = performance.now() + REVEAL_DURATION_MS;
 });
 
 function refreshDialogueUI() {
@@ -1055,7 +1097,14 @@ function applyLoadedState(data) {
 
 function openPauseMenu() {
   paused = true;
-  const slots = listSlots();
+  // Attach a human-readable location to every slot that has data, so the
+  // save/load menu shows WHERE a save was made, not just when — the same
+  // roomId every save already stores (see engine/save.js), just resolved
+  // to a name via data/roomLabels.js.
+  const slots = listSlots().map((slot) => ({
+    ...slot,
+    place: slot.data ? locationLabelFor(slot.data.roomId) : null,
+  }));
   const user = getCurrentUser();
   pauseUI.show(
     slots,
@@ -1223,15 +1272,20 @@ attachInput(canvas, {
     if (!target) return;
     requestAction(effectiveVerbFor(target), target, true);
   },
-  onHover(x, y) {
+  onHover(x, y, sx, sy) {
     if (x === null) {
       hoveredTarget = null;
+      hideHoverTip();
       return;
     }
-    if (inputBlocked()) return;
+    if (inputBlocked()) {
+      hideHoverTip();
+      return;
+    }
     const target = getTargetAt(x, y);
     hoveredTarget = target && target.type !== "floor" ? target : null;
-    if (target) setSentence(previewFor(target, selectedVerb || effectiveVerbFor(target)));
+    if (target) showHoverTip(previewFor(target, selectedVerb || effectiveVerbFor(target)), sx, sy);
+    else hideHoverTip();
   },
   onLongPress(x, y, sx, sy) {
     if (inputBlocked()) return;
@@ -1305,6 +1359,10 @@ attachInput(canvas, {
 // ---------- loop ----------
 
 function update(dt) {
+  // The cursor tooltip only refreshes on mousemove — if an overlay opens
+  // (dialogue, puzzle, menu) while the mouse sits still, no new hover event
+  // fires to clear it, so it could otherwise float on top of the overlay.
+  if (inputBlocked() && !hoverTipEl.hidden) hideHoverTip();
   if (paused) return;
   if (actor.moving) {
     const d = distance(actor.x, actor.y, actor.targetX, actor.targetY);
@@ -1333,6 +1391,7 @@ function draw() {
     actor,
     hoveredHotspot: hoveredTarget ? hoveredTarget.def : null,
     hintHighlight: hintHighlightPolygon && performance.now() < hintHighlightExpiresAt ? hintHighlightPolygon : null,
+    revealedHotspots: revealedHotspots && performance.now() < revealedExpiresAt ? revealedHotspots : null,
     debug: false,
     cameraOffset: currentCameraOffset(),
     state: gameState,

@@ -3,7 +3,7 @@
 // "two person" puzzle becomes a one-person forgery: find a blank permit,
 // find the Consortium's own stamp, and let paperwork do the talking.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, paintWorldItem } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, paintWorldItem, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 import { getItem } from "../items.js";
 
 const W = 1920, H = 1080;
@@ -80,6 +80,7 @@ function paintWater(ctx) {
 function paintWarden(ctx) {
   ctx.save();
   ctx.translate(1200, 860);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.25)";
   ctx.beginPath();
   ctx.ellipse(0, 78, 44, 12, 0, 0, Math.PI * 2);
@@ -196,6 +197,7 @@ export const donanaCunning = {
     {
       id: "warden",
       name: "Marsh Warden",
+      nameZh: "沼澤巡警",
       kind: "actor",
       polygon: [[1140, 780], [1260, 780], [1260, 950], [1140, 950]],
       responses: {
@@ -212,6 +214,7 @@ export const donanaCunning = {
     {
       id: "desk",
       name: "Warden's Desk",
+      nameZh: "巡警的書桌",
       kind: "scenery",
       polygon: [[1500, 620], [1650, 620], [1650, 760], [1500, 760]],
       responses: {
@@ -222,6 +225,7 @@ export const donanaCunning = {
     {
       id: "reeds",
       name: "Reed Bank",
+      nameZh: "蘆葦叢",
       kind: "scenery",
       polygon: [[60, 400], [320, 400], [320, 640], [60, 640]],
       responses: {
@@ -232,6 +236,7 @@ export const donanaCunning = {
     {
       id: "conch_site",
       name: "Half-Buried Shell",
+      nameZh: "半埋的貝殼",
       kind: "scenery",
       polygon: [[1500, 880], [1650, 880], [1650, 990], [1500, 990]],
       hideWhenFlag: "salt_conch_found",
@@ -251,6 +256,7 @@ export const donanaCunning = {
     {
       id: "boat_launch",
       name: "Channel Out",
+      nameZh: "出口水道",
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "salt_conch_found",

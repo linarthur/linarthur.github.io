@@ -1,6 +1,7 @@
 // engine/renderer.js — single canvas, layered draw. 1920x1080 logical space.
 
 import { loadChromaKeyedSprite } from "./spriteLoader.js";
+import { CHARACTER_SCALE } from "./artHelpers.js";
 
 export const LOGICAL_W = 1920;
 export const LOGICAL_H = 1080;
@@ -80,7 +81,7 @@ export function createRenderer(canvas) {
 
   function drawActor(actor) {
     const { x, y } = actor;
-    const scale = 0.55 + 0.45 * (y / LOGICAL_H); // scale zone: bigger near camera
+    const scale = (0.55 + 0.45 * (y / LOGICAL_H)) * CHARACTER_SCALE; // scale zone: bigger near camera
     ctx.save();
     ctx.translate(x, y);
     ctx.scale(scale, scale);
@@ -140,13 +141,23 @@ export function createRenderer(canvas) {
     ctx.restore();
   }
 
-  function render({ room, actor, hoveredHotspot, hintHighlight, debug, cameraOffset = { x: 0, y: 0 }, state }) {
+  function render({
+    room,
+    actor,
+    hoveredHotspot,
+    hintHighlight,
+    revealedHotspots,
+    debug,
+    cameraOffset = { x: 0, y: 0 },
+    state,
+  }) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, LOGICAL_W, LOGICAL_H);
     ctx.save();
     ctx.translate(cameraOffset.x, cameraOffset.y);
     room.drawBackground(ctx, state);
     if (debug) drawWalkboxDebug(room.walkbox);
+    if (revealedHotspots) revealedHotspots.forEach((polygon) => drawHotspotHighlight(polygon));
     if (hintHighlight) drawHintHighlight(hintHighlight, performance.now());
     if (hoveredHotspot) drawHotspotHighlight(hoveredHotspot.polygon);
     drawActor(actor);

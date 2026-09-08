@@ -3,7 +3,7 @@
 // player drives (dialogue+cutscene), then the Storm Fork — buried at the
 // centre of the rings — is a resonance puzzle (the middle voice).
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 
 const W = 1920, H = 1080;
 
@@ -79,6 +79,7 @@ function paintSandrail(ctx) {
 function paintMoAndFork(ctx, found) {
   ctx.save();
   ctx.translate(1420, 860);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.25)";
   ctx.beginPath();
   ctx.ellipse(0, 78, 44, 12, 0, 0, Math.PI * 2);
@@ -184,6 +185,7 @@ export const saharaPartners = {
     {
       id: "mo",
       name: "Dr. Nomusa Adeyemi",
+      nameZh: "諾姆莎·阿德耶米博士",
       kind: "actor",
       polygon: [[1360, 780], [1480, 780], [1480, 950], [1360, 950]],
       dialogue: "mo_sahara",
@@ -195,6 +197,7 @@ export const saharaPartners = {
     {
       id: "sandrail",
       name: "Sandrail",
+      nameZh: "沙地越野車",
       kind: "scenery",
       polygon: [[420, 830], [590, 830], [590, 940], [420, 940]],
       responses: {
@@ -206,6 +209,7 @@ export const saharaPartners = {
     {
       id: "rings",
       name: "The Concentric Rings",
+      nameZh: "同心圓環",
       kind: "scenery",
       polygon: [[700, 500], [1220, 500], [1220, 740], [700, 740]],
       responses: {
@@ -216,6 +220,7 @@ export const saharaPartners = {
     {
       id: "fork_site",
       name: "Buried Bronze",
+      nameZh: "掩埋的青銅叉尖",
       kind: "scenery",
       polygon: [[1500, 880], [1650, 880], [1650, 990], [1500, 990]],
       hideWhenFlag: "storm_fork_found",
@@ -230,6 +235,7 @@ export const saharaPartners = {
     {
       id: "onward",
       name: "The Track South",
+      nameZh: "南向小徑",
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "storm_fork_found",

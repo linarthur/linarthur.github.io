@@ -197,6 +197,7 @@ export const gallery = {
     {
       id: "crate",
       name: "Empty Crate",
+      nameZh: "空板條箱",
       kind: "scenery",
       polygon: [[595, 720], [790, 720], [790, 830], [595, 830]],
       responses: {
@@ -209,6 +210,7 @@ export const gallery = {
     {
       id: "window",
       name: "Broken Window",
+      nameZh: "破裂的窗戶",
       kind: "scenery",
       polygon: [[1290, 60], [1510, 60], [1510, 480], [1290, 480]],
       responses: {
@@ -219,6 +221,7 @@ export const gallery = {
     {
       id: "portrait",
       name: "Portrait of the Dean",
+      nameZh: "院長的畫像",
       kind: "scenery",
       polygon: [[330, 160], [470, 160], [470, 340], [330, 340]],
       responses: {
@@ -229,6 +232,7 @@ export const gallery = {
     {
       id: "hole",
       name: "Hole in the Floor",
+      nameZh: "地板上的破洞",
       kind: "exit",
       polygon: [[990, 810], [1310, 810], [1310, 940], [990, 940]],
       requiresFlag: "rope_taken",

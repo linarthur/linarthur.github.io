@@ -4,7 +4,7 @@
 // found. One shared room regardless of path, per the design doc's
 // convergence promise from the Act 1 path-choice screen.
 
-import { vignette, lightWash, rimLight, texturedFloor, paintedGradient } from "../../engine/artHelpers.js";
+import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, CHARACTER_SCALE } from "../../engine/artHelpers.js";
 
 const W = 1920, H = 1080;
 
@@ -104,6 +104,7 @@ function paintDescentStair(ctx) {
 function paintDraghi(ctx, met) {
   ctx.save();
   ctx.translate(1500, 880);
+  ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
   ctx.fillStyle = "rgba(0,0,0,0.3)";
   ctx.beginPath();
   ctx.ellipse(0, 78, 46, 12, 0, 0, Math.PI * 2);
@@ -144,6 +145,7 @@ export const calderaApproach = {
     {
       id: "vents",
       name: "Steam Vents",
+      nameZh: "噴氣孔",
       kind: "scenery",
       polygon: [[200, 600], [700, 600], [700, 700], [200, 700]],
       responses: {
@@ -154,6 +156,7 @@ export const calderaApproach = {
     {
       id: "draghi",
       name: "Contessa Verena Draghi",
+      nameZh: "薇蕾娜·德拉吉伯爵夫人",
       kind: "actor",
       polygon: [[1440, 780], [1560, 780], [1560, 950], [1440, 950]],
       dialogue: "draghi_caldera",
@@ -165,6 +168,7 @@ export const calderaApproach = {
     {
       id: "glow",
       name: "The Glow Below",
+      nameZh: "深處的光芒",
       kind: "scenery",
       polygon: [[700, 780], [1220, 780], [1220, 940], [700, 940]],
       responses: {
@@ -175,6 +179,7 @@ export const calderaApproach = {
     {
       id: "descent",
       name: "The Way Down",
+      nameZh: "下降之路",
       kind: "exit",
       polygon: [[860, 940], [1060, 940], [1060, 990], [860, 990]],
       requiresFlag: "draghi_caldera_met",

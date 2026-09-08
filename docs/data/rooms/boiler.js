@@ -153,6 +153,7 @@ export const boiler = {
     {
       id: "valve_wheel",
       name: "Steam Valve",
+      nameZh: "蒸氣閥輪",
       kind: "scenery",
       polygon: [[1130, 570], [1280, 570], [1280, 720], [1130, 720]],
       responses: {
@@ -167,6 +168,7 @@ export const boiler = {
     {
       id: "furnace",
       name: "Furnace",
+      nameZh: "鍋爐",
       kind: "scenery",
       polygon: [[180, 520], [440, 520], [440, 740], [180, 740]],
       responses: {
@@ -178,6 +180,7 @@ export const boiler = {
     {
       id: "toolboard",
       name: "Tool Board",
+      nameZh: "工具板",
       kind: "scenery",
       polygon: [[1500, 600], [1650, 600], [1650, 760], [1500, 760]],
       responses: {
@@ -189,6 +192,7 @@ export const boiler = {
     {
       id: "grate_down",
       name: "Floor Grate",
+      nameZh: "地板柵欄",
       kind: "exit",
       polygon: [[610, 850], [830, 850], [830, 960], [610, 960]],
       requiresFlag: "valve_shut",

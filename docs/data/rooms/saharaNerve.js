@@ -176,6 +176,7 @@ export const saharaNerve = {
     {
       id: "tram",
       name: "Survey Tram",
+      nameZh: "礦業台車",
       kind: "scenery",
       polygon: [[410, 830], [590, 830], [590, 940], [410, 940]],
       hideWhenFlag: "sahara_tram_ridden",
@@ -189,6 +190,7 @@ export const saharaNerve = {
     {
       id: "rings",
       name: "The Concentric Rings",
+      nameZh: "同心環狀山脊",
       kind: "scenery",
       polygon: [[700, 500], [1220, 500], [1220, 740], [700, 740]],
       responses: {
@@ -199,6 +201,7 @@ export const saharaNerve = {
     {
       id: "fork_site",
       name: "Buried Bronze",
+      nameZh: "掩埋的青銅叉齒",
       kind: "scenery",
       polygon: [[1500, 880], [1650, 880], [1650, 990], [1500, 990]],
       hideWhenFlag: "storm_fork_found",
@@ -213,6 +216,7 @@ export const saharaNerve = {
     {
       id: "onward",
       name: "The Track South",
+      nameZh: "南向小徑",
       kind: "exit",
       polygon: [[1660, 760], [1830, 760], [1830, 960], [1660, 960]],
       requiresFlag: "storm_fork_found",

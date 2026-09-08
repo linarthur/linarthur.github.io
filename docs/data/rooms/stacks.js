@@ -173,6 +173,7 @@ export const stacks = {
     {
       id: "toppled_shelf",
       name: "Toppled Shelf",
+      nameZh: "傾倒的書架",
       kind: "scenery",
       polygon: [[830, 560], [1090, 560], [1090, 790], [830, 790]],
       hideWhenFlag: "shelf_moved",
@@ -187,6 +188,7 @@ export const stacks = {
     {
       id: "catalogue",
       name: "Card Catalogue",
+      nameZh: "卡片目錄櫃",
       kind: "scenery",
       polygon: [[100, 750], [260, 750], [260, 900], [100, 900]],
       responses: {
@@ -198,6 +200,7 @@ export const stacks = {
     {
       id: "reading_lamp",
       name: "Fallen Reading Lamp",
+      nameZh: "倒地的檯燈",
       kind: "scenery",
       polygon: [[1550, 800], [1660, 800], [1660, 900], [1550, 900]],
       responses: {
@@ -209,6 +212,7 @@ export const stacks = {
     {
       id: "hole_down",
       name: "Gap in the Floor",
+      nameZh: "地板裂口",
       kind: "exit",
       polygon: [[860, 850], [1080, 850], [1080, 960], [860, 960]],
       requiresFlag: "shelf_moved",

@@ -83,6 +83,32 @@ canvas#stage {
   border-radius: 4px;
 }
 
+/* Mouse-only cursor tooltip (desktop hover affordance) — deliberately
+   separate from #sentence-line. It shows a bilingual "Verb target." /
+   "動詞目標。" pair (engine/main.js previewFor()), which only ever appears
+   because a mouse is hovering; it must never share the persistent
+   narration bar, or the bar's content would silently differ between mouse
+   and touch input. white-space: pre-line (not nowrap) so the \n between
+   the English and Chinese lines actually renders as a line break. */
+#hover-tip {
+  position: absolute;
+  z-index: 5;
+  padding: 3px 10px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--cream);
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 4px;
+  white-space: pre-line;
+  pointer-events: none;
+}
+
+/* Hover is a mouse-only signal (see engine/input.js) — never show this
+   tooltip on touch, even if a stray pointer event were to fire it. */
+@media (hover: none) {
+  #hover-tip { display: none !important; }
+}
+
 /* ---------- sentence line ---------- */
 #sentence-line {
   width: 100%;
@@ -333,7 +359,8 @@ body.touch #inventory-drawer { display: grid; }
    into the pause menu or the hint system on a touch device (no keyboard
    for Space/J/H there), so they're shown for every player, not just touch. */
 #menu-button,
-#hint-button {
+#hint-button,
+#reveal-button {
   position: absolute;
   top: 8px;
   width: 36px;
@@ -351,10 +378,12 @@ body.touch #inventory-drawer { display: grid; }
 }
 
 #menu-button:hover,
-#hint-button:hover { border-color: var(--ochre); }
+#hint-button:hover,
+#reveal-button:hover { border-color: var(--ochre); }
 
 #menu-button { left: 8px; }
 #hint-button { left: 52px; }
+#reveal-button { left: 96px; font-size: 1.1rem; }
 
 /* ---------- dedication (title screen + credits) ---------- */
 .dedication-wrap {
@@ -714,7 +743,8 @@ body.touch #inventory-drawer { display: grid; }
 .sound-volume { flex: 1 1 auto; accent-color: var(--ochre); }
 
 .slot-label { flex: 1 1 auto; font-weight: bold; }
-.slot-meta { flex: 1 1 auto; font-size: 0.75rem; color: #aab; }
+.slot-meta { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; font-size: 0.75rem; color: #aab; }
+.slot-meta-place { color: var(--ochre); }
 
 .slot-btn, .menu-btn {
   background: #1c2733;
