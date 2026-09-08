@@ -5,7 +5,7 @@
 // rest of the game (see engine/state.js), so a dialogue can gate on, and be
 // gated by, anything a puzzle sets.
 //
-// Tree shape (see data/dialogue/higgins.js for a full example):
+// Tree shape (see data/dialogue/leafpool.js for a full example):
 // {
 //   id, npcName, start: "nodeId",
 //   nodes: {
@@ -79,7 +79,7 @@ export function createDialogueRunner({ getFlag, setFlag, hasItem, addGrit }) {
 
     // Optional per-node `mood` ("talk" | "surprised", ...) picks which
     // hero close-up portrait the dialogue UI shows opposite the NPC's
-    // line — see data/dialogue/higgins.js's crate_info node for the one
+    // line — see data/dialogue/leafpool.js's root node for the one
     // node currently opted in. Defaults to "talk" so every existing node
     // (no mood field at all) keeps working unchanged.
     currentMood() {

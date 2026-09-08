@@ -25,7 +25,7 @@
 import { ROOMS } from "../docs/data/rooms/index.js";
 import { PUZZLES } from "../docs/data/puzzles.js";
 import { ITEMS } from "../docs/data/items.js";
-import { higginsDialogue } from "../docs/data/dialogue/higgins.js";
+import { leafpoolDialogue } from "../docs/data/dialogue/leafpool.js";
 import { fadoDialogue } from "../docs/data/dialogue/fado.js";
 import { draghiDialogue, draghiCalderaDialogue } from "../docs/data/dialogue/draghi.js";
 import { moDonanaDialogue, moSaharaDialogue, moBiminiDialogue } from "../docs/data/dialogue/mo.js";
@@ -33,7 +33,7 @@ import { foremanBiminiDialogue } from "../docs/data/dialogue/foreman.js";
 import { ferroBiminiDialogue } from "../docs/data/dialogue/ferro.js";
 
 const DIALOGUES = {
-  [higginsDialogue.id]: higginsDialogue,
+  [leafpoolDialogue.id]: leafpoolDialogue,
   [fadoDialogue.id]: fadoDialogue,
   [draghiDialogue.id]: draghiDialogue,
   [draghiCalderaDialogue.id]: draghiCalderaDialogue,

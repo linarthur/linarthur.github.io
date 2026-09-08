@@ -8,8 +8,22 @@
 // Art retrofitted to the Act 1 technique bar (engine/artHelpers.js).
 
 import { vignette, lightWash, rimLight, texturedFloor, paintedGradient, CHARACTER_SCALE } from "../../engine/artHelpers.js";
+import { loadChromaKeyedSprite } from "../../engine/spriteLoader.js";
 
 const W = 1920, H = 1080;
+
+// Real art, same chroma-keyed-white-background convention as the hero
+// sprite (engine/renderer.js's HERO_SPRITE) — drop a PNG at this path on a
+// plain white background and it replaces the painted fallback below
+// automatically once it loads (cropped to its own content box, see
+// spriteLoader.js's `bbox` — a source file's own margins would otherwise
+// throw off both the sizing and the floor-contact positioning).
+// LEAFPOOL_SPRITE_HEIGHT is the on-screen height in paintLeafpool's local
+// units; the fallback silhouette gets its own separate scale-up in that
+// function so the two land at roughly the same size if you swap between
+// them.
+const LEAFPOOL_SPRITE = loadChromaKeyedSprite("assets/sprites/leafpool-idle.png");
+const LEAFPOOL_SPRITE_HEIGHT = 147;
 
 const WALKBOX = [
   [260, 720], [1660, 720], [1780, 980], [140, 980],
@@ -234,37 +248,81 @@ function paintCrowbar(ctx) {
   ctx.restore();
 }
 
-function paintHiggins(ctx) {
+function paintLeafpool(ctx) {
   ctx.save();
   ctx.translate(565, 800);
   ctx.scale(CHARACTER_SCALE, CHARACTER_SCALE);
+  // The (565, 800) anchor above is the same point the original Higgins
+  // silhouette used, but his feet/shadow actually sat ~75 units below it
+  // (his shadow ellipse was at local y=78), not at the anchor itself — this
+  // shifts everything below (shadow, sprite, fallback) down to match that
+  // same floor-contact height instead of standing noticeably too high up.
+  ctx.translate(0, 75);
+
+  // Contact shadow, drawn unconditionally (same treatment engine/renderer.js
+  // gives the hero) so she reads as standing on the floor rather than
+  // floating — real sprite or fallback silhouette alike.
   ctx.fillStyle = "rgba(0,0,0,0.3)";
   ctx.beginPath();
-  ctx.ellipse(0, 78, 42, 12, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, 6, 25, 7, 0, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = "#4a5058";
-  ctx.beginPath();
-  ctx.moveTo(-26, 70);
-  ctx.lineTo(-18, -55);
-  ctx.quadraticCurveTo(0, -75, 18, -55);
-  ctx.lineTo(26, 70);
-  ctx.closePath();
-  ctx.fill();
-  ctx.fillStyle = "#c98a5f";
-  ctx.beginPath();
-  ctx.arc(0, -68, 18, 0, Math.PI * 2);
-  ctx.fill();
-  // mop handle
-  ctx.strokeStyle = "#8a6a45";
-  ctx.lineWidth = 5;
-  ctx.beginPath();
-  ctx.moveTo(30, 60);
-  ctx.lineTo(60, -100);
-  ctx.stroke();
-  ctx.fillStyle = "#e8dcc4";
-  ctx.beginPath();
-  ctx.ellipse(62, -104, 12, 16, 0.3, 0, Math.PI * 2);
-  ctx.fill();
+
+  if (LEAFPOOL_SPRITE.ready) {
+    // Crop to the sprite's actual content box (see spriteLoader.js) rather
+    // than its raw canvas — a source file's own margins otherwise throw the
+    // sizing/grounding off even though the math below looks right.
+    const b = LEAFPOOL_SPRITE.bbox;
+    const h = LEAFPOOL_SPRITE_HEIGHT;
+    const w = h * (b.w / b.h);
+    ctx.drawImage(LEAFPOOL_SPRITE.canvas, b.x, b.y, b.w, b.h, -w / 2, -h, w, h);
+  } else {
+    // Fallback until the real sprite ships: a light-brown tabby sitting
+    // primly on the dry shelf-ledge, tail curled around her paws. Scaled up
+    // to roughly match the real sprite's on-screen size (see
+    // LEAFPOOL_SPRITE_HEIGHT) so swapping between the two doesn't jump.
+    ctx.scale(1.27, 1.27);
+
+    ctx.strokeStyle = "#a9784a";
+    ctx.lineWidth = 10;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(34, 0);
+    ctx.quadraticCurveTo(58, -6, 50, -34);
+    ctx.stroke();
+
+    ctx.fillStyle = "#c08a52";
+    ctx.beginPath();
+    ctx.ellipse(0, -28, 30, 34, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#f0e6d4";
+    ctx.beginPath();
+    ctx.ellipse(0, -8, 14, 20, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#c08a52";
+    ctx.beginPath();
+    ctx.arc(0, -70, 20, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(-16, -84);
+    ctx.lineTo(-8, -102);
+    ctx.lineTo(-2, -84);
+    ctx.closePath();
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(16, -84);
+    ctx.lineTo(8, -102);
+    ctx.lineTo(2, -84);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = "#d9a066";
+    ctx.beginPath();
+    ctx.ellipse(-7, -70, 3.5, 4, 0, 0, Math.PI * 2);
+    ctx.ellipse(7, -70, 3.5, 4, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
   ctx.restore();
 }
 
@@ -327,7 +385,7 @@ export const subbasement = {
     paintCrate(ctx);
     if (!state?.flags?.crowbar_taken) paintCrowbar(ctx);
     if (!state?.flags?.lantern_taken) paintLantern(ctx);
-    paintHiggins(ctx);
+    paintLeafpool(ctx);
     if (!state?.flags?.found_chart) paintChartTube(ctx);
     vignette(ctx, W, H, 0.55);
   },
@@ -349,16 +407,16 @@ export const subbasement = {
       setFlagOn: { look: "saw_tablet" },
     },
     {
-      id: "higgins",
-      name: "Higgins",
-      nameZh: "希金斯",
+      id: "leafpool",
+      name: "Leafpool",
+      nameZh: "葉池",
       kind: "actor",
       polygon: [[500, 690], [630, 690], [630, 910], [500, 910]],
-      dialogue: "higgins_intro",
+      dialogue: "leafpool_intro",
       responses: {
-        look: "Higgins, the porter, fighting a mop-shaped war he isn't winning.\n工友希金斯，正在打一場拿拖把也打不贏的仗。",
+        look: "A cat, entirely too composed for a flooding basement, watching him with patient amber eyes.\n一隻貓，對淹水的地下室毫不在意，用一雙耐心的琥珀色眼睛看著他。",
         talk: null, // handled by the dialogue system — see engine main.js
-        default: "He's got enough on his plate without being pushed around.\n他自己的麻煩已經夠多了，不需要再被人為難。",
+        default: "She doesn't seem like the sort to be pushed around by anyone — least of all him.\n她看起來完全不是會被誰使喚的貓，尤其不是被他。",
       },
     },
     {

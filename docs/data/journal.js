@@ -35,8 +35,8 @@ export const GOALS = [
     done: (flags) => !!flags.learned_crate_theft,
   },
   {
-    id: "talk_to_higgins",
-    text: "Talk to Higgins — he was here when it happened.\n找希金斯談談——事發時他就在現場。",
+    id: "talk_to_leafpool",
+    text: "Talk to Leafpool — she was here when it happened.\n找葉池談談——事發時她就在現場。",
     show: (flags) => !!flags.barrels_moved,
     done: (flags) => !!flags.learned_crate_theft && !!flags.learned_water,
   },

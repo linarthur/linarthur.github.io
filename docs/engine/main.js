@@ -51,7 +51,7 @@ import {
   removeSkipOverlay,
   bellFlourishSVG,
 } from "./ui.js";
-import { higginsDialogue } from "../data/dialogue/higgins.js";
+import { leafpoolDialogue } from "../data/dialogue/leafpool.js";
 import { fadoDialogue } from "../data/dialogue/fado.js";
 import { draghiDialogue, draghiCalderaDialogue } from "../data/dialogue/draghi.js";
 import { moDonanaDialogue, moSaharaDialogue, moBiminiDialogue } from "../data/dialogue/mo.js";
@@ -71,7 +71,7 @@ const debugRequested = new URLSearchParams(location.search).has("debug");
 const devToolsEnabled = isDevHost || debugRequested;
 
 const DIALOGUES = {
-  [higginsDialogue.id]: higginsDialogue,
+  [leafpoolDialogue.id]: leafpoolDialogue,
   [fadoDialogue.id]: fadoDialogue,
   [draghiDialogue.id]: draghiDialogue,
   [draghiCalderaDialogue.id]: draghiCalderaDialogue,

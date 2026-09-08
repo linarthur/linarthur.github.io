@@ -16,6 +16,11 @@
 
 export function loadChromaKeyedSprite(url, { threshold = 245, feather = 20 } = {}) {
   const state = { canvas: null, ready: false, width: 0, height: 0 };
+  // Room data files can now call this at module scope (see
+  // data/rooms/subbasement.js), and those same files are imported by
+  // test/solvability.mjs under plain Node, with no DOM/Image — degrade to
+  // "never loads" there instead of throwing, same as any other failed load.
+  if (typeof Image === "undefined") return state;
   const img = new Image();
   img.onload = () => {
     const c = document.createElement("canvas");
@@ -38,6 +43,25 @@ export function loadChromaKeyedSprite(url, { threshold = 245, feather = 20 } = {
     state.canvas = c;
     state.width = c.width;
     state.height = c.height;
+    // Tight bounding box of the actual subject (anything left non-fully-
+    // transparent after keying), separate from the raw canvas size — a
+    // source file's own margins/padding around the subject otherwise throw
+    // off any caller that sizes/positions using the full image (e.g. makes
+    // a character look like it's floating above its own feet). Callers
+    // should draw from this box, not (0, 0, width, height).
+    let minX = c.width, minY = c.height, maxX = -1, maxY = -1;
+    for (let y = 0; y < c.height; y++) {
+      for (let x = 0; x < c.width; x++) {
+        if (px[(y * c.width + x) * 4 + 3] > 10) {
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+        }
+      }
+    }
+    state.bbox =
+      maxX >= minX ? { x: minX, y: minY, w: maxX - minX + 1, h: maxY - minY + 1 } : { x: 0, y: 0, w: c.width, h: c.height };
     state.ready = true;
   };
   img.onerror = () => {

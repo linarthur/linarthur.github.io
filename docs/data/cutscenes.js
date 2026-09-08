@@ -2,25 +2,25 @@
 // Each key is referenced by id from dialogue nodes or room/puzzle logic.
 
 export const CUTSCENES = {
-  higgins_hint: [
+  leafpool_hint: [
     { type: "camera", ms: 260 },
-    { type: "say", speaker: "Higgins", text: "Reckon it's coming from under the tablet, if you want my two pence.", ms: 2200 },
+    { type: "say", speaker: "Leafpool", text: "The hum's coming from under the tablet, if my nose is worth anything down here.", ms: 2200 },
     { type: "walkTo", x: 950, y: 620 },
     { type: "wait", ms: 300 },
-    { type: "setFlag", key: "higgins_pointed_at_tablet", value: true },
+    { type: "setFlag", key: "leafpool_pointed_at_tablet", value: true },
   ],
 
   prologue_end: [
     { type: "wait", ms: 300 },
     { type: "say", speaker: "Indy", text: "A chart. Someone wanted this crate quiet — and this map quieter still.", ms: 2400 },
     { type: "camera", ms: 200 },
-    { type: "say", speaker: "Higgins", text: "Three anchorages, Professor. Reckon you've got some travelling ahead of you.", ms: 2400 },
+    { type: "say", speaker: "Leafpool", text: "Three anchorages, Professor. StarClan doesn't often bother marking a map for someone — reckon you'd best not waste the gift.", ms: 2400 },
     { type: "setFlag", key: "prologue_complete", value: true },
   ],
 
   // Act 1, the harbour bar — the first sight of Draghi, before she's said
   // a word. Fires once, from the `draghi_intro` tree's root node, the same
-  // way `higgins_hint` fires from a mid-conversation node below.
+  // way `leafpool_hint` fires from a mid-conversation node below.
   draghi_reveal: [
     { type: "camera", ms: 250 },
     { type: "say", speaker: "Indy", text: "Well. Someone dressed for a funeral, and came to the wrong bar.", ms: 2200 },
