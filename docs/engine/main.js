@@ -1045,8 +1045,25 @@ function ms_active() {
 
 const cutsceneCtx = {
   walkActorTo,
+  // Cutscene `speaker`/`text` are written the same "English\n中文" way as
+  // every other bilingual string in the game (see data/cutscenes.js) — this
+  // builds two full lines ("Speaker: line" / "說話者：台詞") instead of just
+  // prefixing the speaker onto whatever's in `text` verbatim, which used to
+  // silently produce an English-only sentence line even when `text` itself
+  // had a Chinese half, because the speaker prefix always landed in front
+  // of the combined two-line string rather than in front of just the first
+  // line. Still degrades cleanly for a speaker-less environmental line
+  // (`speaker: null`) or (if either ever lacks a "\n") a single-language one.
   say(speaker, text, ms) {
-    setSentence(speaker ? `${speaker}: ${text}` : text);
+    const [enText, zhText] = String(text).split("\n");
+    if (zhText === undefined) {
+      setSentence(speaker ? `${speaker}: ${text}` : text);
+    } else {
+      const [enSpeaker, zhSpeaker] = speaker ? String(speaker).split("\n") : [null, null];
+      const line1 = enSpeaker ? `${enSpeaker}: ${enText}` : enText;
+      const line2 = zhSpeaker ? `${zhSpeaker}：${zhText}` : zhText;
+      setSentence(`${line1}\n${line2}`);
+    }
     return wait(ms);
   },
   wait,
