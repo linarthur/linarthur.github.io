@@ -1,11 +1,12 @@
 // engine/adminUI.js
 //
-// Read-only play-analytics dashboard for the single admin account
-// (linarthur@gmail.com — see firestore.rules and engine/analytics.js).
-// Pure UI: main.js fetches the session documents via
-// firebaseSync.fetchAllSessions() and hands them to show(); this module
-// never talks to Firebase directly, same division of labour as every
-// other overlay in engine/ui.js.
+// Read-only play-analytics dashboard, visible only to whichever account
+// holds the Firebase "admin" custom claim (see firestore.rules and
+// firebaseSync.js's isCurrentUserAdmin — the real enforcement is server-side,
+// this module just renders whatever main.js hands it). Pure UI: main.js
+// fetches the session documents via firebaseSync.fetchAllSessions() and
+// hands them to show(); this module never talks to Firebase directly, same
+// division of labour as every other overlay in engine/ui.js.
 
 function el(tag, className, text) {
   const e = document.createElement(tag);
@@ -15,13 +16,15 @@ function el(tag, className, text) {
 }
 
 // Filtered out here too, not just at write time (engine/analytics.js
-// already skips creating new sessions for this account) — a client-side
-// belt-and-suspenders so the dashboard never shows the admin's own
-// playtesting, including any rows already written before that write-side
-// guard existed, or written by a stale cached copy of the old code.
-const ADMIN_EMAIL = "linarthur@gmail.com";
-function excludeAdmin(sessions) {
-  return (sessions || []).filter((s) => s.email !== ADMIN_EMAIL);
+// already skips creating new sessions for the signed-in admin) — a
+// client-side belt-and-suspenders so the dashboard never shows the
+// viewer's own playtesting, including any rows already written before
+// that write-side guard existed, or written by a stale cached copy of the
+// old code. `ownEmail` is whichever account is currently viewing this
+// panel (passed in by main.js), not a fixed address baked in here.
+function excludeAdmin(sessions, ownEmail) {
+  if (!ownEmail) return sessions || [];
+  return (sessions || []).filter((s) => s.email !== ownEmail);
 }
 
 const ACT_LABEL = {
@@ -205,14 +208,14 @@ export function createAdminUI(root) {
   });
 
   return {
-    show(sessions, refreshCb) {
-      allSessions = excludeAdmin(sessions);
+    show(sessions, refreshCb, ownEmail) {
+      allSessions = excludeAdmin(sessions, ownEmail);
       onRefresh = refreshCb || null;
       panel.hidden = false;
       render();
     },
-    setSessions(sessions) {
-      allSessions = excludeAdmin(sessions);
+    setSessions(sessions, ownEmail) {
+      allSessions = excludeAdmin(sessions, ownEmail);
       render();
     },
     hide() {

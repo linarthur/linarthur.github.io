@@ -82,6 +82,22 @@ export function getCurrentUser() {
   return currentUser;
 }
 
+// Admin access is a Firebase custom claim (`admin: true`), set once via a
+// one-off Admin SDK script (see SETUP.md) rather than a hardcoded email —
+// nothing in this codebase needs to know or ship the actual admin account.
+// Firestore's own security rules check the same claim (`request.auth.token
+// .admin == true` in firestore.rules) — that's the real enforcement; this
+// client-side check only decides whether to show the admin UI at all.
+export async function isCurrentUserAdmin() {
+  if (!currentUser) return false;
+  try {
+    const result = await currentUser.getIdTokenResult();
+    return !!result.claims?.admin;
+  } catch (e) {
+    return false;
+  }
+}
+
 export async function signInWithGoogle() {
   if (!available) return null;
   const provider = new sdk.GoogleAuthProvider();

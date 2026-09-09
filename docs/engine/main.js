@@ -29,6 +29,7 @@ import {
   cloudSaveSlot,
   cloudLoadSlot,
   fetchAllSessions,
+  isCurrentUserAdmin,
 } from "./firebaseSync.js";
 import { startSession, reportRoom, reportPath, reportGrit, reportGameComplete } from "./analytics.js";
 import { createAdminUI } from "./adminUI.js";
@@ -124,9 +125,15 @@ function settleAuthOnce() {
   settleAuthWait();
 }
 
-initFirebase((user) => {
+// Cached rather than checked fresh on every pause-menu open, so opening
+// the menu never has to wait on an extra token round-trip — refreshed
+// once per real auth change (sign-in/out), not per-open.
+let isAdminCached = false;
+
+initFirebase(async (user) => {
   refreshOfflineBadge();
   if (user) ensureUserDoc(gameState.grit);
+  isAdminCached = await isCurrentUserAdmin();
   settleAuthOnce();
   // A returning Google session can take longer to restore than the
   // authStateSettled timeout below allows for — the SDK itself loads from
@@ -806,7 +813,6 @@ const dialogueUI = createDialogueUI(overlaysRoot);
 const journalUI = createJournalUI(overlaysRoot);
 const pauseUI = createPauseMenuUI(overlaysRoot);
 const adminUI = createAdminUI(overlaysRoot);
-const ADMIN_EMAIL = "linarthur@gmail.com";
 const creditsUI = createCreditsUI(document.body);
 const chapterCardUI = createChapterCardUI(document.body);
 const pathChoiceUI = createPathChoiceUI(document.body);
@@ -1180,16 +1186,19 @@ function openPauseMenu() {
       async onOpenAdmin() {
         pauseUI.hide();
         paused = false; // adminUI.isVisible() takes over input-blocking duty, same as the journal
+        // Passed through rather than hardcoded in adminUI.js — it's just
+        // "whoever is currently viewing this panel," not a fixed account.
+        const ownEmail = getCurrentUser()?.email;
         const sessions = await fetchAllSessions();
         adminUI.show(sessions, async () => {
-          adminUI.setSessions(await fetchAllSessions());
-        });
+          adminUI.setSessions(await fetchAllSessions(), ownEmail);
+        }, ownEmail);
       },
     },
     {
       available: firebaseReady,
       user,
-      isAdmin: user?.email === ADMIN_EMAIL,
+      isAdmin: isAdminCached,
       gritTotal: gameState.grit,
       gritTitle: gritTitle(gameState.grit),
       async onSignIn() {

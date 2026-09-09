@@ -15,11 +15,8 @@
 // anonymous sign-in only happens here, once gameplay begins, and never
 // fires the auth-change callback main.js listens to.
 
-import { getCurrentUser, signInAnonymously, writeSession } from "./firebaseSync.js";
+import { getCurrentUser, signInAnonymously, writeSession, isCurrentUserAdmin } from "./firebaseSync.js";
 
-// The admin's own playtesting shouldn't clutter the dashboard they're
-// looking at — keep this in sync with main.js's ADMIN_EMAIL.
-const ADMIN_EMAIL = "linarthur@gmail.com";
 const FLUSH_INTERVAL_MS = 20000;
 const ANON_ID_KEY = "drownedbell_anon_id";
 
@@ -130,7 +127,7 @@ export async function startSession(isDevSession = false) {
     let user = getCurrentUser();
     if (!user) user = await signInAnonymously();
     if (!user) return; // Firebase unavailable, or anonymous sign-in failed — skip analytics entirely.
-    if (user.email === ADMIN_EMAIL) return; // don't log the admin's own playtesting
+    if (await isCurrentUserAdmin()) return; // don't log the admin's own playtesting
 
     sessionId = `${user.uid}_${Date.now()}`;
     startedAt = Date.now();
