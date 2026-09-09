@@ -122,10 +122,10 @@ function flush(extra = {}) {
 // player actually seeing the game.
 export async function startSession(isDevSession = false) {
   try {
-    // localhost / ?debug=1 runs — Claude's own dev/testing sessions
-    // included — are development traffic, not real playtests; logging them
-    // just adds noise to the admin dashboard. Caller passes the same
-    // devToolsEnabled check main.js already uses to gate window.__debug.
+    // localhost / ?debug=1 runs are development traffic, not real
+    // playtests; logging them just adds noise to the admin dashboard.
+    // Caller passes the same devToolsEnabled check main.js already uses
+    // to gate window.__debug.
     if (isDevSession) return;
     let user = getCurrentUser();
     if (!user) user = await signInAnonymously();

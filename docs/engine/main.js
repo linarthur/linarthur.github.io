@@ -936,9 +936,9 @@ hintButton.addEventListener("click", () => {
 // dashed outline that appears on hover. Touch devices have no hover signal,
 // so without this, only desktop players could ever see which shapes are
 // interactive before touching them (the same "content silently differs by
-// input method" bug class documented in CLAUDE.md, applied to affordance
-// rather than narration text). Every device gets the same feature; desktop
-// players can use it too, they just also have hover.
+// input method" trap that bit the narration bar once already — see the
+// project notes, or grep this file for `onHover`). Every device gets the
+// same feature; desktop players can use it too, they just also have hover.
 const revealButton = document.getElementById("reveal-button");
 let revealedHotspots = null;
 let revealedExpiresAt = 0;
