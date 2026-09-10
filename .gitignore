@@ -3,6 +3,7 @@ reference sound/
 reference graphics/
 screenshots
 CLAUDE.md
+SETUP.md
 firestore.rules
 docs/config/identity.indiana.js
 .DS_Store
