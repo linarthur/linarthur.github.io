@@ -6,5 +6,8 @@ CLAUDE.md
 SETUP.md
 firestore.rules
 docs/config/identity.indiana.js
+docs/config/firebase.js
+*serviceAccountKey*.json
+set-admin-claim.mjs
 .DS_Store
 Thumbs.db
